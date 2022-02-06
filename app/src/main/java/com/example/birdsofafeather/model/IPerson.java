@@ -5,5 +5,5 @@ import java.util.List;
 public interface IPerson {
     int getId();
     String getName();
-    List<String> getClasses();
+    List<String> getNotes();
 }

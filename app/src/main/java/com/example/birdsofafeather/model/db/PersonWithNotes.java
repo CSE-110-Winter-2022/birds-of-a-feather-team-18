@@ -1,22 +1,21 @@
 package com.example.birdsofafeather.model.db;
 
-
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.example.birdsofafeather.model.IPerson;
-
 import java.util.List;
 
-public class PersonWithClasses implements IPerson {
+import com.example.birdsofafeather.model.IPerson;
+
+public class PersonWithNotes implements IPerson{
     @Embedded
     public Person person;
 
     @Relation(parentColumn = "id",
             entityColumn = "person_id",
-            entity = Class.class,
+            entity = Note.class,
             projection = {"text"})
-    public List<String> classes;
+    public List<String> notes;
 
     @Override
     public int getId(){
@@ -29,7 +28,7 @@ public class PersonWithClasses implements IPerson {
     }
 
     @Override
-    public List<String> getClasses() {
-        return this.classes;
+    public List<String> getNotes() {
+        return this.notes;
     }
 }
