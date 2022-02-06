@@ -7,13 +7,13 @@ import androidx.room.Transaction;
 import java.util.List;
 
 @Dao
-public interface PersonWithNotesDao {
+public interface PersonWithCoursesDao {
     @Transaction
     @Query("SELECT * FROM persons")
-    List<com.example.birdsofafeather.model.db.PersonWithNotes> getAll();
+    List<com.example.birdsofafeather.model.db.PersonWithCourses> getAll();
 
     @Query("SELECT * FROM persons WHERE id=:id")
-    com.example.birdsofafeather.model.db.PersonWithNotes get(int id);
+    com.example.birdsofafeather.model.db.PersonWithCourses get(int id);
 
     @Query("SELECT COUNT(*) from persons")
     int count();

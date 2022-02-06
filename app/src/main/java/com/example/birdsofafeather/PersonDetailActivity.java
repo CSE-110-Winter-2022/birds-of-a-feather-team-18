@@ -13,15 +13,15 @@ import java.util.List;
 
 import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
-import com.example.birdsofafeather.model.db.Note;
+import com.example.birdsofafeather.model.db.Course;
 
 public class PersonDetailActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
 
-    private RecyclerView notesRecyclerView;
-    private RecyclerView.LayoutManager notesLayoutManager;
-    private com.example.birdsofafeather.NotesViewAdapter notesViewAdapter;
+    private RecyclerView coursesRecyclerView;
+    private RecyclerView.LayoutManager coursesLayoutManager;
+    private com.example.birdsofafeather.CoursesViewAdapter coursesViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,31 +32,31 @@ public class PersonDetailActivity extends AppCompatActivity {
         int personId = intent.getIntExtra("person_id", 0);
 
         db = AppDatabase.singleton(this);
-        person = db.personWithNotesDao().get(personId);
-        List<Note> notes = db.notesDao().getForPerson(personId);
+        person = db.personWithCoursesDao().get(personId);
+        List<Course> courses = db.coursesDao().getForPerson(personId);
 
         setTitle(person.getName());
 
-        notesRecyclerView = findViewById(R.id.notes_view);
-        notesLayoutManager = new LinearLayoutManager(this);
-        notesRecyclerView.setLayoutManager(notesLayoutManager);
+        coursesRecyclerView = findViewById(R.id.courses_view);
+        coursesLayoutManager = new LinearLayoutManager(this);
+        coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
-        notesViewAdapter = new com.example.birdsofafeather.NotesViewAdapter(notes, (note) -> {
-            db.notesDao().delete(note);
+        coursesViewAdapter = new com.example.birdsofafeather.CoursesViewAdapter(courses, (course) -> {
+            db.coursesDao().delete(course);
         });
-        notesRecyclerView.setAdapter(notesViewAdapter);
+        coursesRecyclerView.setAdapter(coursesViewAdapter);
     }
 
-    public void onAddNoteClicked(View view){
-        int newNoteId = db.notesDao().count()+1;
+    public void onAddCourseClicked(View view){
+        int newCourseId = db.coursesDao().count()+1;
         int personId = person.getId();
-        TextView newNoteTextView = findViewById(R.id.new_note_textview);
-        String newNoteText = newNoteTextView.getText().toString();
+        TextView newCourseTextView = findViewById(R.id.new_course_textview);
+        String newCourseText = newCourseTextView.getText().toString();
 
-        Note newNote = new Note(newNoteId, personId, newNoteText);
-        db.notesDao().insert(newNote);
+        Course newCourse = new Course(newCourseId, personId, newCourseText);
+        db.coursesDao().insert(newCourse);
 
-        notesViewAdapter.addNote(newNote);
+        coursesViewAdapter.addCourse(newCourse);
     }
 
     public void onGoBackClicked(View view) {

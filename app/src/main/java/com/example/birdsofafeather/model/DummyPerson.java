@@ -6,12 +6,12 @@ import java.util.List;
 public class DummyPerson implements com.example.birdsofafeather.model.IPerson {
     private final int id;
     private final String name;
-    private final String[] notes;
+    private final String[] courses;
 
-    public DummyPerson(int id, String name, String[] notes) {
+    public DummyPerson(int id, String name, String[] courses) {
         this.id = id;
         this.name = name;
-        this.notes = notes;
+        this.courses = courses;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class DummyPerson implements com.example.birdsofafeather.model.IPerson {
     }
 
     @Override
-    public List<String> getNotes() {
-        return Arrays.asList(notes);
+    public List<String> getCourses() {
+        return Arrays.asList(courses);
     }
 }

@@ -4,18 +4,18 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "notes")
-public class Note {
+@Entity(tableName = "courses")
+public class Course {
 
-    public Note(int noteId, int personId, String text){
-        this.noteId = noteId;
+    public Course(int courseId, int personId, String text){
+        this.courseId = courseId;
         this.personId = personId;
         this.text = text;
     }
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    public int noteId;
+    public int courseId;
 
     @ColumnInfo(name = "person_id")
     public int personId;

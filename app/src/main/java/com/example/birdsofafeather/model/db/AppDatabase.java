@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Person.class, Note.class}, version = 1)
+@Database(entities = {Person.class, Course.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase singletonInstance;
 
@@ -21,6 +21,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return singletonInstance;
     }
 
-    public abstract com.example.birdsofafeather.model.db.PersonWithNotesDao personWithNotesDao();
-    public abstract com.example.birdsofafeather.model.db.NotesDao notesDao();
+    public abstract com.example.birdsofafeather.model.db.PersonWithCoursesDao personWithCoursesDao();
+    public abstract com.example.birdsofafeather.model.db.CoursesDao coursesDao();
 }

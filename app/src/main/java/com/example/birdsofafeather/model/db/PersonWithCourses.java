@@ -7,15 +7,15 @@ import java.util.List;
 
 import com.example.birdsofafeather.model.IPerson;
 
-public class PersonWithNotes implements IPerson{
+public class PersonWithCourses implements IPerson{
     @Embedded
     public Person person;
 
     @Relation(parentColumn = "id",
             entityColumn = "person_id",
-            entity = Note.class,
+            entity = Course.class,
             projection = {"text"})
-    public List<String> notes;
+    public List<String> courses;
 
     @Override
     public int getId(){
@@ -28,7 +28,7 @@ public class PersonWithNotes implements IPerson{
     }
 
     @Override
-    public List<String> getNotes() {
-        return this.notes;
+    public List<String> getCourses() {
+        return this.courses;
     }
 }

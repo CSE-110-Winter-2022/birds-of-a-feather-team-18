@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setTitle(R.string.app_title);
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        List<? extends IPerson> persons = db.personWithNotesDao().getAll();
+        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
