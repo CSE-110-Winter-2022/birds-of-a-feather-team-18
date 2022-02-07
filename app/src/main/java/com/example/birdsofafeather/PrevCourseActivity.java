@@ -38,8 +38,8 @@ public class PrevCourseActivity extends AppCompatActivity {
         Person user = new Person(personId, "user");
 
         db.personWithCoursesDao().insert(user);
-        Course nCourse = new Course(db.coursesDao().maxId()+1, personId, "CSE110");
-        db.coursesDao().insert(nCourse);
+//        Course nCourse = new Course(db.coursesDao().maxId()+1, personId, "CSE110");
+  //      db.coursesDao().insert(nCourse);
 
         List<Course> courses = db.coursesDao().getForPerson(personId);
 
@@ -77,12 +77,22 @@ public class PrevCourseActivity extends AppCompatActivity {
         String newQuarterText = newQuarterTextView.getText().toString();
         String newCourseNumText = newCourseNumTextView.getText().toString();
 
-        String prevCourse = newYearText + newQuarterText + newSubjectText + newCourseNumText;
+        String prevCourse =  newQuarterText + newYearText + " " + newSubjectText + " " + newCourseNumText;
 
         Course newCourse = new Course(newCourseId, personId, prevCourse);
-        db.coursesDao().insert(newCourse);
 
-        coursesViewAdapter.addCourse(newCourse);
+        List<Course> courses = db.coursesDao().getForPerson(personId);
+        boolean alreadyInDatabase = false;
+        for(int i=0; i<courses.size(); ++i) {
+            if (courses.get(i).text.toString().equals(prevCourse)) {
+                alreadyInDatabase = true;
+                break;
+            }
+        }
+        if(!alreadyInDatabase){
+            db.coursesDao().insert(newCourse);
+            coursesViewAdapter.addCourse(newCourse);
+        }
     }
 
     public void onDoneClicked(View view) {
