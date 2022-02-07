@@ -35,6 +35,7 @@ android {
 
 dependencies {
     def room_version = "2.4.1"
+    implementation 'com.google.android.gms:play-services-nearby:18.0.2'
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
