@@ -56,7 +56,7 @@ public class PrevClasses {
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
-            assertEquals(1, activity.numCourses());
+            assertEquals(1, activity.getCourseCount());
         });
     }
 }

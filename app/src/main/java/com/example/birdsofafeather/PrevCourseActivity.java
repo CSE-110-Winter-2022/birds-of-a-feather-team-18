@@ -22,6 +22,7 @@ public class PrevCourseActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
     private int personId;
+    private int currCourseCount;
 
     private RecyclerView coursesRecyclerView;
     private RecyclerView.LayoutManager coursesLayoutManager;
@@ -91,6 +92,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         }
         if(!alreadyInDatabase){
             db.coursesDao().insert(newCourse);
+            currCourseCount = db.coursesDao().getForPerson(personId).size();
             coursesViewAdapter.addCourse(newCourse);
         }
     }
@@ -99,8 +101,8 @@ public class PrevCourseActivity extends AppCompatActivity {
         finish();
     }
 
-    public int numCourses() {
-        List<Course> courses = db.coursesDao().getForPerson(personId);
-        return courses.size();
+
+    public int getCourseCount(){
+        return currCourseCount;
     }
 }
