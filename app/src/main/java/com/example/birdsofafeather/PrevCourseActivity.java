@@ -16,6 +16,7 @@ import com.example.birdsofafeather.model.db.Person;
 import org.w3c.dom.Text;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class PrevCourseActivity extends AppCompatActivity {
     private AppDatabase db;
@@ -29,8 +30,11 @@ public class PrevCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prev_course);
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
-        Person user = new Person(0, "user");
+        int  newPersonWithNotesId = db.personWithCoursesDao().maxId() + 1;
+        Person user = new Person(newPersonWithNotesId, "user");
 
         db.personWithCoursesDao().insert(user);
 
