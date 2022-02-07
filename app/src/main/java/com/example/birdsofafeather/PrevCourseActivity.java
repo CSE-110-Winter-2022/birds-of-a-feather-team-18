@@ -33,7 +33,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prev_course);
         db = AppDatabase.singleton(getApplicationContext());
-        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
+        //List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
         personId = db.personWithCoursesDao().maxId() + 1;
         Person user = new Person(personId, "user");
@@ -105,4 +105,10 @@ public class PrevCourseActivity extends AppCompatActivity {
     public int getCourseCount(){
         return currCourseCount;
     }
+
+    public List<Course> getCourses() {
+        List<Course> courses = db.coursesDao().getForPerson(personId);
+        return courses;
+    }
+
 }
