@@ -13,6 +13,9 @@
             android:name=".PrevCourseActivity"
             android:exported="false"/>
         <activity
+            android:name=".LoginActivity"
+            android:exported="false"/>
+        <activity
             android:name="com.example.birdsofafeather.MainActivity"
             android:exported="true">
             <intent-filter>

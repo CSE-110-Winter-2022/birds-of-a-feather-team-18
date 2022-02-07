@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.DummyPerson;
 import com.example.birdsofafeather.model.IPerson;
+import com.example.birdsofafeather.model.db.AppDatabase;
 
 public class MainActivity extends AppCompatActivity {
     protected RecyclerView personsRecyclerView;
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(R.string.app_title);
+
+
+        AppDatabase db = AppDatabase.singleton(this);
+        if(db.personWithCoursesDao().count() == 0){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
 
     }

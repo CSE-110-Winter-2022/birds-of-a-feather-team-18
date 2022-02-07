@@ -21,6 +21,7 @@ import java.util.List;
 public class PrevCourseActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
+    private int personId;
 
     private RecyclerView coursesRecyclerView;
     private RecyclerView.LayoutManager coursesLayoutManager;
@@ -30,24 +31,29 @@ public class PrevCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prev_course);
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        db = AppDatabase.singleton(getApplicationContext());
         List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
-        int  newPersonWithNotesId = db.personWithCoursesDao().maxId() + 1;
-        Person user = new Person(newPersonWithNotesId, "user");
+        personId = db.personWithCoursesDao().maxId() + 1;
+        Person user = new Person(personId, "user");
 
         db.personWithCoursesDao().insert(user);
+        Course nCourse = new Course(db.coursesDao().maxId()+1, personId, "CSE110");
+        db.coursesDao().insert(nCourse);
+
+        List<Course> courses = db.coursesDao().getForPerson(personId);
 
 
 
-        Course[] courses = {new Course(0,0,"CSE110")};
+
+        //Course[] courses = {new Course(0,0,"CSE110")};
 
 
         coursesRecyclerView = findViewById(R.id.prev_courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
 
-        coursesViewAdapter = new CoursesViewAdapter(Arrays.asList(courses));
+        coursesViewAdapter = new CoursesViewAdapter(courses);
 
 
         coursesRecyclerView.setAdapter(coursesViewAdapter);
@@ -59,9 +65,8 @@ public class PrevCourseActivity extends AppCompatActivity {
     }
 
     public void onAddPrevCourseClicked(View view){
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        //AppDatabase db = AppDatabase.singleton(getApplicationContext());
         int newCourseId = db.coursesDao().maxId()+1;
-        int personId = 0;
         TextView newSubjectTextView = findViewById(R.id.subject_view);
         TextView newYearTextView = findViewById(R.id.year_view);
         TextView newQuarterTextView = findViewById(R.id.quarter_view);
