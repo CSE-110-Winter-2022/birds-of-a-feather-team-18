@@ -98,4 +98,9 @@ public class PrevCourseActivity extends AppCompatActivity {
     public void onDoneClicked(View view) {
         finish();
     }
+
+    public int numCourses() {
+        List<Course> courses = db.coursesDao().getForPerson(personId);
+        return courses.size();
+    }
 }

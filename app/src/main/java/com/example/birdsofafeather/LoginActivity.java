@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView selfNameTextView = findViewById(R.id.self_name_textview);
         String selfName = selfNameTextView.getText().toString();
 
-        Person newSelf = new Person(db.personWithCoursesDao().maxId()+1, selfName);
+        Person newSelf = new Person(1, selfName);
         db.personWithCoursesDao().insert(newSelf);
         finish();
     }
