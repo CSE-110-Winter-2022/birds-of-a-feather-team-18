@@ -5,9 +5,11 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_detail.xml" value="0.165625" />
-        <entry key="app/src/main/res/layout/notes_row.xml" value="0.165625" />
-        <entry key="app/src/main/res/layout/person_row.xml" value="0.165625" />
+        <entry key="app/src/main/res/layout/activity_prev_course.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/activity_prev_course_detail.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/courses_row.xml" value="0.1" />
         <entry key="app/src/main/res/layout/notes_row.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/person_row.xml" value="0.165625" />
       </map>
     </option>
   </component>

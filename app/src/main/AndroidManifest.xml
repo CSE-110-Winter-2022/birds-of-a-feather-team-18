@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
         <activity
-            android:name="com.example.birdsofafeather.PersonDetailActivity"
-            android:exported="false" />
+            android:name=".PrevCourseActivity"
+            android:exported="false"/>
         <activity
             android:name="com.example.birdsofafeather.MainActivity"
             android:exported="true">

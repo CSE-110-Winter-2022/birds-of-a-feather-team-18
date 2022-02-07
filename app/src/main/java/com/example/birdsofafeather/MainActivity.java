@@ -1,21 +1,18 @@
 package com.example.birdsofafeather;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import com.example.birdsofafeather.model.DummyPerson;
 import com.example.birdsofafeather.model.IPerson;
-import com.example.birdsofafeather.model.db.AppDatabase;
 
 public class MainActivity extends AppCompatActivity {
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
-    protected com.example.birdsofafeather.PersonsViewAdapter personsViewAdapter;
 
     protected IPerson[] data = {
             new DummyPerson(0, "Jane Doe", new String[]{
@@ -38,15 +35,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.app_title);
 
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
-        personsRecyclerView = findViewById(R.id.persons_view);
+    }
 
-        personsLayoutManager = new LinearLayoutManager(this);
-        personsRecyclerView.setLayoutManager(personsLayoutManager);
-
-        personsViewAdapter = new PersonsViewAdapter(persons);
-        personsRecyclerView.setAdapter(personsViewAdapter);
+    public void onTestClicked(View view) {
+        Intent intent = new Intent(this, PrevCourseActivity.class);
+        startActivity(intent);
     }
 }
