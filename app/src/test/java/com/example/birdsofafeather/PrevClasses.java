@@ -38,10 +38,10 @@ public class PrevClasses {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {
-            TextView newSubjectTextView = activity.findViewById(R.id.subject_view);
-            TextView newYearTextView = activity.findViewById(R.id.year_view);
-            TextView newQuarterTextView = activity.findViewById(R.id.quarter_view);
-            TextView newCourseNumTextView = activity.findViewById(R.id.course_number_view);
+            EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
+            EditText newYearTextView = activity.findViewById(R.id.year_view);
+            EditText newQuarterTextView = activity.findViewById(R.id.quarter_view);
+            EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
             newSubjectTextView.setText("CSE");
@@ -56,7 +56,7 @@ public class PrevClasses {
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
-            assertEquals(1, 1);
+            assertEquals(1, activity.getCourseCount());
         });
     }
 }
