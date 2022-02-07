@@ -13,7 +13,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase singleton(Context context) {
         if(singletonInstance == null) {
             singletonInstance = Room.databaseBuilder(context, AppDatabase.class, "persons.db")
-                    //.createFromAsset("starter-persons.db")
+                    .createFromAsset("starter-persons.db")
                     .allowMainThreadQueries()
                     .build();
         }
@@ -21,6 +21,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return singletonInstance;
     }
 
-    public abstract com.example.birdsofafeather.model.db.PersonWithCoursesDao personWithCoursesDao();
-    public abstract com.example.birdsofafeather.model.db.CoursesDao coursesDao();
+    public abstract PersonWithCoursesDao personWithCoursesDao();
+    public abstract CoursesDao coursesDao();
 }
