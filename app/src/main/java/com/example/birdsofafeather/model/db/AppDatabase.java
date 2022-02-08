@@ -10,6 +10,12 @@ import androidx.room.RoomDatabase;
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase singletonInstance;
 
+    public static void useTestDatabase(Context context) {
+        singletonInstance = Room.inMemoryDatabaseBuilder(context, AppDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+    }
+
     public static AppDatabase singleton(Context context) {
         if(singletonInstance == null) {
             singletonInstance = Room.databaseBuilder(context, AppDatabase.class, "persons.db")
