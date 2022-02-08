@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.DummyPerson;
 import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
+    protected PersonsViewAdapter personsViewAdapter;
 
     protected IPerson[] data = {
             new DummyPerson(0, "Jane Doe", new String[]{
@@ -48,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+
+        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
+
+        personsRecyclerView = findViewById(R.id.persons_view);
+
+        personsLayoutManager = new LinearLayoutManager(this);
+        personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+        personsViewAdapter = new PersonsViewAdapter(persons);
+        personsRecyclerView.setAdapter(personsViewAdapter);
+
     }
 
     public void onTestClicked(View view) {

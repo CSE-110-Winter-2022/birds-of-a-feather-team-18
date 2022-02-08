@@ -1,5 +1,6 @@
 package com.example.birdsofafeather;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -26,6 +27,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Person newSelf = new Person(db.personWithCoursesDao().maxId()+1, selfName);
         db.personWithCoursesDao().insert(newSelf);
+
+        Intent intent = new Intent(this, PrevCourseActivity.class);
+        startActivity(intent);
+
         finish();
     }
 }
