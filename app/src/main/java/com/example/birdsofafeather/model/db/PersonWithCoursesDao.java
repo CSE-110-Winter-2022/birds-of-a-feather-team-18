@@ -1,6 +1,7 @@
 package com.example.birdsofafeather.model.db;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -22,6 +23,12 @@ public interface PersonWithCoursesDao {
     @Query("SELECT MAX(id) from persons")
     int maxId();
 
+    @Query("DELETE FROM persons")
+    void deleteAll();
+
     @Insert
     void insert(Person person);
+
+    @Delete
+    void delete(Person person);
 }

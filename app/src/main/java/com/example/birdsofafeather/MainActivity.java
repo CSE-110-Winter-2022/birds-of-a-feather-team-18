@@ -38,12 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         AppDatabase db = AppDatabase.singleton(this);
+
+        //clear database of all persons and courses
+        db.coursesDao().deleteAll();
+        db.personWithCoursesDao().deleteAll();
+
+        //if the database is empty, start the login activity
         if(db.personWithCoursesDao().count() == 0){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
-
-
     }
 
     public void onTestClicked(View view) {

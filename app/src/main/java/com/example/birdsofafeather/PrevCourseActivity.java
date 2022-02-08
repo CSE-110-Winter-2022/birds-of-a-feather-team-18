@@ -32,12 +32,13 @@ public class PrevCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prev_course);
         db = AppDatabase.singleton(getApplicationContext());
-        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
+        //List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
-        personId = db.personWithCoursesDao().maxId() + 1;
-        Person user = new Person(personId, "user");
+        //personId = db.personWithCoursesDao().maxId() + 1;
+        personId = 1;
+        //Person user = new Person(personId, "user");
+        //db.personWithCoursesDao().insert(user);
 
-        db.personWithCoursesDao().insert(user);
 //        Course nCourse = new Course(db.coursesDao().maxId()+1, personId, "CSE110");
   //      db.coursesDao().insert(nCourse);
 
@@ -84,7 +85,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         List<Course> courses = db.coursesDao().getForPerson(personId);
         boolean alreadyInDatabase = false;
         for(int i=0; i<courses.size(); ++i) {
-            if (courses.get(i).text.toString().equals(prevCourse)) {
+            if (courses.get(i).text.equals(prevCourse)) {
                 alreadyInDatabase = true;
                 break;
             }
