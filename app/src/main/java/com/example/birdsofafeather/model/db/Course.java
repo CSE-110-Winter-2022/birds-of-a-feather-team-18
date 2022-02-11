@@ -7,12 +7,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "courses")
 public class Course {
 
-    public Course(int courseId, int personId, String text){
-        this.courseId = courseId;
-        this.personId = personId;
-        this.text = text;
-    }
-
     @PrimaryKey
     @ColumnInfo(name = "id")
     public int courseId;
@@ -22,4 +16,10 @@ public class Course {
 
     @ColumnInfo(name = "text")
     public String text;
+
+    public Course(int courseId, int personId, String text){
+        this.courseId = courseId;
+        this.personId = personId;
+        this.text = text;
+    }
 }

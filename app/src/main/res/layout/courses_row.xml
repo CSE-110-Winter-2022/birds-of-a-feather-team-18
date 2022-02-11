@@ -27,14 +27,5 @@
         android:textStyle="bold"
         tools:text="@tools:sample/lorem"/>
 
-    <Button
-        android:id="@+id/remove_course_button"
-        android:layout_width="48sp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="X" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

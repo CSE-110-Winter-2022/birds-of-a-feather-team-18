@@ -1,6 +1,8 @@
 package com.example.birdsofafeather.model.db;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -10,11 +12,20 @@ import java.util.List;
 public interface PersonWithCoursesDao {
     @Transaction
     @Query("SELECT * FROM persons")
-    List<com.example.birdsofafeather.model.db.PersonWithCourses> getAll();
+    List<PersonWithCourses> getAll();
 
     @Query("SELECT * FROM persons WHERE id=:id")
-    com.example.birdsofafeather.model.db.PersonWithCourses get(int id);
+    PersonWithCourses get(int id);
 
     @Query("SELECT COUNT(*) from persons")
     int count();
+
+    @Query("SELECT MAX(id) from persons")
+    int maxId();
+
+    @Insert
+    void insert(Person person);
+
+    @Delete
+    void delete(Person person);
 }

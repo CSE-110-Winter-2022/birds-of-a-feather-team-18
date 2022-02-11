@@ -16,26 +16,28 @@ import com.example.birdsofafeather.model.db.Course;
 
 public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.ViewHolder> {
     private final List<Course> courses;
-    private final Consumer<Course> onCourseRemoved;
+    //private final Consumer<Course> onCourseRemoved;
 
-    public CoursesViewAdapter(List<Course> courses, Consumer<Course> onCourseRemoved){
+    //public CoursesViewAdapter(List<Course> courses, Consumer<Course> onCourseRemoved){
+    public CoursesViewAdapter(List<Course> courses){
         super();
         this.courses = courses;
-        this.onCourseRemoved = onCourseRemoved;
+        //this.onCourseRemoved = onCourseRemoved;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CoursesViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.courses_row, parent, false);
 
-        return new ViewHolder(view, this::removeCourse, onCourseRemoved);
+        //return new ViewHolder(view, this::removeCourse, onCourseRemoved);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CoursesViewAdapter.ViewHolder holder, int position) {
         holder.setCourse(courses.get(position));
     }
 
@@ -48,25 +50,32 @@ public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.
         this.courses.add(course);
         this.notifyItemInserted(this.courses.size()-1);
     }
+    /*
 
     public void removeCourse(int position) {
         this.courses.remove(position);
         this.notifyItemRemoved(position);
     }
 
+     */
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseTextView;
         private Course course;
 
-        ViewHolder(View itemView, Consumer<Integer> removeCourse, Consumer<Course> onCourseRemoved) {
+        //ViewHolder(View itemView, Consumer<Integer> removeCourse, Consumer<Course> onCourseRemoved) {
+        ViewHolder(View itemView) {
             super(itemView);
             this.courseTextView = itemView.findViewById(R.id.course_row_text);
+
+            /*
 
             Button removeButton = itemView.findViewById(R.id.remove_course_button);
             removeButton.setOnClickListener((view) -> {
                 removeCourse.accept(this.getAdapterPosition());
                 onCourseRemoved.accept(course);
             });
+             */
         }
 
         public void setCourse(Course course) {
