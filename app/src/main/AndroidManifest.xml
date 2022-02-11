@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.birdsofafeather">
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +8,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyBQ8f2wXIUbdKPfCxv75lp-4kphoIW9j8I"/>
+        <activity
+            android:name="com.example.birdsofafeather.PersonDetailActivity"
+            android:exported="false" />
+
         <activity
             android:name=".PrevCourseActivity"
             android:exported="false"/>
@@ -20,10 +26,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

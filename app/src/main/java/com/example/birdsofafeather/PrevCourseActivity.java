@@ -22,6 +22,7 @@ public class PrevCourseActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
     private int personId;
+    private int currCourseCount;
 
     private RecyclerView coursesRecyclerView;
     private RecyclerView.LayoutManager coursesLayoutManager;
@@ -92,11 +93,21 @@ public class PrevCourseActivity extends AppCompatActivity {
         }
         if(!alreadyInDatabase){
             db.coursesDao().insert(newCourse);
+            currCourseCount = db.coursesDao().getForPerson(personId).size();
             coursesViewAdapter.addCourse(newCourse);
         }
     }
 
     public void onDoneClicked(View view) {
         finish();
+    }
+
+    public int getCourseCount(){
+        return currCourseCount;
+    }
+
+    public List<Course> getCourses() {
+        List<Course> courses = db.coursesDao().getForPerson(personId);
+        return courses;
     }
 }

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
-
+        /*
         List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
         personsRecyclerView = findViewById(R.id.persons_view);
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         personsViewAdapter = new PersonsViewAdapter(persons);
         personsRecyclerView.setAdapter(personsViewAdapter);
+         */
 
     }
 
