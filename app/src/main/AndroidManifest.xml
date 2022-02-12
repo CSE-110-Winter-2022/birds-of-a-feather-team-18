@@ -14,7 +14,6 @@
         <activity
             android:name="com.example.birdsofafeather.PersonDetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".PrevCourseActivity"
             android:exported="false"/>
