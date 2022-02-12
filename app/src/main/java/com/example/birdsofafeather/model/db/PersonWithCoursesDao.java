@@ -23,6 +23,9 @@ public interface PersonWithCoursesDao {
     @Query("SELECT MAX(id) from persons")
     int maxId();
 
+    @Query("DELETE FROM persons")
+    void deleteAll();
+
     @Insert
     void insert(Person person);
 
