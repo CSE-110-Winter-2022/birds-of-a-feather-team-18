@@ -25,12 +25,16 @@ public class NameLoginActivity extends AppCompatActivity {
         TextView selfNameTextView = findViewById(R.id.self_name_textview);
         String selfName = selfNameTextView.getText().toString();
 
-        Person newSelf = new Person(db.personWithCoursesDao().maxId()+1, selfName);
-        db.personWithCoursesDao().insert(newSelf);
+        if(selfName.equals("")){
+            Utilities.showAlert(this, "No Name Entered");
+        } else {
+            Person newSelf = new Person(db.personWithCoursesDao().maxId() + 1, selfName);
+            db.personWithCoursesDao().insert(newSelf);
 
-        Intent intent = new Intent(this, PhotoURLActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, PhotoURLActivity.class);
+            startActivity(intent);
 
-        finish();
+            finish();
+        }
     }
 }
