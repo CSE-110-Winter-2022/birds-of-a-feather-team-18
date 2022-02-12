@@ -32,16 +32,4 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-    <ImageView
-        android:id="@+id/testImageView"
-        android:layout_width="173dp"
-        android:layout_height="180dp"
-        android:layout_marginBottom="228dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

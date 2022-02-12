@@ -14,8 +14,12 @@ public class Person {
     @ColumnInfo(name = "name")
     public String name;
 
-    public Person(int personId, String name){
+    @ColumnInfo(name = "photo")
+    public String photo;
+
+    public Person(int personId, String name, String photo){
         this.personId = personId;
         this.name = name;
+        this.photo = photo;
     }
 }

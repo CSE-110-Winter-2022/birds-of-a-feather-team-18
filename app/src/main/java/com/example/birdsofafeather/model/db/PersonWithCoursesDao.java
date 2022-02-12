@@ -31,4 +31,7 @@ public interface PersonWithCoursesDao {
 
     @Delete
     void delete(Person person);
+
+    @Query("UPDATE persons SET photo = :newPhoto WHERE id =:id")
+    void updatePhoto(String newPhoto, int id);
 }

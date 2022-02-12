@@ -19,20 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected RecyclerView.LayoutManager personsLayoutManager;
     protected PersonsViewAdapter personsViewAdapter;
 
-    protected IPerson[] data = {
-            new DummyPerson(0, "Jane Doe", new String[]{
-                    "Likes cats.",
-                    "Favorite color is blue."
-            }),
-            new DummyPerson(1, "John Public", new String[]{
-                    "Likes dogs.",
-                    "Favorite color is red."
-            }),
-            new DummyPerson(2, "Richard Roe", new String[]{
-                    "Likes birds.",
-                    "Favorite color is yellow."
-            })}
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

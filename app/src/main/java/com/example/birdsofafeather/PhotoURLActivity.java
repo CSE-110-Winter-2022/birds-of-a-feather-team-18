@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
+import com.example.birdsofafeather.model.db.Person;
+import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +22,7 @@ import java.net.URL;
 public class PhotoURLActivity extends AppCompatActivity {
     protected AppDatabase db;
     String photoUrl;
+    //ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +30,27 @@ public class PhotoURLActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_url);
         setTitle(R.string.app_title);
         //default profile photo
-        photoUrl = "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg";
-        //db = AppDatabase.singleton(this);
+        db = AppDatabase.singleton(this);
+        //imageView = findViewById(R.id.testImageView);
+        //Picasso.get().load(db.personWithCoursesDao().get(1).person.photo).into(imageView);
     }
 
     public void onSubmitClicked(View view) throws IOException {
         TextView photoUrlTextView = findViewById(R.id.photo_url_textview);
 
         if(!photoUrlTextView.getText().toString().equals("")) {
-            ImageView imageView = findViewById(R.id.testImageView);
-
-            //TODO: add photo to database (as field in Person)
-
+            //imageView = findViewById(R.id.testImageView);
 
             try {
                 URL url = new URL(photoUrlTextView.getText().toString());
-                HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+                //HttpURLConnection huc = (HttpURLConnection) url.openConnection();
 
-                int responseCode = huc.getResponseCode();
-
-                if(responseCode==HttpURLConnection.HTTP_NOT_FOUND){
-                    Utilities.showAlert(this, "Invalid Photo URL");
-                } else {
-                    photoUrl = photoUrlTextView.getText().toString();
-                    Picasso.get().load(photoUrl).into(imageView);
-                    Intent intent = new Intent(this, PrevCourseActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                photoUrl = photoUrlTextView.getText().toString();
+                db.personWithCoursesDao().updatePhoto(photoUrl, 1);
+               // Picasso.get().load(db.personWithCoursesDao().get(1).person.photo).into(imageView);
+                Intent intent = new Intent(this, PrevCourseActivity.class);
+                startActivity(intent);
+                finish();
             } catch (MalformedURLException e){
                 Utilities.showAlert(this, "Invalid Photo URL");
             }

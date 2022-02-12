@@ -28,7 +28,7 @@ public class NameLoginActivity extends AppCompatActivity {
         if(selfName.equals("")){
             Utilities.showAlert(this, "No Name Entered");
         } else {
-            Person newSelf = new Person(db.personWithCoursesDao().maxId() + 1, selfName);
+            Person newSelf = new Person(db.personWithCoursesDao().maxId() + 1, selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg");
             db.personWithCoursesDao().insert(newSelf);
 
             Intent intent = new Intent(this, PhotoURLActivity.class);
