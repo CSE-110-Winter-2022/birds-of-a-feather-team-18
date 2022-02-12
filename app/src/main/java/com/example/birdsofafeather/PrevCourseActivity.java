@@ -110,4 +110,5 @@ public class PrevCourseActivity extends AppCompatActivity {
         List<Course> courses = db.coursesDao().getForPerson(personId);
         return courses;
     }
+
 }
