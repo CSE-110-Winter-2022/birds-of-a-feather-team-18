@@ -20,6 +20,12 @@ public interface CoursesDao {
     @Query("SELECT COUNT(*) from courses")
     int count();
 
+    @Query("SELECT MAX(id) from courses")
+    int maxId();
+
+    @Query("DELETE FROM courses")
+    void deleteAll();
+
     @Insert
     void insert(Course course);
 

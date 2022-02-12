@@ -15,4 +15,12 @@
     <string name="add_note">ADD NOTE</string>
     <string name="name">Name</string>
     <string name="confirm_name">CONFIRM</string>
+    <string name="add_course">ADD COURSE</string>
+    <string name="done">DONE</string>
+    <string name="subject">Subject</string>
+    <string name="course_number">Course</string>
+    <string name="quarter">Quarter</string>
+    <string name="year">Year</string>
+    <string name="submit_url">SUBMIT</string>
+    <string name="url_instruction">Submit URL to a headshot of yourself</string>
 </resources>

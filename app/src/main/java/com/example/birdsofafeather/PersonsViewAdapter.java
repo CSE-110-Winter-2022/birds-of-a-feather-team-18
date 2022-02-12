@@ -10,9 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.birdsofafeather.model.IPerson;
+
 import java.util.List;
 
-import com.example.birdsofafeather.model.IPerson;
 
 public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.ViewHolder> {
     private final List<? extends IPerson> persons;

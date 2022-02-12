@@ -11,7 +11,7 @@ public class Utilities {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
         alertBuilder
-                .setTitle("Alert!")
+                .setTitle("Error!")
                 .setMessage(message)
                 .setPositiveButton("Ok", (dialog, id) -> {
                     dialog.cancel();

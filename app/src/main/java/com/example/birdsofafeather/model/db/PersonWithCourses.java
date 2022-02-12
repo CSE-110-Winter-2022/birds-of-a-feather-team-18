@@ -28,6 +28,9 @@ public class PersonWithCourses implements IPerson{
     }
 
     @Override
+    public String getPhoto() { return this.person.photo; }
+
+    @Override
     public List<String> getCourses() {
         return this.courses;
     }
