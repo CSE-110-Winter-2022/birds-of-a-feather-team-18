@@ -21,4 +21,6 @@
     <string name="course_number">Course</string>
     <string name="quarter">Quarter</string>
     <string name="year">Year</string>
+    <string name="submit_url">SUBMIT</string>
+    <string name="url_instruction">Submit URL to a headshot of yourself</string>
 </resources>

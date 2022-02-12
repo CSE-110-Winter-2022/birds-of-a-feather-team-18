@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.birdsofafeather">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,12 +15,14 @@
         <activity
             android:name="com.example.birdsofafeather.PersonDetailActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".PhotoURLActivity"
+            android:exported="false"/>
         <activity
             android:name=".PrevCourseActivity"
             android:exported="false"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".NameLoginActivity"
             android:exported="false"/>
         <activity
             android:name="com.example.birdsofafeather.MainActivity"

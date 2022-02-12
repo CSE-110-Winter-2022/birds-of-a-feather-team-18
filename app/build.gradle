@@ -28,7 +28,7 @@ android {
 
     testOptions {
         unitTests {
-            includeAndroidResources = true;
+            includeAndroidResources = true
         }
     }
 }
@@ -43,6 +43,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-common:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test:core:1.4.0'

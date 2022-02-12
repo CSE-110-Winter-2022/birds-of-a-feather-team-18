@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         //if the database is empty, start the login activity
         if(db.personWithCoursesDao().count() == 0){
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, NameLoginActivity.class);
             startActivity(intent);
         }
         /*

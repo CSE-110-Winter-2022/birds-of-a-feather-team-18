@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
 
-public class LoginActivity extends AppCompatActivity {
+public class NameLoginActivity extends AppCompatActivity {
     protected AppDatabase db;
 
     @Override
@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         Person newSelf = new Person(db.personWithCoursesDao().maxId()+1, selfName);
         db.personWithCoursesDao().insert(newSelf);
 
-        Intent intent = new Intent(this, PrevCourseActivity.class);
+        Intent intent = new Intent(this, PhotoURLActivity.class);
         startActivity(intent);
 
         finish();
