@@ -51,11 +51,6 @@ public class PrevClasses {
     }
 
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
-
-    @Test
     public void test_no_repeat_courses() {
         ActivityScenario<PrevCourseActivity> scenario = scenarioRule.getScenario();
 
