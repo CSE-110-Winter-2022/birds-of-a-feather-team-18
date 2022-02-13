@@ -83,7 +83,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         String newQuarterText = newQuarterSpinnerView.getSelectedItem().toString();
         String newCourseNumText = newCourseNumTextView.getText().toString();
 
-        String prevCourse =  newQuarterText + " " + newYearText + " " + newSubjectText + " " + newCourseNumText;
+        String prevCourse =  newQuarterText + newYearText + " " + newSubjectText + " " + newCourseNumText;
 
         Course newCourse = new Course(newCourseId, personId, prevCourse);
 

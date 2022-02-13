@@ -20,12 +20,12 @@
     <string name="subject">Subject</string>
     <string name="course_number">Course</string>
     <string-array name="quarter">
-        <item>Fall</item>
-        <item>Winter</item>
-        <item>Spring</item>
-        <item>Summer Session I</item>
-        <item>Summer Session II</item>
-        <item>Special Summer Session</item>
+        <item>FA</item>
+        <item>WI</item>
+        <item>SP</item>
+        <item>SS1</item>
+        <item>SS2</item>
+        <item>SSS</item>
     </string-array>
     <string name="year">Year</string>
     <string name="submit_url">SUBMIT</string>

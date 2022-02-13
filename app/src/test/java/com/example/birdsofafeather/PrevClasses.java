@@ -107,7 +107,7 @@ public class PrevClasses {
             List<Course> courses = activity.getCourses();
 
             assertEquals(1, courses.size());
-            assertEquals("Winter 2022 CSE 110", courses.get(0).text);
+            assertEquals("WI2022 CSE 110", courses.get(0).text);
         });
     }
 }
