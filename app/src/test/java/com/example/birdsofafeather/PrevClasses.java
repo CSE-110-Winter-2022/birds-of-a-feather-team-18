@@ -105,4 +105,36 @@ public class PrevClasses {
             assertEquals("WI2022 CSE 110", courses.get(0).text);
         });
     }
+
+    @Test
+    public void testDropDown(){
+        ActivityScenario<PrevCourseActivity> scenario = scenarioRule.getScenario();
+
+        scenario.moveToState(Lifecycle.State.CREATED);
+
+        scenario.onActivity(activity -> {
+            EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
+            Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
+            Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
+            EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
+            Button addButton = activity.findViewById(R.id.add_prev_course_button);
+
+            newSubjectTextView.setText("CSE");
+            newCourseNumTextView.setText("110");
+
+            addButton.performClick();
+            List<Course> courses = activity.getCourses();
+            //default drop-down selection - year = 2012 / quarter = FA
+            assertEquals(1, courses.size());
+            assertEquals("FA2012 CSE 110", courses.get(0).text);
+
+            //move both drop-down to last selection - year = 2022 / quarter = SSS
+            newYearSpinnerView.setSelection(10);
+            newQuarterSpinnerView.setSelection(5);
+            addButton.performClick();
+            courses = activity.getCourses();
+            assertEquals(2, courses.size());
+            assertEquals("SSS2022 CSE 110", courses.get(1).text);
+        });
+    }
 }
