@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.singleton(this);
 
         //clear database of all persons and courses
-        db.coursesDao().deleteAll();
-        db.personWithCoursesDao().deleteAll();
+        db.coursesDao().deleteExceptUser(1);
+        db.personWithCoursesDao().deleteExceptUser(1);
 
         //if the database is empty, start the login activity
         if(db.personWithCoursesDao().count() == 0){

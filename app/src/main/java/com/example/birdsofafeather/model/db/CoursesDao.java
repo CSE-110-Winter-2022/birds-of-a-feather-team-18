@@ -26,6 +26,9 @@ public interface CoursesDao {
     @Query("DELETE FROM courses")
     void deleteAll();
 
+    @Query("DELETE FROM courses WHERE person_id !=:id")
+    void deleteExceptUser(int id);
+
     @Insert
     void insert(Course course);
 
