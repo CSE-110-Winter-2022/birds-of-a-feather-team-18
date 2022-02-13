@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.1580547112462006" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_detail.xml" value="0.1580547112462006" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_list.xml" value="0.25" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_photo_url.xml" value="0.1580547112462006" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_course.xml" value="0.1580547112462006" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/courses_row.xml" value="0.1580547112462006" />
+        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/person_row.xml" value="0.1580547112462006" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_detail.xml" value="0.165625" />

@@ -3,6 +3,7 @@ package com.example.birdsofafeather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +38,12 @@ public class PersonDetailActivity extends AppCompatActivity {
         person = db.personWithCoursesDao().get(personId);
         List<Course> courses = db.coursesDao().getForPerson(personId);
 
+        //Set up photo
+        String photo = person.getPhoto();
+        ImageView imageView = findViewById(R.id.image_view);
+        Picasso.get().load(photo).into(imageView);
+
+
         setTitle(person.getName());
 
         coursesRecyclerView = findViewById(R.id.courses_view);
@@ -46,17 +54,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         coursesRecyclerView.setAdapter(coursesViewAdapter);
     }
 
-    public void onAddCourseClicked(View view){
-        int newCourseId = db.coursesDao().count()+1;
-        int personId = person.getId();
-        TextView newCourseTextView = findViewById(R.id.new_course_textview);
-        String newCourseText = newCourseTextView.getText().toString();
-
-        Course newCourse = new Course(newCourseId, personId, newCourseText);
-        db.coursesDao().insert(newCourse);
-
-        coursesViewAdapter.addCourse(newCourse);
-    }
 
     public void onGoBackClicked(View view) {
         finish();
