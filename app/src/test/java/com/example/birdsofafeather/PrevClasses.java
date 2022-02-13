@@ -10,8 +10,10 @@ import static org.junit.Assert.*;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -61,20 +63,20 @@ public class PrevClasses {
 
         scenario.onActivity(activity -> {
             EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
-            EditText newYearTextView = activity.findViewById(R.id.year_view);
-            EditText newQuarterTextView = activity.findViewById(R.id.quarter_view);
+            Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
+            Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
             EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
             newSubjectTextView.setText("CSE");
-            newYearTextView.setText("2022");
-            newQuarterTextView.setText("Winter");
+            newYearSpinnerView.setSelection(10);
+            newQuarterSpinnerView.setSelection(1);
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
             newSubjectTextView.setText("CSE");
-            newYearTextView.setText("2022");
-            newQuarterTextView.setText("Winter");
+            newYearSpinnerView.setSelection(10);
+            newQuarterSpinnerView.setSelection(1);
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
@@ -91,21 +93,21 @@ public class PrevClasses {
 
         scenario.onActivity(activity -> {
             EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
-            EditText newYearTextView = activity.findViewById(R.id.year_view);
-            EditText newQuarterTextView = activity.findViewById(R.id.quarter_view);
+            Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
+            Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
             EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
             newSubjectTextView.setText("CSE");
-            newYearTextView.setText("22");
-            newQuarterTextView.setText("WI");
+            newYearSpinnerView.setSelection(10);
+            newQuarterSpinnerView.setSelection(1);
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
             List<Course> courses = activity.getCourses();
 
             assertEquals(1, courses.size());
-            assertEquals("WI22 CSE 110", courses.get(0).text);
+            assertEquals("WI2022 CSE 110", courses.get(0).text);
         });
     }
 }

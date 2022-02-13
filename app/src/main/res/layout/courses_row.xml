@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="@dimen/course_list_item_height"
     android:layout_marginLeft="@dimen/margin"
     android:layout_marginRight="@dimen/margin"
     android:gravity="center_vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="64sp">
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/course_row_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        android:layout_marginTop="16sp"
-        android:height="24sp"
-        android:lineHeight="16sp"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="@tools:sample/lorem"/>
+        <TextView
+            android:id="@+id/course_row_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16sp"
+            android:height="24sp"
+            android:lineHeight="16sp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/lorem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

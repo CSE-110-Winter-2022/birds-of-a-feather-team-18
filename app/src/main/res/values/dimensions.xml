@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="list_item_height">64sp</dimen>
+    <dimen name="course_list_item_height">40sp</dimen>
+    <dimen name="person_list_item_height">60sp</dimen>
     <dimen name="margin">16sp</dimen>
 </resources>
