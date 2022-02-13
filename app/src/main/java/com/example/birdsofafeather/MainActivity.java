@@ -59,15 +59,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void onEnterClicked(View view) {
         TextView profile = findViewById(R.id.student_profile);
-        String csvReader = "\\Users\\55369\\Desktop\\Study\\mock.csv";
-        String test = "Bill,,,\n" +
+        String test = profile.getText().toString();
+        //String csvReader = "\\Users\\55369\\Desktop\\Study\\mock.csv";
+        /*String test = "Bill,,,\n" +
                 "https://lh3.googleusercontent.com/pw/AM-JKLXQ2ix4dg-PzLrPOSMOOy6M3PSUrijov9jCLXs4IGSTwN73B4kr-F6Nti_4KsiUU8LzDSGPSWNKnFdKIPqCQ2dFTRbARsW76pevHPBzc51nceZDZrMPmDfAYyI4XNOnPrZarGlLLUZW9wal6j-z9uA6WQ=w854-h924-no?authuser=0,,,\n" +
                 "2021,FA,CSE,210\n" +
                 "2022,WI,CSE,110\n" +
-                "2022,SP,CSE,110";
+                "2022,SP,CSE,110";*/
+
+
         Scanner scanner = new Scanner(test);
         AppDatabase db = AppDatabase.singleton(this);
-        String line = "";
+        //String line = "";
         String csvSplitBy = ",";
 
         int count = 0;
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         db.personWithCoursesDao().insert(newPerson);
         scanner.close();
 
-/*        try {
+ /*      try {
             br = new BufferedReader(new FileReader(csvReader));
             int count = 0;
             String name = null;

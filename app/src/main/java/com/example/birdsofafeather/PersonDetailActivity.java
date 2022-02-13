@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class PersonDetailActivity extends AppCompatActivity {
+public class  PersonDetailActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
 
@@ -42,7 +42,6 @@ public class PersonDetailActivity extends AppCompatActivity {
         String photo = person.getPhoto();
         ImageView imageView = findViewById(R.id.image_view);
         Picasso.get().load(photo).into(imageView);
-
 
         setTitle(person.getName());
 
