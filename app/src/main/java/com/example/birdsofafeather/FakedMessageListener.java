@@ -3,10 +3,13 @@ package com.example.birdsofafeather;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
+import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,6 +41,11 @@ public class FakedMessageListener extends MessageListener {
                 String courseType;
                 String courseNum;
                 String text;
+                List<Course> userCourses = db.coursesDao().getForPerson(1);
+                List<String> userCourseText = new ArrayList<>();
+                for(int i = 0; i < userCourses.size(); i++){
+                    userCourseText.add(userCourses.get(i).text);
+                }
                 int personId = db.personWithCoursesDao().maxId() + 1;
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
@@ -56,11 +64,15 @@ public class FakedMessageListener extends MessageListener {
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
                         Course c = new Course(courseId, personId, text);
-                        db.coursesDao().insert(c);
+                        if(userCourseText.contains(c.text)){
+                            db.coursesDao().insert(c);
+                        }
                     }
                 }
                 Person newPerson = new Person(personId, name, photoId);
-                db.personWithCoursesDao().insert(newPerson);
+                if (db.coursesDao().getForPerson(personId).size() != 0){
+                    db.personWithCoursesDao().insert(newPerson);
+                }
                 scanner.close();
 
                 this.messageListener.onLost(message);

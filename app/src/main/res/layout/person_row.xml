@@ -26,4 +26,14 @@
         android:layout_height="wrap_content"
         android:paddingLeft="250dp"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/common_course_num"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="235dp"
+        android:layout_marginTop="16sp"
+        android:text="50"
+        android:textStyle="bold"
+        android:textSize="24sp" />
 </FrameLayout>

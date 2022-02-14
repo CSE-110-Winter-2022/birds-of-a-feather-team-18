@@ -10,6 +10,7 @@ import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class PersonListActivity extends AppCompatActivity {
@@ -30,6 +31,13 @@ public class PersonListActivity extends AppCompatActivity {
 
         List<PersonWithCourses> classMates = persons.subList(1, persons.size());
 
+        classMates.sort(new Comparator<PersonWithCourses>() {
+            @Override
+            public int compare(PersonWithCourses t1, PersonWithCourses t2) {
+                return t2.getCourses().size() - t1.getCourses().size();
+            }
+        });
+
         personsRecyclerView = findViewById(R.id.persons_view);
 
         personsLayoutManager = new LinearLayoutManager(this);
@@ -37,5 +45,9 @@ public class PersonListActivity extends AppCompatActivity {
 
         personsViewAdapter = new PersonsViewAdapter(classMates);
         personsRecyclerView.setAdapter(personsViewAdapter);
+    }
+
+    private void quickSort(List<PersonWithCourses> c) {
+
     }
 }
