@@ -59,11 +59,14 @@ public class NameLoginTests {
             EditText newNameTextView = activity.findViewById(R.id.self_name_textview);
             Button confirmButton = activity.findViewById(R.id.confirm_button);
 
+            //no name is entered
             newNameTextView.setText("");
             confirmButton.performClick();
 
             AlertDialog a = activity.getDialog();
+            //check that an error message pops up
             assertNotEquals(null, a.getButton(DialogInterface.BUTTON_POSITIVE));
+            //check that the database is still empty
             assertEquals(0, activity.db.personWithCoursesDao().count());
         });
     }
