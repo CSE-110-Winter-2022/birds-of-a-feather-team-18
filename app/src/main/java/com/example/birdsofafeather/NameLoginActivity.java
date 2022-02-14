@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
@@ -12,6 +13,7 @@ import com.example.birdsofafeather.model.db.Person;
 
 public class NameLoginActivity extends AppCompatActivity {
     protected AppDatabase db;
+    public AlertDialog alertDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class NameLoginActivity extends AppCompatActivity {
         String selfName = selfNameTextView.getText().toString();
 
         if(selfName.equals("")){
-            Utilities.showAlert(this, "No Name Entered");
+            alertDialog = Utilities.showAlert(this, "No Name Entered");
         } else {
             Person newSelf = new Person( 1, selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg");
             db.personWithCoursesDao().insert(newSelf);
@@ -36,5 +38,9 @@ public class NameLoginActivity extends AppCompatActivity {
 
             finish();
         }
+    }
+
+    public AlertDialog getDialog() {
+        return alertDialog;
     }
 }
