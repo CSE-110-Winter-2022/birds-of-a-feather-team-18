@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.IPerson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,17 +49,26 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView personNameView;
+        private final ImageView imageView;
+        private final TextView commonCourseView;
         private IPerson person;
 
         ViewHolder(View itemView) {
             super(itemView);
             this.personNameView = itemView.findViewById(R.id.person_row_name);
+            //constructor on the ViewHolder
+            this.imageView = itemView.findViewById(R.id.person_row_photo);
             itemView.setOnClickListener(this);
+            this.commonCourseView = itemView.findViewById(R.id.common_course_num);
         }
 
         public void setPerson(IPerson person) {
             this.person = person;
             this.personNameView.setText(person.getName());
+            //set up photo
+            Picasso.get().load(person.getPhoto()).into(imageView);
+            Integer num = (Integer)person.getCourses().size();
+            this.commonCourseView.setText(num.toString());
         }
 
         @Override
