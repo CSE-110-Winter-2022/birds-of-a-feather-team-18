@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class  PersonDetailActivity extends AppCompatActivity {
+public class PersonDetailActivity extends AppCompatActivity {
     private AppDatabase db;
     private IPerson person;
 
