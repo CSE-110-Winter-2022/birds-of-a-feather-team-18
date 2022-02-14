@@ -90,24 +90,4 @@ public class PhotoURLTests {
         });
     }
 
-    @Test
-    public void test_valid_URL() {
-        ActivityScenario<PhotoURLActivity> scenario = scenarioRule.getScenario();
-
-        scenario.moveToState(Lifecycle.State.CREATED);
-
-        scenario.onActivity(activity -> {
-            //simulate entering a name in NameLoginActivity
-            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg"));
-
-            EditText newPhotoTextView = activity.findViewById(R.id.photo_url_textview);
-            Button submitButton = activity.findViewById(R.id.submit_button);
-
-            newPhotoTextView.setText("https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuppet.fandom.com%2Fwiki%2FKermit_the_Frog&psig=AOvVaw3N-8hwQtw0jrN-pq2ne2uZ&ust=1644883628733000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMjIlJnz_fUCFQAAAAAdAAAAABAD");
-            submitButton.performClick();
-
-            assertEquals("https://www.google.com/url?sa=i&url=https%3A%2F%2Fmuppet.fandom.com%2Fwiki%2FKermit_the_Frog&psig=AOvVaw3N-8hwQtw0jrN-pq2ne2uZ&ust=1644883628733000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMjIlJnz_fUCFQAAAAAdAAAAABAD",
-                    activity.db.personWithCoursesDao().get(1).getPhoto());
-        });
-    }
 }
