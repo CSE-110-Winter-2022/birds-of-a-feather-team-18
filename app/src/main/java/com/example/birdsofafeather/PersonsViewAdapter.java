@@ -50,6 +50,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             implements View.OnClickListener {
         private final TextView personNameView;
         private final ImageView imageView;
+        private final TextView commonCourseView;
         private IPerson person;
 
         ViewHolder(View itemView) {
@@ -58,6 +59,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             //constructor on the ViewHolder
             this.imageView = itemView.findViewById(R.id.person_row_photo);
             itemView.setOnClickListener(this);
+            this.commonCourseView = itemView.findViewById(R.id.common_course_num);
         }
 
         public void setPerson(IPerson person) {
@@ -65,6 +67,8 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             this.personNameView.setText(person.getName());
             //set up photo
             Picasso.get().load(person.getPhoto()).into(imageView);
+            Integer num = (Integer)person.getCourses().size();
+            this.commonCourseView.setText(num.toString());
         }
 
         @Override
