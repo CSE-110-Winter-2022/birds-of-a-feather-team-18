@@ -57,10 +57,10 @@ public class NameLoginTests {
 
         scenario.onActivity(activity -> {
             EditText newNameTextView = activity.findViewById(R.id.self_name_textview);
-            Button addButton = activity.findViewById(R.id.confirm_button);
+            Button confirmButton = activity.findViewById(R.id.confirm_button);
 
             newNameTextView.setText("");
-            addButton.performClick();
+            confirmButton.performClick();
 
             AlertDialog a = activity.getDialog();
             assertNotEquals(null, a.getButton(DialogInterface.BUTTON_POSITIVE));
@@ -76,10 +76,10 @@ public class NameLoginTests {
 
         scenario.onActivity(activity -> {
             EditText newNameTextView = activity.findViewById(R.id.self_name_textview);
-            Button addButton = activity.findViewById(R.id.confirm_button);
+            Button confirmButton = activity.findViewById(R.id.confirm_button);
 
             newNameTextView.setText("Cabernet");
-            addButton.performClick();
+            confirmButton.performClick();
 
             assertEquals(1, activity.db.personWithCoursesDao().count());
             assertEquals("Cabernet", activity.db.personWithCoursesDao().get(1).person.name);
