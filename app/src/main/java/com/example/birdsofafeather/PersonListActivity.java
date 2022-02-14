@@ -47,7 +47,4 @@ public class PersonListActivity extends AppCompatActivity {
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
-    private void quickSort(List<PersonWithCourses> c) {
-
-    }
 }
