@@ -27,12 +27,15 @@ public class NameLoginActivity extends AppCompatActivity {
         TextView selfNameTextView = findViewById(R.id.self_name_textview);
         String selfName = selfNameTextView.getText().toString();
 
+        //display an error if no name is entered
         if(selfName.equals("")){
             alertDialog = Utilities.showAlert(this, "No Name Entered");
         } else {
+            //create a person and insert it into the database with an id of 1 and with the default photo
             Person newSelf = new Person( 1, selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg");
             db.personWithCoursesDao().insert(newSelf);
 
+            //start PhotoURLActivity
             Intent intent = new Intent(this, PhotoURLActivity.class);
             startActivity(intent);
 
