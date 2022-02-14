@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.Optional;
 
 public class Utilities {
-    public static void showAlert(Context context, String message) {
+    public static AlertDialog showAlert(Context context, String message) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
         alertBuilder
@@ -20,6 +20,7 @@ public class Utilities {
 
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
+        return alertDialog;
     }
 
     public static Optional<Integer> parseCount(String str) {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
@@ -22,6 +23,7 @@ import java.net.URL;
 public class PhotoURLActivity extends AppCompatActivity {
     protected AppDatabase db;
     String photoUrl;
+    AlertDialog alertDialog = null;
     //ImageView imageView;
 
     @Override
@@ -52,7 +54,7 @@ public class PhotoURLActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } catch (MalformedURLException e){
-                Utilities.showAlert(this, "Invalid Photo URL");
+                alertDialog = Utilities.showAlert(this, "Invalid Photo URL");
             }
 
         } else {
@@ -62,5 +64,8 @@ public class PhotoURLActivity extends AppCompatActivity {
         }
     }
 
+    public AlertDialog getDialog() {
+        return alertDialog;
+    }
 }
 

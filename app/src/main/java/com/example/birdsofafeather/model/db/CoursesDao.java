@@ -33,5 +33,5 @@ public interface CoursesDao {
     void insert(Course course);
 
     @Delete
-    void delete(Course Course);
+    void delete(Course course);
 }
