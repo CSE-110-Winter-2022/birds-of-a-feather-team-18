@@ -2,8 +2,11 @@ package com.example.birdsofafeather;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.birdsofafeather.model.DummyPerson;
 import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
+import com.example.birdsofafeather.model.db.Course;
+import com.example.birdsofafeather.model.db.Person;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
-    protected RecyclerView personsRecyclerView;
-    protected RecyclerView.LayoutManager personsLayoutManager;
-    protected PersonsViewAdapter personsViewAdapter;
+    private static final String TAG = "Bofs-Nearby";
+    private MessageListener messageListener;
 
 
     @Override
@@ -26,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.app_title);
 
-
         AppDatabase db = AppDatabase.singleton(this);
 
         //clear database of all persons and courses
@@ -34,26 +45,57 @@ public class MainActivity extends AppCompatActivity {
         db.personWithCoursesDao().deleteExceptUser(1);
 
         //if the database is empty, start the login activity
-        if(db.personWithCoursesDao().count() == 0){
+        if (db.personWithCoursesDao().count() == 0) {
             Intent intent = new Intent(this, NameLoginActivity.class);
             startActivity(intent);
         }
-        /*
-        List<? extends IPerson> persons = db.personWithCoursesDao().getAll();
 
-        personsRecyclerView = findViewById(R.id.persons_view);
+        MessageListener realListener = new MessageListener() {};
 
-        personsLayoutManager = new LinearLayoutManager(this);
-        personsRecyclerView.setLayoutManager(personsLayoutManager);
+        TextView profile = findViewById(R.id.student_profile);
+        String test = profile.getText().toString();
 
-        personsViewAdapter = new PersonsViewAdapter(persons);
-        personsRecyclerView.setAdapter(personsViewAdapter);
-         */
+        this.messageListener = new FakedMessageListener(realListener, test, db);
 
     }
 
     public void onTestClicked(View view) {
-        Intent intent = new Intent(this, PrevCourseActivity.class);
+        /*Intent intent = new Intent(this, PrevCourseActivity.class);
+        startActivity(intent);*/
+        Intent intent = new Intent(this, PersonListActivity.class);
         startActivity(intent);
+    }
+
+    public void onEnterClicked(View view) {
+        TextView profile = findViewById(R.id.student_profile);
+        String test = profile.getText().toString();
+
+        MessageListener realListener = new MessageListener() {
+            @Override
+            public void onFound(@NonNull Message message) {
+                Log.d(TAG, "Found Profile: " + new String(message.getContent()));
+            }
+
+            @Override
+            public void onLost(@NonNull Message message) {
+                Log.d(TAG, "Profile loaded in DataBase " + new String(message.getContent()));
+            }
+        };
+        AppDatabase db = AppDatabase.singleton(this);
+        //Use messageListener to save profile in database
+        this.messageListener = new FakedMessageListener(realListener, test, db);
+
+        profile.setText("");
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Nearby.getMessagesClient(this).subscribe(messageListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
 }

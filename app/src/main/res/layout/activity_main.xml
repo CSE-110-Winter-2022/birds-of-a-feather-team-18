@@ -10,20 +10,47 @@
         android:id="@+id/test_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TEST"
         android:onClick="onTestClicked"
+        android:text="TEST"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/persons_view"
-        android:layout_width="409dp"
-        android:layout_height="340dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.229" />
+
+    <EditText
+        android:id="@+id/student_profile"
+        android:layout_width="371dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="101dp"
+        android:ems="10"
+        android:gravity="top|start"
+
+        android:hint="@string/Text_box"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/test_button" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="160dp"
+        android:text="Enter"
+        android:onClick="onEnterClicked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/student_profile" />
 </androidx.constraintlayout.widget.ConstraintLayout>

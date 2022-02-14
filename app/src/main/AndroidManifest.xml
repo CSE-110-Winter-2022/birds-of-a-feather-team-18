@@ -11,7 +11,7 @@
         android:theme="@style/Theme.BirdsOfAFeather">
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyBQ8f2wXIUbdKPfCxv75lp-4kphoIW9j8I"/>
+            android:value="AIzaSyAMc-iSGkLFmUHUkoDO0SeP2-YpEOdXQJc"/>
         <activity
             android:name="com.example.birdsofafeather.PersonDetailActivity"
             android:exported="false" />
@@ -23,6 +23,9 @@
             android:exported="false"/>
         <activity
             android:name=".NameLoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".PersonListActivity"
             android:exported="false"/>
         <activity
             android:name="com.example.birdsofafeather.MainActivity"
