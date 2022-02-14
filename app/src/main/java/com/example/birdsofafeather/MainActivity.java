@@ -30,6 +30,7 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Bofs-Nearby";
     private MessageListener messageListener;
+    private AppDatabase db;
 
 
     @Override
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.app_title);
 
-        AppDatabase db = AppDatabase.singleton(this);
+        db = AppDatabase.singleton(this);
 
         //clear database of all persons and courses
         db.coursesDao().deleteExceptUser(1);
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLost(@NonNull Message message) {
                 Log.d(TAG, "Profile loaded in DataBase " + new String(message.getContent()));
+                Log.d(TAG, "Number of classmates: " + new String(String.valueOf(db.personWithCoursesDao().count() - 1)));
+                Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
             }
         };
         AppDatabase db = AppDatabase.singleton(this);
