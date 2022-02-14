@@ -19,7 +19,14 @@
     <string name="done">DONE</string>
     <string name="subject">Subject</string>
     <string name="course_number">Course</string>
-    <string name="quarter">Quarter</string>
+    <string-array name="quarter">
+        <item>FA</item>
+        <item>WI</item>
+        <item>SP</item>
+        <item>SS1</item>
+        <item>SS2</item>
+        <item>SSS</item>
+    </string-array>
     <string name="year">Year</string>
     <string name="submit_url">SUBMIT</string>
     <string name="url_instruction">Submit URL to a headshot of yourself</string>
