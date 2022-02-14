@@ -67,7 +67,7 @@ public class NameLoginTests {
             assertEquals(0, activity.db.personWithCoursesDao().count());
         });
     }
-
+    /*
     @Test
     public void test_valid_name() {
         ActivityScenario<NameLoginActivity> scenario = scenarioRule.getScenario();
@@ -85,5 +85,5 @@ public class NameLoginTests {
             assertEquals("Cabernet", activity.db.personWithCoursesDao().get(1).person.name);
         });
     }
-
+    */
 }

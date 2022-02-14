@@ -36,7 +36,7 @@ public class CoursesDaoTests {
         Context context = ApplicationProvider.getApplicationContext();
         AppDatabase.singleton(context).close();
     }
-    /*
+
     @Test
     public void coursesDaoTest() {
         Person person1 = new Person(1, "Bob", DEFAULT_PHOTO);
@@ -70,6 +70,5 @@ public class CoursesDaoTests {
         testDB.coursesDao().deleteAll();
         assertEquals(0, testDB.coursesDao().count());
     }
-     */
 
 }
