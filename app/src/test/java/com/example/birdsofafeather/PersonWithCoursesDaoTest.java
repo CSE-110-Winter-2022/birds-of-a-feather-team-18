@@ -37,6 +37,8 @@ public class PersonWithCoursesDaoTest {
         AppDatabase.singleton(context).close();
     }
 
+    //Tests insert, getAll, get, maxId, deleteExcept user and
+    //deleteAll for personWithCoursesDao
     @Test
     public void personWithCoursesDaoTest() {
         Person person1 = new Person(1, "Bob", DEFAULT_PHOTO);
