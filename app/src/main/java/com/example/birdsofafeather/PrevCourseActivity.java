@@ -119,7 +119,7 @@ public class PrevCourseActivity extends AppCompatActivity {
 
         String prevCourse =  newQuarterText + newYearText + " " + newSubjectText + " " + newCourseNumText;
 
-        Course newCourse = new Course(newCourseId, personId, prevCourse, newSizeText);
+        Course newCourse = new Course(newCourseId, personId, prevCourse, newYearText, newQuarterText, newSizeText);
 
         List<Course> courses = db.coursesDao().getForPerson(personId);
         boolean alreadyInDatabase = false;
