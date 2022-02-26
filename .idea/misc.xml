@@ -4,12 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_prev_course.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_detail.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_photo_url.xml" value="0.15520833333333334" />
-
         <entry key="app/src/main/res/layout/activity_prev_course.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_prev_course_detail.xml" value="0.165" />
         <entry key="app/src/main/res/layout/courses_row.xml" value="0.23852386474609377" />
