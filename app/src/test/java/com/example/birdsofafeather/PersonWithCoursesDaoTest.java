@@ -43,10 +43,10 @@ public class PersonWithCoursesDaoTest {
     public void personWithCoursesDaoTest() {
         Person person1 = new Person(1, "Bob", DEFAULT_PHOTO);
         Person person2 = new Person(2, "Joe", DEFAULT_PHOTO);
-        Course course1 = new Course(1, 1, "course1");
-        Course course2 = new Course(2, 1, "course2");
-        Course course3 = new Course(3, 2, "course3");
-        Course course4 = new Course(4, 2, "course4");
+        Course course1 = new Course(1, 1, "course1", "22", "SP", "Tiny");
+        Course course2 = new Course(2, 1, "course2", "22", "SP", "Small");
+        Course course3 = new Course(3, 2, "course3", "", "", "");
+        Course course4 = new Course(4, 2, "course4", "19", "FA", "Large");
 
         testDB.personWithCoursesDao().insert(person1);
         testDB.personWithCoursesDao().insert(person2);
