@@ -17,9 +17,21 @@ public class Course {
     @ColumnInfo(name = "text")
     public String text;
 
-    public Course(int courseId, int personId, String text){
+    @ColumnInfo(name = "year")
+    public String year;
+
+    @ColumnInfo(name = "quarter")
+    public String quarter;
+
+    @ColumnInfo(name = "size")
+    public String size;
+
+    public Course(int courseId, int personId, String text, String year, String quarter, String size){
         this.courseId = courseId;
         this.personId = personId;
         this.text = text;
+        this.year = year;
+        this.quarter = quarter;
+        this.size = size;
     }
 }

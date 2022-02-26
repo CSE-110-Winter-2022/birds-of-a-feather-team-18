@@ -78,8 +78,9 @@ public class FakedMessageListener extends MessageListener {
                         //set the course to the official version
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
-                        Course c = new Course(courseId, personId, text);
-                        //we only add the course that there is a common
+
+                        //TODO: Put size functionality for mocked bluetooth
+                        Course c = new Course(courseId, personId, text, year,quarter,"");
                         if(userCourseText.contains(c.text)){
                             db.coursesDao().insert(c);
                         }

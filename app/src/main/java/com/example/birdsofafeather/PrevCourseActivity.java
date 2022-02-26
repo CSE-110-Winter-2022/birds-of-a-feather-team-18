@@ -62,6 +62,14 @@ public class PrevCourseActivity extends AppCompatActivity {
         ArrayAdapter<String> yearArrAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearList);
         spinnerYear.setAdapter(yearArrAdapter);
 
+        // Class Size Drop-down functionality
+        Spinner spinnerSize = findViewById(R.id.class_size_spinner);
+        ArrayAdapter<CharSequence> sizeArrAdapter = ArrayAdapter.createFromResource
+                (this,R.array.size, android.R.layout.simple_spinner_item);
+        sizeArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerSize.setAdapter(sizeArrAdapter);
+
+
         // Course RecyclerView
         coursesRecyclerView = findViewById(R.id.prev_courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);
@@ -78,19 +86,43 @@ public class PrevCourseActivity extends AppCompatActivity {
         TextView newSubjectTextView = findViewById(R.id.subject_view);
         Spinner newYearSpinnerView = findViewById(R.id.year_spinner);
         Spinner newQuarterSpinnerView = findViewById(R.id.quarter_spinner);
+        Spinner newSizeSpinnerView = findViewById(R.id.class_size_spinner);
         TextView newCourseNumTextView = findViewById(R.id.course_number_view);
 
         // get String for Year/Quarter/Subject/CourseNum
         String newSubjectText = newSubjectTextView.getText().toString();
         String newYearText = newYearSpinnerView.getSelectedItem().toString();
         String newQuarterText = newQuarterSpinnerView.getSelectedItem().toString();
+        String newSizeText = newSizeSpinnerView.getSelectedItem().toString();
         String newCourseNumText = newCourseNumTextView.getText().toString();
 
-        // Concatenate Quarter/Year/Subject/CourseNum to get course string
+        switch(newSizeText) {
+            case "Tiny (<40)":
+                newSizeText = "Tiny";
+                break;
+            case "Small (40-75)":
+                newSizeText = "Small";
+                break;
+            case "Medium (75-150)":
+                newSizeText = "Medium";
+                break;
+            case "Large (150-250)":
+                newSizeText = "Large";
+                break;
+            case "Huge (250-400)":
+                newSizeText = "Huge";
+                break;
+            case "Gigantic (400+)":
+                newSizeText = "Gigantic";
+                break;
+            default:
+                newSizeText = "";
+                break;
+        }
+
         String prevCourse =  newQuarterText + newYearText + " " + newSubjectText + " " + newCourseNumText;
 
-        // Create newCourse using unique courseId, userId (always 1), and concatenated course string
-        Course newCourse = new Course(newCourseId, personId, prevCourse);
+        Course newCourse = new Course(newCourseId, personId, prevCourse, newYearText, newQuarterText, newSizeText);
 
         // Don't add duplicate classes
         List<Course> courses = db.coursesDao().getForPerson(personId);

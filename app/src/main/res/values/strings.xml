@@ -27,6 +27,14 @@
         <item>SS2</item>
         <item>SSS</item>
     </string-array>
+    <string-array name="size">
+        <item>Tiny (&#60;40)</item>
+        <item>Small (40-75)</item>
+        <item>Medium (75-150)</item>
+        <item>Large (150-250)</item>
+        <item>Huge (250-400)</item>
+        <item>Gigantic (400+)</item>
+    </string-array>
     <string name="year">Year</string>
     <string name="submit_url">SUBMIT</string>
     <string name="url_instruction">Submit URL to a headshot of yourself</string>
