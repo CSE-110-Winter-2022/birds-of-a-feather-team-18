@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.Optional;
 
 public class Utilities {
+    //use to show an error message
     public static AlertDialog showAlert(Context context, String message) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
@@ -21,14 +22,5 @@ public class Utilities {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
         return alertDialog;
-    }
-
-    public static Optional<Integer> parseCount(String str) {
-        try {
-            int maxCount = Integer.parseInt(str);
-            return Optional.of(maxCount);
-        } catch (NumberFormatException e) {
-            return Optional.empty();
-        }
     }
 }

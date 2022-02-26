@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        // Instantiate message listener
         MessageListener realListener = new MessageListener() {};
 
         TextView profile = findViewById(R.id.student_profile);
@@ -61,41 +62,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onTestClicked(View view) {
-        /*Intent intent = new Intent(this, PrevCourseActivity.class);
-        startActivity(intent);*/
+
+        // Start personListActivity
         Intent intent = new Intent(this, PersonListActivity.class);
         startActivity(intent);
     }
 
     public void onEnterClicked(View view) {
+
+        // Get CSV file
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
 
         MessageListener realListener = new MessageListener() {
+
+            // Log to show that message is received
             @Override
             public void onFound(@NonNull Message message) {
                 Log.d(TAG, "Found Profile: " + new String(message.getContent()));
             }
 
+            // Log to show that profile from CSV saved to database
             @Override
             public void onLost(@NonNull Message message) {
                 Log.d(TAG, "Profile loaded in DataBase " + new String(message.getContent()));
+
+                // Log to get number of courses and number of common courses
                 Log.d(TAG, "Number of classmates: " + new String(String.valueOf(db.personWithCoursesDao().count() - 1)));
                 Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
             }
         };
+
+
         AppDatabase db = AppDatabase.singleton(this);
         //Use messageListener to save profile in database
         this.messageListener = new FakedMessageListener(realListener, test, db);
 
         profile.setText("");
     }
+
+    // Starting bluetooth
     @Override
     protected void onStart() {
         super.onStart();
         Nearby.getMessagesClient(this).subscribe(messageListener);
     }
 
+    // Stop bluetooth
     @Override
     protected void onStop() {
         super.onStop();

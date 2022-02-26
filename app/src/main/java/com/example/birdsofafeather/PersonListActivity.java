@@ -13,11 +13,12 @@ import com.example.birdsofafeather.model.db.PersonWithCourses;
 import java.util.Comparator;
 import java.util.List;
 
+//set up the student taken common course list
 public class PersonListActivity extends AppCompatActivity {
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
     protected PersonsViewAdapter personsViewAdapter;
-
+    //set up data base
     private AppDatabase db;
 
     @Override
@@ -27,10 +28,15 @@ public class PersonListActivity extends AppCompatActivity {
         setTitle(R.string.app_title);
 
         db = AppDatabase.singleton(getApplicationContext());
+        //first we get the person list in the database
         List<PersonWithCourses> persons = db.personWithCoursesDao().getAll();
 
+        //then we create a sublist of classmate that have common course with user
+        //user personId is 1, but List is start with 0
         List<PersonWithCourses> classMates = persons.subList(1, persons.size());
 
+        //Use a sorting to sort the number of common course
+        //more common course, higher priority
         classMates.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
@@ -40,6 +46,7 @@ public class PersonListActivity extends AppCompatActivity {
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
+        //send the info to the viewAdapter
         personsLayoutManager = new LinearLayoutManager(this);
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
