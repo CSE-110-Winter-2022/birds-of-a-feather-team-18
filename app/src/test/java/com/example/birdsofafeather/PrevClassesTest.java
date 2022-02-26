@@ -34,7 +34,7 @@ import java.util.List;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class PrevClasses {
+public class PrevClassesTest {
     @Rule
     public ActivityScenarioRule<PrevCourseActivity> scenarioRule = new ActivityScenarioRule<>(PrevCourseActivity.class);
 
@@ -57,25 +57,34 @@ public class PrevClasses {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {
+            // Get EditText/Spinner for Quarter/Year/Subject/CourseNum
             EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
             Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
             Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
             EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
+
+            //Get addButton
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
+            //Set Subject = CSE and CourseNum = 110
+            newSubjectTextView.setText("CSE");
+            newCourseNumTextView.setText("110");
+
+            //Select year drop-down menu item 10 (item 10 = 2022)
+            newYearSpinnerView.setSelection(10);
+            //Select quarter drop-down menu item 1 (item 1 = WI)
+            newQuarterSpinnerView.setSelection(1);
+            //Press add button
+            addButton.performClick();
+
+            //Add a duplicate class
             newSubjectTextView.setText("CSE");
             newYearSpinnerView.setSelection(10);
             newQuarterSpinnerView.setSelection(1);
             newCourseNumTextView.setText("110");
             addButton.performClick();
 
-            newSubjectTextView.setText("CSE");
-            newYearSpinnerView.setSelection(10);
-            newQuarterSpinnerView.setSelection(1);
-            newCourseNumTextView.setText("110");
-            addButton.performClick();
-
-
+            //No duplicate classes added
             assertEquals(1, activity.getCourseCount());
         });
     }
@@ -87,21 +96,29 @@ public class PrevClasses {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {
+            // Get EditText/Spinner for Quarter/Year/Subject/CourseNum
             EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
             Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
             Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
             EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
+            //Set Subject = CSE and CourseNum = 110
             newSubjectTextView.setText("CSE");
-            newYearSpinnerView.setSelection(10);
-            newQuarterSpinnerView.setSelection(1);
             newCourseNumTextView.setText("110");
+
+            //Select year drop-down menu item 10 (item 10 = 2022)
+            newYearSpinnerView.setSelection(10);
+            //Select quarter drop-down menu item 1 (item 1 = WI)
+            newQuarterSpinnerView.setSelection(1);
+            //Press add button
             addButton.performClick();
 
             List<Course> courses = activity.getCourses();
 
+            //Test if course was added
             assertEquals(1, courses.size());
+            //Test if course string is correct
             assertEquals("WI2022 CSE 110", courses.get(0).text);
         });
     }
@@ -113,15 +130,18 @@ public class PrevClasses {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {
+            // Get EditText/Spinner for Quarter/Year/Subject/CourseNum
             EditText newSubjectTextView = activity.findViewById(R.id.subject_view);
             Spinner newYearSpinnerView = activity.findViewById(R.id.year_spinner);
             Spinner newQuarterSpinnerView = activity.findViewById(R.id.quarter_spinner);
             EditText newCourseNumTextView = activity.findViewById(R.id.course_number_view);
             Button addButton = activity.findViewById(R.id.add_prev_course_button);
 
+            //Set Subject = CSE and CourseNum = 110
             newSubjectTextView.setText("CSE");
             newCourseNumTextView.setText("110");
 
+            //press add button
             addButton.performClick();
             List<Course> courses = activity.getCourses();
             //default drop-down selection - year = 2012 / quarter = FA
@@ -133,7 +153,10 @@ public class PrevClasses {
             newQuarterSpinnerView.setSelection(5);
             addButton.performClick();
             courses = activity.getCourses();
+
+            //additional course was added
             assertEquals(2, courses.size());
+            //additional course string is correct
             assertEquals("SSS2022 CSE 110", courses.get(1).text);
         });
     }

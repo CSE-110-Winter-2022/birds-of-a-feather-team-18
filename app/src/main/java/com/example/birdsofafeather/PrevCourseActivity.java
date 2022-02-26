@@ -38,8 +38,10 @@ public class PrevCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prev_course);
+        // Get database
         db = AppDatabase.singleton(getApplicationContext());
 
+        // get user ID (always 1)
         personId = 1;
         List<Course> courses = db.coursesDao().getForPerson(personId);
 
@@ -68,25 +70,26 @@ public class PrevCourseActivity extends AppCompatActivity {
         spinnerSize.setAdapter(sizeArrAdapter);
 
 
-
+        // Course RecyclerView
         coursesRecyclerView = findViewById(R.id.prev_courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
-
         coursesViewAdapter = new CoursesViewAdapter(courses);
-
         coursesRecyclerView.setAdapter(coursesViewAdapter);
-
     }
 
     public void onAddPrevCourseClicked(View view){
+        // get unique courseID
         int newCourseId = db.coursesDao().maxId()+1;
+
+        // get TextView/Spinner for Year/Quarter/Subject/CourseNum
         TextView newSubjectTextView = findViewById(R.id.subject_view);
         Spinner newYearSpinnerView = findViewById(R.id.year_spinner);
         Spinner newQuarterSpinnerView = findViewById(R.id.quarter_spinner);
         Spinner newSizeSpinnerView = findViewById(R.id.class_size_spinner);
         TextView newCourseNumTextView = findViewById(R.id.course_number_view);
 
+        // get String for Year/Quarter/Subject/CourseNum
         String newSubjectText = newSubjectTextView.getText().toString();
         String newYearText = newYearSpinnerView.getSelectedItem().toString();
         String newQuarterText = newQuarterSpinnerView.getSelectedItem().toString();
@@ -121,6 +124,7 @@ public class PrevCourseActivity extends AppCompatActivity {
 
         Course newCourse = new Course(newCourseId, personId, prevCourse, newYearText, newQuarterText, newSizeText);
 
+        // Don't add duplicate classes
         List<Course> courses = db.coursesDao().getForPerson(personId);
         boolean alreadyInDatabase = false;
         for(int i=0; i<courses.size(); ++i) {

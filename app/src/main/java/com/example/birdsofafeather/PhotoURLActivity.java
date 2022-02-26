@@ -24,17 +24,13 @@ public class PhotoURLActivity extends AppCompatActivity {
     protected AppDatabase db;
     String photoUrl;
     AlertDialog alertDialog = null;
-    //ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_url);
         setTitle(R.string.app_title);
-        //default profile photo
         db = AppDatabase.singleton(this);
-        //imageView = findViewById(R.id.testImageView);
-        //Picasso.get().load(db.personWithCoursesDao().get(1).person.photo).into(imageView);
     }
 
     public void onSubmitClicked(View view) throws IOException {
@@ -44,20 +40,24 @@ public class PhotoURLActivity extends AppCompatActivity {
             //imageView = findViewById(R.id.testImageView);
 
             try {
+                //create URL to check if the entered URL is valid
                 URL url = new URL(photoUrlTextView.getText().toString());
-                //HttpURLConnection huc = (HttpURLConnection) url.openConnection();
 
+                //update the user's photo with the new URL if it is valid
                 photoUrl = photoUrlTextView.getText().toString();
                 db.personWithCoursesDao().updatePhoto(photoUrl, 1);
-               // Picasso.get().load(db.personWithCoursesDao().get(1).person.photo).into(imageView);
+
+                //start PrevCourseActivity
                 Intent intent = new Intent(this, PrevCourseActivity.class);
                 startActivity(intent);
                 finish();
             } catch (MalformedURLException e){
+                //show error message if the photo URL is invalid
                 alertDialog = Utilities.showAlert(this, "Invalid Photo URL");
             }
 
         } else {
+            //if no URL is entered, do not change anything and move on to PrevCourseActivity
             Intent intent = new Intent(this, PrevCourseActivity.class);
             startActivity(intent);
             finish();

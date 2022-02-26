@@ -16,13 +16,10 @@ import com.example.birdsofafeather.model.db.Course;
 
 public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.ViewHolder> {
     private final List<Course> courses;
-    //private final Consumer<Course> onCourseRemoved;
 
-    //public CoursesViewAdapter(List<Course> courses, Consumer<Course> onCourseRemoved){
     public CoursesViewAdapter(List<Course> courses){
         super();
         this.courses = courses;
-        //this.onCourseRemoved = onCourseRemoved;
     }
 
     @NonNull
@@ -31,8 +28,6 @@ public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.courses_row, parent, false);
-
-        //return new ViewHolder(view, this::removeCourse, onCourseRemoved);
         return new ViewHolder(view);
     }
 
@@ -50,32 +45,14 @@ public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.
         this.courses.add(course);
         this.notifyItemInserted(this.courses.size()-1);
     }
-    /*
-
-    public void removeCourse(int position) {
-        this.courses.remove(position);
-        this.notifyItemRemoved(position);
-    }
-
-     */
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseTextView;
         private Course course;
 
-        //ViewHolder(View itemView, Consumer<Integer> removeCourse, Consumer<Course> onCourseRemoved) {
         ViewHolder(View itemView) {
             super(itemView);
             this.courseTextView = itemView.findViewById(R.id.course_row_text);
-
-            /*
-
-            Button removeButton = itemView.findViewById(R.id.remove_course_button);
-            removeButton.setOnClickListener((view) -> {
-                removeCourse.accept(this.getAdapterPosition());
-                onCourseRemoved.accept(course);
-            });
-             */
         }
 
         public void setCourse(Course course) {
