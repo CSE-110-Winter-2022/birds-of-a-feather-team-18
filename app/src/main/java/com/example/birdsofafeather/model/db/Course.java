@@ -17,9 +17,13 @@ public class Course {
     @ColumnInfo(name = "text")
     public String text;
 
-    public Course(int courseId, int personId, String text){
+    @ColumnInfo(name = "size")
+    public String size;
+
+    public Course(int courseId, int personId, String text, String size){
         this.courseId = courseId;
         this.personId = personId;
         this.text = text;
+        this.size = size;
     }
 }
