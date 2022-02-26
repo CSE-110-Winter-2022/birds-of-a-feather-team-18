@@ -28,7 +28,6 @@ public class CoursesViewAdapter extends RecyclerView.Adapter<CoursesViewAdapter.
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.courses_row, parent, false);
-
         return new ViewHolder(view);
     }
 
