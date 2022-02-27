@@ -9,6 +9,7 @@ import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
@@ -48,6 +49,7 @@ public class FakedMessageListener extends MessageListener {
                 String courseType;
                 String courseNum;
                 String text;
+                String courseSize;
                 //get the user courses from db
                 List<Course> userCourses = db.coursesDao().getForPerson(1);
                 //create a list string to store the courses
@@ -75,12 +77,13 @@ public class FakedMessageListener extends MessageListener {
                         quarter = array[1];
                         courseType = array[2];
                         courseNum = array[3];
+                        courseSize = array[4];
                         //set the course to the official version
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
 
                         //TODO: Put size functionality for mocked bluetooth
-                        Course c = new Course(courseId, personId, text, year,quarter,"");
+                        Course c = new Course(courseId, personId, text, year,quarter,courseSize);
                         if(userCourseText.contains(c.text)){
                             db.coursesDao().insert(c);
                         }
@@ -88,7 +91,65 @@ public class FakedMessageListener extends MessageListener {
                 }
                 Person newPerson = new Person(personId, name, photoId);
                 //only add the person when there are common course with user
-                if (db.coursesDao().getForPerson(personId).size() != 0){
+                List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
+                if (newPersonCourses.size() != 0){
+                    //calculate the size and recency priorities for this new person
+                    float sizePrio = 0;
+                    int recentPrio = 0;
+                    int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+                    int thisQuarter;
+                    int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+                    int thisWeek = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
+                    if(thisMonth>9 || (thisMonth==9 && thisWeek>=3)) {
+                        thisQuarter = 1;
+                    } else if (thisMonth<3 || (thisMonth==3 && thisWeek<=3)) {
+                        thisQuarter = 2;
+                    } else if ((thisMonth==3 && thisWeek>=4) || (thisMonth>3 && thisMonth<6) || (thisMonth==6 && thisWeek <=2)) {
+                        thisQuarter = 3;
+                    } else if ((thisMonth==6 && thisWeek >=3) || thisMonth==7) {
+                        thisQuarter = 4;
+                    } else {
+                        thisQuarter = 4;
+                    }
+                    for(int i=0; i<newPersonCourses.size(); i++){
+                        int yearAge = (thisYear - Integer.parseInt(newPersonCourses.get(i).year))*4;
+                        String courseQuarter = newPersonCourses.get(i).quarter;
+                        int courseQ = 0;
+                        if(courseQuarter.equals("FA")){
+                            courseQ = 1;
+                        } else if(courseQuarter.equals("WI")){
+                            courseQ = 2;
+                        } else if(courseQuarter.equals("SP")){
+                            courseQ = 3;
+                        } else if(courseQuarter.equals("SS1") || courseQuarter.equals("SS2")){
+                            courseQ = 4;
+                        }
+                        int courseAge = thisQuarter - courseQ;
+                        int age = yearAge + courseAge;
+                        recentPrio = Integer.max(5 - age, 1);
+                        switch(newPersonCourses.get(i).size){
+                            case "Tiny":
+                                sizePrio += 1;
+                                break;
+                            case "Small":
+                                sizePrio += 0.33;
+                                break;
+                            case "Medium":
+                                sizePrio += 0.18;
+                                break;
+                            case "Large":
+                                sizePrio += 0.10;
+                                break;
+                            case "Huge":
+                                sizePrio += 0.06;
+                                break;
+                            case "Gigantic":
+                                sizePrio += 0.03;
+                                break;
+                        }
+                    }
+                    newPerson.sizePriority = sizePrio;
+                    newPerson.recentPriority = recentPrio;
                     db.personWithCoursesDao().insert(newPerson);
                 }
                 scanner.close();

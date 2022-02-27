@@ -23,6 +23,9 @@ public class PersonListActivity extends AppCompatActivity {
     protected PersonsViewAdapter personsViewAdapter;
     //set up data base
     private AppDatabase db;
+    private List<PersonWithCourses> classMatesByNumCourses;
+    private List<PersonWithCourses> classMatesByCourseSize;
+    private List<PersonWithCourses> classMatesByRecentCourses;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -39,20 +42,45 @@ public class PersonListActivity extends AppCompatActivity {
 
         db = AppDatabase.singleton(getApplicationContext());
         //first we get the person list in the database
-        List<PersonWithCourses> persons = db.personWithCoursesDao().getAll();
+        classMatesByNumCourses = db.personWithCoursesDao().getAll();
+        classMatesByCourseSize = db.personWithCoursesDao().getAll();
+        classMatesByRecentCourses = db.personWithCoursesDao().getAll();
 
         //then we create a sublist of classmate that have common course with user
         //user personId is 1, but List is start with 0
-        List<PersonWithCourses> classMates = persons.subList(1, persons.size());
+        classMatesByNumCourses = classMatesByNumCourses.subList(1, classMatesByNumCourses.size());
+        classMatesByCourseSize = classMatesByCourseSize.subList(1, classMatesByCourseSize.size());
+        classMatesByRecentCourses = classMatesByRecentCourses.subList(1, classMatesByRecentCourses.size());
 
         //Use a sorting to sort the number of common course
         //more common course, higher priority
-        classMates.sort(new Comparator<PersonWithCourses>() {
+        classMatesByNumCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
                 return t2.getCourses().size() - t1.getCourses().size();
             }
         });
+
+        classMatesByCourseSize.sort(new Comparator<PersonWithCourses>() {
+            @Override
+            public int compare(PersonWithCourses t1, PersonWithCourses t2) {
+                if(t2.person.sizePriority>t1.person.sizePriority){
+                    return 1;
+                } else if(t2.person.sizePriority<t1.person.sizePriority){
+                    return -1;
+                }
+                return 0;
+            }
+        });
+
+
+        classMatesByRecentCourses.sort(new Comparator<PersonWithCourses>() {
+            @Override
+            public int compare(PersonWithCourses t1, PersonWithCourses t2) {
+                return t2.person.recentPriority - t1.person.recentPriority;
+            }
+        });
+
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
@@ -60,16 +88,44 @@ public class PersonListActivity extends AppCompatActivity {
         personsLayoutManager = new LinearLayoutManager(this);
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-        personsViewAdapter = new PersonsViewAdapter(classMates);
+        personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses);
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
     public void onApplySortClicked(View view) {
         Spinner newSortSpinnerView = findViewById(R.id.sort_spinner);
         String newSortText = newSortSpinnerView.getSelectedItem().toString();
+        switch (newSortText){
+            case "Most Shared Classes":
+                personsRecyclerView = findViewById(R.id.persons_view);
 
-        //TODO add how changing sort changes the array inputted into the recycler view
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
 
+                personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+            case "Most Recent Classes":
+                personsRecyclerView = findViewById(R.id.persons_view);
 
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+                personsViewAdapter = new PersonsViewAdapter(classMatesByRecentCourses);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+            case "Smallest Classes":
+                personsRecyclerView = findViewById(R.id.persons_view);
+
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+                personsViewAdapter = new PersonsViewAdapter(classMatesByCourseSize);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+        }
     }
 }
