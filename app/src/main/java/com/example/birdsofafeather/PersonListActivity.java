@@ -1,6 +1,9 @@
 package com.example.birdsofafeather;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +29,13 @@ public class PersonListActivity extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_person_list);
         setTitle(R.string.app_title);
+
+        // Sort Selection Drop-down functionality
+        Spinner spinnerSize = findViewById(R.id.sort_spinner);
+        ArrayAdapter<CharSequence> sortArrAdapter = ArrayAdapter.createFromResource
+                (this,R.array.sort, android.R.layout.simple_spinner_item);
+        sortArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerSize.setAdapter(sortArrAdapter);
 
         db = AppDatabase.singleton(getApplicationContext());
         //first we get the person list in the database
@@ -54,4 +64,12 @@ public class PersonListActivity extends AppCompatActivity {
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
+    public void onApplySortClicked(View view) {
+        Spinner newSortSpinnerView = findViewById(R.id.sort_spinner);
+        String newSortText = newSortSpinnerView.getSelectedItem().toString();
+
+        //TODO add how changing sort changes the array inputted into the recycler view
+
+
+    }
 }
