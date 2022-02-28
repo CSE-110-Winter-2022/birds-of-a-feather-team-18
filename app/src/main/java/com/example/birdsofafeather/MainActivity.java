@@ -20,12 +20,6 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Bofs-Nearby";
@@ -52,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Instantiate message listener
+
         MessageListener realListener = new MessageListener() {};
 
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
 
         this.messageListener = new FakedMessageListener(realListener, test, db);
-
     }
 
     public void onTestClicked(View view) {
@@ -68,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onEnterClicked(View view) {
+    public void onMockClicked(View view) {
 
         // Get CSV file
         TextView profile = findViewById(R.id.student_profile);
@@ -113,5 +107,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
+    }
+
+    public void onStartClicked(View view) {
+        Intent intent = new Intent(MainActivity.this, BofsSearchService.class);
+        startService(intent);
+    }
+
+    public void onStopClicked(View view) {
+        Intent intent = new Intent(MainActivity.this, BofsSearchService.class);
+        stopService(intent);
     }
 }
