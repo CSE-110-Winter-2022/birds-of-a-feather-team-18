@@ -47,6 +47,7 @@ public class FakedMessageListener extends MessageListener {
                 String quarter;
                 String courseType;
                 String courseNum;
+                String courseSize;
                 String text;
                 //get the user courses from db
                 List<Course> userCourses = db.coursesDao().getForPerson(1);
@@ -75,12 +76,13 @@ public class FakedMessageListener extends MessageListener {
                         quarter = array[1];
                         courseType = array[2];
                         courseNum = array[3];
+                        courseSize = array[4];
                         //set the course to the official version
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
 
                         //TODO: Put size functionality for mocked bluetooth
-                        Course c = new Course(courseId, personId, text, year, quarter,"");
+                        Course c = new Course(courseId, personId, text, year, quarter,courseSize);
                         if(userCourseText.contains(c.text)){
                             db.coursesDao().insert(c);
                         }
