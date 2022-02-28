@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
-public class BofsSearchService extends Service {
-    public BofsSearchService() {
+public class SearchService extends Service {
+    public SearchService() {
     }
 
     @Override
@@ -17,13 +17,13 @@ public class BofsSearchService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(BofsSearchService.this, "Search started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SearchService.this, "Search started", Toast.LENGTH_SHORT).show();
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Toast.makeText(BofsSearchService.this, "Search stopped", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SearchService.this, "Search stopped", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 }

@@ -8,17 +8,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.birdsofafeather.model.DummyPerson;
-import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
-import com.example.birdsofafeather.model.db.Course;
-import com.example.birdsofafeather.model.db.Person;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+
+import android.app.ActivityManager;
+import android.content.Context;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,43 +53,59 @@ public class MainActivity extends AppCompatActivity {
         this.messageListener = new FakedMessageListener(realListener, test, db);
     }
 
-    public void onTestClicked(View view) {
+    //check if search service is on or off
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            //if service is on, return true
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public void onTestClicked(View view) {
         // Start personListActivity
         Intent intent = new Intent(this, PersonListActivity.class);
         startActivity(intent);
     }
 
-    public void onMockClicked(View view) {
 
+
+    public void onMockClicked(View view) {
         // Get CSV file
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
 
-        MessageListener realListener = new MessageListener() {
+        //if the search is on, send the message to database
+        if (isMyServiceRunning(SearchService.class)) {
+            MessageListener realListener = new MessageListener() {
 
-            // Log to show that message is received
-            @Override
-            public void onFound(@NonNull Message message) {
-                Log.d(TAG, "Found Profile: " + new String(message.getContent()));
-            }
+                // Log to show that message is received
+                @Override
+                public void onFound(@NonNull Message message) {
+                    Log.d(TAG, "Found Profile: " + new String(message.getContent()));
+                }
 
-            // Log to show that profile from CSV saved to database
-            @Override
-            public void onLost(@NonNull Message message) {
-                Log.d(TAG, "Profile loaded in DataBase " + new String(message.getContent()));
+                // Log to show that profile from CSV saved to database
+                @Override
+                public void onLost(@NonNull Message message) {
+                    Log.d(TAG, "Profile loaded in DataBase " + new String(message.getContent()));
 
-                // Log to get number of courses and number of common courses
-                Log.d(TAG, "Number of classmates: " + new String(String.valueOf(db.personWithCoursesDao().count() - 1)));
-                Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
-            }
-        };
+                    // Log to get number of courses and number of common courses
+                    Log.d(TAG, "Number of classmates: " + new String(String.valueOf(db.personWithCoursesDao().count() - 1)));
+                    Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
+                }
+            };
 
-
-        AppDatabase db = AppDatabase.singleton(this);
-        //Use messageListener to save profile in database
-        this.messageListener = new FakedMessageListener(realListener, test, db);
-
+            AppDatabase db = AppDatabase.singleton(this);
+            //Use messageListener to save profile in database
+            this.messageListener = new FakedMessageListener(realListener, test, db);
+        } else {
+            //if service is not on, will show a toast message
+            Toast.makeText(this,"Service is not on", Toast.LENGTH_SHORT).show();
+        }
         profile.setText("");
     }
 
@@ -109,13 +123,15 @@ public class MainActivity extends AppCompatActivity {
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
 
+    //bind the button to start search service
     public void onStartClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, BofsSearchService.class);
+        Intent intent = new Intent(MainActivity.this, SearchService.class);
         startService(intent);
     }
 
+    //bind the button to stop service
     public void onStopClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, BofsSearchService.class);
+        Intent intent = new Intent(MainActivity.this, SearchService.class);
         stopService(intent);
     }
 }

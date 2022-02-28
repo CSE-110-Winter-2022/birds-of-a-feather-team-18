@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
         <service
-            android:name=".BofsSearchService"
+            android:name=".SearchService"
             android:enabled="true"
             android:exported="true"></service>
 
