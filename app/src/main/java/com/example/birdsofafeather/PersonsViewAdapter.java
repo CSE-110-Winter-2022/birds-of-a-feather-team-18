@@ -45,6 +45,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         return this.persons.size();
     }
 
+    public List<? extends IPerson> getPersons() {
+        return persons;
+    }
+
     public static class ViewHolder
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {

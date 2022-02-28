@@ -121,7 +121,7 @@ public class FakedMessageListener extends MessageListener {
                             courseQ = 2;
                         } else if(courseQuarter.equals("SP")){
                             courseQ = 3;
-                        } else if(courseQuarter.equals("SS1") || courseQuarter.equals("SS2")){
+                        } else if(courseQuarter.equals("SS1") || courseQuarter.equals("SS2") || courseQuarter.equals("SSS")){
                             courseQ = 4;
                         }
                         int courseAge = thisQuarter - courseQ;
