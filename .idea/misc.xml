@@ -3,20 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_login.xml" value="0.2692502532928065" />
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_mock.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_detail.xml" value="0.2692502532928065" />
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_list.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_course.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_main.xml" value="0.2" />
+<<<<<<< Updated upstream
+=======
+        <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_person_list.xml" value="0.2546875" />
+>>>>>>> Stashed changes
         <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_prev_course.xml" value="0.24375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_detail.xml" value="0.165625" />
+        <entry key="app/src/main/res/layout/activity_person_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_photo_url.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_prev_course.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_prev_course_detail.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/courses_row.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/courses_row.xml" value="0.23852386474609377" />
         <entry key="app/src/main/res/layout/notes_row.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/person_row.xml" value="0.165625" />
       </map>
