@@ -41,8 +41,8 @@ public class CoursesDaoTests {
     //delete, and deleteAll methods in CoursesDao
     @Test
     public void coursesDaoTest() {
-        Person person1 = new Person(1, "Bob", DEFAULT_PHOTO);
-        Person person2 = new Person(2, "Joe", DEFAULT_PHOTO);
+        Person person1 = new Person(1, "Bob", DEFAULT_PHOTO, false);
+        Person person2 = new Person(2, "Joe", DEFAULT_PHOTO, false);
         Course course1 = new Course(1, 1, "course1", "22", "SP", "Tiny");
         Course course2 = new Course(2, 1, "course2", "22", "SP", "Small");
         Course course3 = new Course(3, 2, "course3", "", "", "");

@@ -54,7 +54,7 @@ public class PhotoURLTests {
 
         scenario.onActivity(activity -> {
             //simulate entering a name in NameLoginActivity
-            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg"));
+            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false));
 
             EditText newPhotoTextView = activity.findViewById(R.id.photo_url_textview);
             Button submitButton = activity.findViewById(R.id.submit_button);
@@ -77,7 +77,7 @@ public class PhotoURLTests {
 
         scenario.onActivity(activity -> {
             //simulate entering a name in NameLoginActivity
-            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg"));
+            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false));
 
             EditText newNameTextView = activity.findViewById(R.id.photo_url_textview);
             Button submitButton = activity.findViewById(R.id.submit_button);
@@ -104,7 +104,7 @@ public class PhotoURLTests {
 
         scenario.onActivity(activity -> {
             //simulate entering a name in NameLoginActivity
-            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg"));
+            activity.db.personWithCoursesDao().insert(new Person(1, "Cabernet", "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false));
 
             EditText newPhotoTextView = activity.findViewById(R.id.photo_url_textview);
             Button submitButton = activity.findViewById(R.id.submit_button);
