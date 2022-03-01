@@ -73,7 +73,6 @@ public class PersonListActivity extends AppCompatActivity {
             }
         });
 
-
         classMatesByRecentCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
