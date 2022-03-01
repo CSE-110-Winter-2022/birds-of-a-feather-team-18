@@ -53,27 +53,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/student_profile" />
 
-    <Button
-        android:id="@+id/start_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="73dp"
-        android:layout_marginTop="91dp"
-        android:text="Start"
-        android:onClick="onStartClicked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/get_button" />
-
-    <Button
-        android:id="@+id/stop_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="91dp"
-        android:layout_marginEnd="74dp"
-        android:text="Stop"
-        android:onClick="onStopClicked"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/start_service"
-        app:layout_constraintTop_toBottomOf="@+id/get_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

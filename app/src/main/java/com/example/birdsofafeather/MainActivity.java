@@ -107,12 +107,22 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Service is not on", Toast.LENGTH_SHORT).show();
         }
         profile.setText("");
+
+        if (isMyServiceRunning(SearchService.class)){
+
+            Log.d(TAG, "Mock Clicked, service on: should work");
+        }
+        else{
+
+            Log.d(TAG, "Mock Clicked, service off: shouldn't work");
+        }
     }
 
     // Starting bluetooth
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
         Nearby.getMessagesClient(this).subscribe(messageListener);
     }
 
@@ -121,17 +131,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
-    }
-
-    //bind the button to start search service
-    public void onStartClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, SearchService.class);
-        startService(intent);
-    }
-
-    //bind the button to stop service
-    public void onStopClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, SearchService.class);
-        stopService(intent);
     }
 }
