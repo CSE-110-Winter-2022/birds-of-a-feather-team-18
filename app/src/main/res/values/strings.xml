@@ -17,6 +17,7 @@
     <string name="confirm_name">CONFIRM</string>
     <string name="add_course">ADD COURSE</string>
     <string name="done">DONE</string>
+    <string name="apply_sort">SORT</string>
     <string name="subject">Subject</string>
     <string name="course_number">Course</string>
     <string-array name="quarter">
@@ -34,6 +35,11 @@
         <item>Large (150-250)</item>
         <item>Huge (250-400)</item>
         <item>Gigantic (400+)</item>
+    </string-array>
+    <string-array name="sort">
+        <item>Most Shared Classes</item>
+        <item>Most Recent Classes</item>
+        <item>Smallest Classes</item>
     </string-array>
     <string name="year">Year</string>
     <string name="submit_url">SUBMIT</string>

@@ -17,9 +17,17 @@ public class Person {
     @ColumnInfo(name = "photo")
     public String photo;
 
+    @ColumnInfo(name = "sizePriority")
+    public float sizePriority;
+
+    @ColumnInfo(name = "recentPriority")
+    public int recentPriority;
+
     public Person(int personId, String name, String photo){
         this.personId = personId;
         this.name = name;
         this.photo = photo;
+        sizePriority = 0;
+        recentPriority = 0;
     }
 }
