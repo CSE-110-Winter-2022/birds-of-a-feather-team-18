@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.birdsofafeather">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,31 +11,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
+        <service
+            android:name=".SearchService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyAMc-iSGkLFmUHUkoDO0SeP2-YpEOdXQJc"/>
+            android:value="AIzaSyAMc-iSGkLFmUHUkoDO0SeP2-YpEOdXQJc" />
+
         <activity
-            android:name="com.example.birdsofafeather.PersonDetailActivity"
+            android:name=".PersonDetailActivity"
             android:exported="false" />
         <activity
             android:name=".PhotoURLActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".PrevCourseActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".NameLoginActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".PersonListActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
-            android:name="com.example.birdsofafeather.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

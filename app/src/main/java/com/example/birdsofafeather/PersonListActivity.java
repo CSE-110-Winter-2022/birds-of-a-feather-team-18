@@ -1,6 +1,8 @@
 package com.example.birdsofafeather;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -18,6 +20,7 @@ import java.util.List;
 
 //set up the student taken common course list
 public class PersonListActivity extends AppCompatActivity {
+    private static final String TAG = "Bofs-Nearby";
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
     protected PersonsViewAdapter personsViewAdapter;
@@ -126,5 +129,18 @@ public class PersonListActivity extends AppCompatActivity {
                 personsRecyclerView.setAdapter(personsViewAdapter);
                 break;
         }
+    }
+
+    public void onStartClicked(View view) {
+        Intent intent = new Intent(PersonListActivity.this, SearchService.class);
+        startService(intent);
+        Log.d(TAG, "Start Clicked, service start");
+    }
+
+    //bind the button to stop service
+    public void onStopClicked(View view) {
+        Intent intent = new Intent(PersonListActivity.this, SearchService.class);
+        stopService(intent);
+        Log.d(TAG, "Stop Clicked, service stop");
     }
 }
