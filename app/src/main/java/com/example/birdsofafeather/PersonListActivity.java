@@ -26,9 +26,12 @@ public class PersonListActivity extends AppCompatActivity {
     protected PersonsViewAdapter personsViewAdapter;
     //set up data base
     private AppDatabase db;
+
     private List<PersonWithCourses> classMatesByNumCourses;
     private List<PersonWithCourses> classMatesByCourseSize;
     private List<PersonWithCourses> classMatesByRecentCourses;
+
+    private String newSortText;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -37,11 +40,14 @@ public class PersonListActivity extends AppCompatActivity {
         setTitle(R.string.app_title);
 
         // Sort Selection Drop-down functionality
-        Spinner spinnerSize = findViewById(R.id.sort_spinner);
+        Spinner sortSpinner = findViewById(R.id.sort_spinner);
         ArrayAdapter<CharSequence> sortArrAdapter = ArrayAdapter.createFromResource
                 (this,R.array.sort, android.R.layout.simple_spinner_item);
         sortArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerSize.setAdapter(sortArrAdapter);
+        sortSpinner.setAdapter(sortArrAdapter);
+
+        // get default spinner value
+        newSortText = sortSpinner.getSelectedItem().toString();
 
         db = AppDatabase.singleton(getApplicationContext());
         //first we get the person list in the database
@@ -83,20 +89,19 @@ public class PersonListActivity extends AppCompatActivity {
             }
         });
 
-
         personsRecyclerView = findViewById(R.id.persons_view);
 
         //send the info to the viewAdapter
         personsLayoutManager = new LinearLayoutManager(this);
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-        personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses);
+        personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses, db);
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
     public void onApplySortClicked(View view) {
         Spinner newSortSpinnerView = findViewById(R.id.sort_spinner);
-        String newSortText = newSortSpinnerView.getSelectedItem().toString();
+        newSortText = newSortSpinnerView.getSelectedItem().toString();
         switch (newSortText){
             case "Most Shared Classes":
                 personsRecyclerView = findViewById(R.id.persons_view);
@@ -105,7 +110,7 @@ public class PersonListActivity extends AppCompatActivity {
                 personsLayoutManager = new LinearLayoutManager(this);
                 personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-                personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses);
+                personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses, db);
                 personsRecyclerView.setAdapter(personsViewAdapter);
                 break;
             case "Most Recent Classes":
@@ -115,7 +120,7 @@ public class PersonListActivity extends AppCompatActivity {
                 personsLayoutManager = new LinearLayoutManager(this);
                 personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-                personsViewAdapter = new PersonsViewAdapter(classMatesByRecentCourses);
+                personsViewAdapter = new PersonsViewAdapter(classMatesByRecentCourses, db);
                 personsRecyclerView.setAdapter(personsViewAdapter);
                 break;
             case "Smallest Classes":
@@ -125,11 +130,68 @@ public class PersonListActivity extends AppCompatActivity {
                 personsLayoutManager = new LinearLayoutManager(this);
                 personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-                personsViewAdapter = new PersonsViewAdapter(classMatesByCourseSize);
+                personsViewAdapter = new PersonsViewAdapter(classMatesByCourseSize, db);
                 personsRecyclerView.setAdapter(personsViewAdapter);
                 break;
         }
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setContentView(R.layout.activity_person_list);
+        setTitle(R.string.app_title);
+
+        // Sort Selection Drop-down functionality
+        Spinner sortSpinner = findViewById(R.id.sort_spinner);
+        ArrayAdapter<CharSequence> sortArrAdapter = ArrayAdapter.createFromResource
+                (this,R.array.sort, android.R.layout.simple_spinner_item);
+        sortArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        sortSpinner.setAdapter(sortArrAdapter);
+        sortSpinner.setSelection(sortArrAdapter.getPosition(newSortText));
+
+        personsRecyclerView = findViewById(R.id.persons_view);
+
+        switch (newSortText){
+            case "Most Shared Classes":
+                // refresh recyclerview with updated database
+                for(int i = 0; i < classMatesByNumCourses.size(); i++){
+                    classMatesByNumCourses.set(i, db.personWithCoursesDao().get(classMatesByNumCourses.get(i).getId()));
+                }
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+                personsViewAdapter = new PersonsViewAdapter(classMatesByNumCourses, db);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+            case "Most Recent Classes":
+                // refresh recyclerview with updated database
+                for(int i = 0; i < classMatesByRecentCourses.size(); i++){
+                    classMatesByRecentCourses.set(i, db.personWithCoursesDao().get(classMatesByRecentCourses.get(i).getId()));
+                }
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+                personsViewAdapter = new PersonsViewAdapter(classMatesByRecentCourses, db);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+            case "Smallest Classes":
+                // refresh recyclerview with updated database
+                for(int i = 0; i < classMatesByCourseSize.size(); i++){
+                    classMatesByCourseSize.set(i, db.personWithCoursesDao().get(classMatesByCourseSize.get(i).getId()));
+                }
+                //send the info to the viewAdapter
+                personsLayoutManager = new LinearLayoutManager(this);
+                personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+                personsViewAdapter = new PersonsViewAdapter(classMatesByCourseSize, db);
+                personsRecyclerView.setAdapter(personsViewAdapter);
+                break;
+        }
+    }
+
 
     public void onStartClicked(View view) {
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
@@ -142,5 +204,12 @@ public class PersonListActivity extends AppCompatActivity {
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);
         Log.d(TAG, "Stop Clicked, service stop");
+    }
+
+    // Go to Favorite List and send current spinner value
+    public void onFavoriteClicked(View view) {
+        Intent intent = new Intent(this, FavoriteListActivity.class);
+        intent.putExtra("currSortText", newSortText);
+        startActivity(intent);
     }
 }

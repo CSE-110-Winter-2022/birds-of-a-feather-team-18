@@ -23,11 +23,15 @@ public class Person {
     @ColumnInfo(name = "recentPriority")
     public int recentPriority;
 
-    public Person(int personId, String name, String photo){
+    @ColumnInfo(name = "favorite")
+    public boolean favorite;
+
+    public Person(int personId, String name, String photo, boolean favorite){
         this.personId = personId;
         this.name = name;
         this.photo = photo;
         sizePriority = 0;
         recentPriority = 0;
+        this.favorite = favorite;
     }
 }

@@ -37,4 +37,7 @@ public interface PersonWithCoursesDao {
 
     @Query("UPDATE persons SET photo = :newPhoto WHERE id =:id")
     void updatePhoto(String newPhoto, int id);
+
+    @Query("UPDATE persons SET favorite = :isFavorite WHERE id =:id")
+    void updateFavorite(boolean isFavorite, int id);
 }

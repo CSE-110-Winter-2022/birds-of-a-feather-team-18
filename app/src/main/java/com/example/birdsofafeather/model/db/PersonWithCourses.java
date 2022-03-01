@@ -34,4 +34,9 @@ public class PersonWithCourses implements IPerson{
     public List<String> getCourses() {
         return this.courses;
     }
+
+    @Override
+    public boolean getFavorite(){
+        return this.person.favorite;
+    }
 }
