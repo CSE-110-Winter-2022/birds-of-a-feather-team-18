@@ -7,4 +7,5 @@ public interface IPerson {
     String getName();
     String getPhoto();
     List<String> getCourses();
+    boolean getFavorite();
 }

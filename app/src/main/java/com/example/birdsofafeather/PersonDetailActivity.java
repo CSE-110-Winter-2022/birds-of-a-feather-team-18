@@ -3,6 +3,7 @@ package com.example.birdsofafeather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,12 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         setTitle(person.getName());
 
+        //Check if person is favorite
+        CheckBox favStar = findViewById(R.id.detail_star);
+        boolean favorite = person.getFavorite();
+        favStar.setChecked(favorite);
+
+        // Set up recyclerview
         coursesRecyclerView = findViewById(R.id.courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);
         coursesRecyclerView.setLayoutManager(coursesLayoutManager);
@@ -56,5 +63,11 @@ public class PersonDetailActivity extends AppCompatActivity {
 
     public void onGoBackClicked(View view) {
         finish();
+    }
+
+    public void onDetailStarClicked(View view) {
+        boolean isFavorite = ((CheckBox)view).isChecked();
+
+        db.personWithCoursesDao().updateFavorite(isFavorite, person.getId());
     }
 }

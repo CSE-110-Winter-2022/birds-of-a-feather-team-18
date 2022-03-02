@@ -89,7 +89,7 @@ public class FakedMessageListener extends MessageListener {
                         }
                     }
                 }
-                Person newPerson = new Person(personId, name, photoId);
+                Person newPerson = new Person(personId, name, photoId, false);
                 //only add the person when there are common course with user
                 List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
                 if (newPersonCourses.size() != 0){
