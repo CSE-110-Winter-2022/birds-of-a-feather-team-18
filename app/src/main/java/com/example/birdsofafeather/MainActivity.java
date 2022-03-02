@@ -1,29 +1,36 @@
 package com.example.birdsofafeather;
 
+import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
-import android.app.ActivityManager;
-import android.content.Context;
-import android.widget.Toast;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Bofs-Nearby";
     private MessageListener messageListener;
     private AppDatabase db;
-
+    private final int backgroundCode = 1150;
+    private final int coarseCode = 72621;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,33 @@ public class MainActivity extends AppCompatActivity {
         setTitle(R.string.app_title);
 
         db = AppDatabase.singleton(this);
+
+        requestBackgroundPermission();
+        requestCoarsePermission();
+
+        Button AskPermissionsRequest = findViewById(R.id.askPermissions);
+        AskPermissionsRequest.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(MainActivity.this,
+                                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "Permissions have already been granted!", Toast.LENGTH_SHORT).show();
+                }
+                else if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(MainActivity.this,
+                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    requestCoarsePermission();
+                }
+                else{
+                    requestBackgroundPermission();
+                    requestCoarsePermission();
+                }
+            }
+        });
 
         //clear database of all persons and courses
         db.coursesDao().deleteExceptUser(1);
@@ -70,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PersonListActivity.class);
         startActivity(intent);
     }
-
-
 
     public void onMockClicked(View view) {
         // Get CSV file
@@ -115,6 +147,67 @@ public class MainActivity extends AppCompatActivity {
         else{
 
             Log.d(TAG, "Mock Clicked, service off: shouldn't work");
+        }
+    }
+
+    private void requestBackgroundPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+            new AlertDialog.Builder(this).setTitle("BACKGROUND_LOCATION Permission needed").setMessage("This permission is needed to search for other BoFs.")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, backgroundCode);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, backgroundCode);
+        }
+    }
+
+    private void requestCoarsePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            new AlertDialog.Builder(this).setTitle("COARSE_LOCATION Permission needed").setMessage("This permission is needed to search for other BoFs.")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, coarseCode);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, coarseCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == backgroundCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(this, "BACKGROUND_LOCATION Permission is granted", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "You need to grant 'BACKGROUND_LOCATION Permission' to search for other BoFs.", Toast.LENGTH_SHORT).show();
+        }
+        if (requestCode == coarseCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(this, "COARSE_LOCATION Permission is granted", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "You need to grant 'COARSE_LOCATION Permission' to search for other BoFs.", Toast.LENGTH_SHORT).show();
         }
     }
 
