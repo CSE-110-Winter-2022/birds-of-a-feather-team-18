@@ -46,10 +46,10 @@ public class PersonListTest {
         AppDatabase.useTestDatabase(context);
         testDB = AppDatabase.singleton(context);
 
-        Person person1 = new Person(1, "User", DEFAULT_PHOTO);
-        Person person2 = new Person(2, "Small Simon", DEFAULT_PHOTO);
-        Person person3 = new Person(3, "Freshman Fabio", DEFAULT_PHOTO);
-        Person person4 = new Person(4, "Tryhard Tyler", DEFAULT_PHOTO);
+        Person person1 = new Person(1, "User", DEFAULT_PHOTO, false);
+        Person person2 = new Person(2, "Small Simon", DEFAULT_PHOTO, false);
+        Person person3 = new Person(3, "Freshman Fabio", DEFAULT_PHOTO, false);
+        Person person4 = new Person(4, "Tryhard Tyler", DEFAULT_PHOTO, false);
         //user's courses
         Course course1 = new Course(1, 1, "LTEA 138", "22", "WI", "Huge");
         Course course2 = new Course(2, 1, "CSE 110", "21", "WI", "Gigantic");
