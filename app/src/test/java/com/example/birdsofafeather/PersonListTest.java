@@ -19,6 +19,7 @@ import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
+import com.squareup.picasso.Picasso;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,14 +36,6 @@ import java.util.List;
  */
 @RunWith(AndroidJUnit4.class)
 public class PersonListTest {
-    @Test
-    public void dummyTest() {
-        assertEquals(1, 1);
-    }
-
-    /*
-    @Rule
-    public ActivityScenarioRule<PersonListActivity> scenarioRule = new ActivityScenarioRule<>(PersonListActivity.class);
 
     AppDatabase testDB;
     final String DEFAULT_PHOTO = "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg";
@@ -73,6 +66,18 @@ public class PersonListTest {
         Course course10 = new Course(10, 4, "CSE 110", "21", "WI", "Gigantic");
         Course course11 = new Course(11, 4, "CSE 101", "21", "FA", "Medium");
         Course course12 = new Course(12, 4, "CSE 120", "21", "SP", "Small");
+        //Simon's sizePriority: 2 small courses --> 2*0.33=0.66
+        person2.sizePriority = (float) 0.66;
+        //Simon's recentPriority: SP21 & SS1 2013 --> age 2 & age 4+ --> 3+1=4
+        person2.recentPriority = 4;
+        //Fabio's sizePriority: 1 Huge, 1 Gigantic --> 0.06 + 0.03 = 0.09
+        person3.sizePriority = (float) 0.09;
+        //Fabio's recentPriority: WI22 & WI21 --> age 0 & age 3 --> 5+2=7
+        person3.recentPriority = 7;
+        //Tyler's sizePriority: 1 Small, 1 Medium, 1 Gigantic --> 0.33 + 0.18 + 0.03 = 0.54
+        person4.sizePriority = (float) 0.54;
+        //Tyler's recentPriority: WI21 & FA21 & SP21 --> age 3 & age 4 & age 2 --> 2+1+3=6
+        person4.recentPriority = 6;
 
         testDB.personWithCoursesDao().insert(person1);
         testDB.personWithCoursesDao().insert(person2);
@@ -101,9 +106,7 @@ public class PersonListTest {
 
     @Test
     public void test_sorts() {
-
-
-        ActivityScenario<PersonListActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PersonListActivity> scenario = ActivityScenario.launch(PersonListActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -135,5 +138,4 @@ public class PersonListTest {
         });
     }
 
-     */
 }
