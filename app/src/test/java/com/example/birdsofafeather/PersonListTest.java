@@ -19,6 +19,7 @@ import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
+import com.squareup.picasso.Picasso;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,10 +40,6 @@ public class PersonListTest {
     public void dummyTest() {
         assertEquals(1, 1);
     }
-
-    /*
-    @Rule
-    public ActivityScenarioRule<PersonListActivity> scenarioRule = new ActivityScenarioRule<>(PersonListActivity.class);
 
     AppDatabase testDB;
     final String DEFAULT_PHOTO = "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg";
@@ -101,9 +98,7 @@ public class PersonListTest {
 
     @Test
     public void test_sorts() {
-
-
-        ActivityScenario<PersonListActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PersonListActivity> scenario = ActivityScenario.launch(PersonListActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -122,6 +117,8 @@ public class PersonListTest {
             sortButton.performClick();
             personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
             personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
+            int priority1 = personList.get(0).person.recentPriority;
+            int priority2 = personList.get(1).person.recentPriority;
             assert(personList.get(0).person.recentPriority > personList.get(1).person.recentPriority);
             assert(personList.get(1).person.recentPriority > personList.get(2).person.recentPriority);
 
@@ -135,5 +132,4 @@ public class PersonListTest {
         });
     }
 
-     */
 }

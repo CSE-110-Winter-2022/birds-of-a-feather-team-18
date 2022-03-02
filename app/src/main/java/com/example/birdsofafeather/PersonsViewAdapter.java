@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.birdsofafeather.model.IPerson;
 import com.squareup.picasso.Picasso;
 
@@ -69,8 +70,9 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         public void setPerson(IPerson person) {
             this.person = person;
             this.personNameView.setText(person.getName());
+
             //set up photo
-            Picasso.get().load(person.getPhoto()).into(imageView);
+            Glide.with(imageView.getContext()).load(person.getPhoto()).into(imageView);
             Integer num = (Integer)person.getCourses().size();
             this.commonCourseView.setText(num.toString());
         }
