@@ -46,26 +46,28 @@ public class PersonListTest {
         AppDatabase.useTestDatabase(context);
         testDB = AppDatabase.singleton(context);
 
-        Person person1 = new Person(1, "User", DEFAULT_PHOTO, false);
-        Person person2 = new Person(2, "Small Simon", DEFAULT_PHOTO, false);
-        Person person3 = new Person(3, "Freshman Fabio", DEFAULT_PHOTO, false);
-        Person person4 = new Person(4, "Tryhard Tyler", DEFAULT_PHOTO, false);
+        Person person1 = new Person("1", "User", DEFAULT_PHOTO, false);
+        Person person2 = new Person("2", "Small Simon", DEFAULT_PHOTO, false);
+        Person person3 = new Person("3", "Freshman Fabio", DEFAULT_PHOTO, false);
+        Person person4 = new Person("4", "Tryhard Tyler", DEFAULT_PHOTO, false);
+
         //user's courses
-        Course course1 = new Course(1, 1, "LTEA 138", "22", "WI", "Huge");
-        Course course2 = new Course(2, 1, "CSE 110", "21", "WI", "Gigantic");
-        Course course3 = new Course(3, 1, "CSE 101", "21", "FA", "Medium");
-        Course course4 = new Course(4, 1, "CSE 120", "21", "SP", "Small");
-        Course course5 = new Course(5, 1, "ECON 120", "2013", "SS1", "Small");
+        Course course1 = new Course(1, "1", "LTEA 138", "22", "WI", "Huge");
+        Course course2 = new Course(2, "1", "CSE 110", "21", "WI", "Gigantic");
+        Course course3 = new Course(3, "1", "CSE 101", "21", "FA", "Medium");
+        Course course4 = new Course(4, "1", "CSE 120", "21", "SP", "Small");
+        Course course5 = new Course(5, "1", "ECON 120", "2013", "SS1", "Small");
         //Simon's courses
-        Course course6 = new Course(6, 2, "CSE 120", "21", "SP", "Small");
-        Course course7 = new Course(7, 2, "ECON 120", "2013", "SS1", "Small");
+        Course course6 = new Course(6, "2", "CSE 120", "21", "SP", "Small");
+        Course course7 = new Course(7, "2", "ECON 120", "2013", "SS1", "Small");
         //Fabio's courses
-        Course course8 = new Course(8, 3, "LTEA 138", "22", "WI", "Huge");
-        Course course9 = new Course(9, 3, "CSE 110", "21", "WI", "Gigantic");
+        Course course8 = new Course(8, "3", "LTEA 138", "22", "WI", "Huge");
+        Course course9 = new Course(9, "3", "CSE 110", "21", "WI", "Gigantic");
         //Tyler's courses
-        Course course10 = new Course(10, 4, "CSE 110", "21", "WI", "Gigantic");
-        Course course11 = new Course(11, 4, "CSE 101", "21", "FA", "Medium");
-        Course course12 = new Course(12, 4, "CSE 120", "21", "SP", "Small");
+
+        Course course10 = new Course(10, "4", "CSE 110", "21", "WI", "Gigantic");
+        Course course11 = new Course(11, "4", "CSE 101", "21", "FA", "Medium");
+        Course course12 = new Course(12, "4", "CSE 120", "21", "SP", "Small");
         //Simon's sizePriority: 2 small courses --> 2*0.33=0.66
         person2.sizePriority = (float) 0.66;
         //Simon's recentPriority: SP21 & SS1 2013 --> age 2 & age 4+ --> 3+1=4
@@ -118,13 +120,14 @@ public class PersonListTest {
             RecyclerView personRecyclerView = activity.findViewById(R.id.persons_view);
             PersonsViewAdapter personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
             List<PersonWithCourses> personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
-            assertEquals(4, personList.get(0).getId());
+            assertEquals("4", personList.get(0).getId());
 
 
             sortOptionSpinnerView.setSelection(1);
             sortButton.performClick();
             personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
             personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
+
             assert(personList.get(0).person.recentPriority > personList.get(1).person.recentPriority);
             assert(personList.get(1).person.recentPriority > personList.get(2).person.recentPriority);
 
