@@ -24,6 +24,7 @@ public class Person {
 
     @ColumnInfo(name = "recentPriority")
     public int recentPriority;
+
     @ColumnInfo(name = "favorite")
     public boolean favorite;
 

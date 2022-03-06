@@ -1,12 +1,14 @@
 package com.example.birdsofafeather;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
+import com.example.birdsofafeather.model.db.Session;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 //set up the student taken common course list
@@ -194,6 +201,35 @@ public class PersonListActivity extends AppCompatActivity {
 
 
     public void onStartClicked(View view) {
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        alertBuilder.setTitle("Starting Session")
+                .setMessage("Resume a previous session or start a new one?")
+                .setCancelable(true)
+                .setPositiveButton("New", (dialog,id) -> {
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mmaa");
+                    String dateString = dateFormat.format(new Date()).toString();
+                    Session newSession = new Session(String.valueOf(db.sessionsDao().maxId()+1), dateString);
+                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("currSession", newSession.sessionId);
+                    db.sessionsDao().insert(newSession);
+
+                    /*
+                    Intent intent = new Intent(PersonListActivity.this, SearchService.class);
+                    startService(intent);
+                    Log.d(TAG, "Start Clicked, service start");
+                    dialog.cancel();
+                    */
+                })
+                .setNegativeButton("Previous", (dialog,id) -> {
+                    //implement choosing previous session
+                });
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+
+
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         startService(intent);
         Log.d(TAG, "Start Clicked, service start");
@@ -201,6 +237,10 @@ public class PersonListActivity extends AppCompatActivity {
 
     //bind the button to stop service
     public void onStopClicked(View view) {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("currSession", "none");
+
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);
         Log.d(TAG, "Stop Clicked, service stop");
