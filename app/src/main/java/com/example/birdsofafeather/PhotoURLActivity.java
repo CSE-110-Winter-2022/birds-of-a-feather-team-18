@@ -45,7 +45,7 @@ public class PhotoURLActivity extends AppCompatActivity {
 
                 //update the user's photo with the new URL if it is valid
                 photoUrl = photoUrlTextView.getText().toString();
-                db.personWithCoursesDao().updatePhoto(photoUrl, 1);
+                db.personWithCoursesDao().updatePhoto(photoUrl, "1");
 
                 //start PrevCourseActivity
                 Intent intent = new Intent(this, PrevCourseActivity.class);

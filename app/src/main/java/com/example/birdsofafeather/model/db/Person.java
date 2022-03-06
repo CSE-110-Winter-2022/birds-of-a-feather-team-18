@@ -1,5 +1,6 @@
 package com.example.birdsofafeather.model.db;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,7 +10,8 @@ public class Person {
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    public int personId;
+    @NonNull
+    public String personId;
 
     @ColumnInfo(name = "name")
     public String name;
@@ -26,7 +28,7 @@ public class Person {
     @ColumnInfo(name = "favorite")
     public boolean favorite;
 
-    public Person(int personId, String name, String photo, boolean favorite){
+    public Person(String personId, String name, String photo, boolean favorite){
         this.personId = personId;
         this.name = name;
         this.photo = photo;

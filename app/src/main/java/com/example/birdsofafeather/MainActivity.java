@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //clear database of all persons and courses
-        db.coursesDao().deleteExceptUser(1);
-        db.personWithCoursesDao().deleteExceptUser(1);
+        db.coursesDao().deleteExceptUser("1");
+        db.personWithCoursesDao().deleteExceptUser("1");
 
         //if the database is empty, start the login activity
         if (db.personWithCoursesDao().count() == 0) {
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Log to get number of courses and number of common courses
                     Log.d(TAG, "Number of classmates: " + new String(String.valueOf(db.personWithCoursesDao().count() - 1)));
-                    Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
+                    //Log.d(TAG, "Number of common courses: " + new String(String.valueOf(db.coursesDao().getForPerson(db.personWithCoursesDao().maxId()).size())));
                 }
             };
 

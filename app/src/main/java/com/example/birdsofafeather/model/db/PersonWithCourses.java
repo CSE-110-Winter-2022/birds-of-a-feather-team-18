@@ -18,7 +18,7 @@ public class PersonWithCourses implements IPerson{
     public List<String> courses;
 
     @Override
-    public int getId(){
+    public String getId(){
         return this.person.personId;
     }
 

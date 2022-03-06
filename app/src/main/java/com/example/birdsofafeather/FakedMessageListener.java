@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -51,15 +52,15 @@ public class FakedMessageListener extends MessageListener {
                 String text;
                 String courseSize;
                 //get the user courses from db
-                List<Course> userCourses = db.coursesDao().getForPerson(1);
+                List<Course> userCourses = db.coursesDao().getForPerson("1");
                 //create a list string to store the courses
                 List<String> userCourseText = new ArrayList<>();
                 //start implement the user courses, then we can make comparison
                 for(int i = 0; i < userCourses.size(); i++){
                     userCourseText.add(userCourses.get(i).text);
                 }
-                //set the student profile id
-                int personId = db.personWithCoursesDao().maxId() + 1;
+
+                String personId = "";
                 //start use scanner to scan each line
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
@@ -82,6 +83,9 @@ public class FakedMessageListener extends MessageListener {
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
 
+                        String personString = name + photoId;
+                        personId = UUID.nameUUIDFromBytes(personString.getBytes()).toString();
+
                         //TODO: Put size functionality for mocked bluetooth
                         Course c = new Course(courseId, personId, text, year,quarter,courseSize);
                         if(userCourseText.contains(c.text)){
@@ -89,7 +93,10 @@ public class FakedMessageListener extends MessageListener {
                         }
                     }
                 }
+
+                //set the student profile id
                 Person newPerson = new Person(personId, name, photoId, false);
+
                 //only add the person when there are common course with user
                 List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
                 if (newPersonCourses.size() != 0){

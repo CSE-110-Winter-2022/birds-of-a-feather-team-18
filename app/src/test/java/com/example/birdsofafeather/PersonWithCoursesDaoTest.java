@@ -41,12 +41,12 @@ public class PersonWithCoursesDaoTest {
     //deleteAll for personWithCoursesDao
     @Test
     public void personWithCoursesDaoTest() {
-        Person person1 = new Person(1, "Bob", DEFAULT_PHOTO, false);
-        Person person2 = new Person(2, "Joe", DEFAULT_PHOTO, false);
-        Course course1 = new Course(1, 1, "course1", "22", "SP", "Tiny");
-        Course course2 = new Course(2, 1, "course2", "22", "SP", "Small");
-        Course course3 = new Course(3, 2, "course3", "", "", "");
-        Course course4 = new Course(4, 2, "course4", "19", "FA", "Large");
+        Person person1 = new Person("1", "Bob", DEFAULT_PHOTO, false);
+        Person person2 = new Person("2", "Joe", DEFAULT_PHOTO, false);
+        Course course1 = new Course(1, "1", "course1", "22", "SP", "Tiny");
+        Course course2 = new Course(2, "1", "course2", "22", "SP", "Small");
+        Course course3 = new Course(3, "2", "course3", "", "", "");
+        Course course4 = new Course(4, "2", "course4", "19", "FA", "Large");
 
         testDB.personWithCoursesDao().insert(person1);
         testDB.personWithCoursesDao().insert(person2);
@@ -60,14 +60,13 @@ public class PersonWithCoursesDaoTest {
         for(int i = 0; i < actualPeopleList.size(); i++) {
             actualPeople += actualPeopleList.get(i).getName();
         }
-        testDB.personWithCoursesDao().updatePhoto("new photo", 1);
+        testDB.personWithCoursesDao().updatePhoto("new photo", "1");
 
         assertEquals("BobJoe", actualPeople);
         assertEquals(2, testDB.personWithCoursesDao().count());
-        assertEquals("Bob", testDB.personWithCoursesDao().get(1).getName());
-        assertEquals(2, testDB.personWithCoursesDao().maxId());
-        assertEquals("new photo", testDB.personWithCoursesDao().get(1).getPhoto());
-        testDB.personWithCoursesDao().deleteExceptUser(1);
+        assertEquals("Bob", testDB.personWithCoursesDao().get("1").getName());
+        assertEquals("new photo", testDB.personWithCoursesDao().get("1").getPhoto());
+        testDB.personWithCoursesDao().deleteExceptUser("1");
         assertEquals(1, testDB.personWithCoursesDao().count());
         testDB.personWithCoursesDao().deleteAll();
         assertEquals(0, testDB.personWithCoursesDao().count());

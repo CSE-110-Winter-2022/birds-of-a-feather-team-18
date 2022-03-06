@@ -32,7 +32,7 @@ public class NameLoginActivity extends AppCompatActivity {
             alertDialog = Utilities.showAlert(this, "No Name Entered");
         } else {
             //create a person and insert it into the database with an id of 1 and with the default photo
-            Person newSelf = new Person( 1, selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false);
+            Person newSelf = new Person( "1", selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false);
             db.personWithCoursesDao().insert(newSelf);
 
             //start PhotoURLActivity

@@ -15,13 +15,15 @@ public interface PersonWithCoursesDao {
     List<PersonWithCourses> getAll();
 
     @Query("SELECT * FROM persons WHERE id=:id")
-    PersonWithCourses get(int id);
+    PersonWithCourses get(String id);
 
     @Query("SELECT COUNT(*) from persons")
     int count();
 
+    /*
     @Query("SELECT MAX(id) from persons")
     int maxId();
+    */
 
     @Query("DELETE FROM persons")
     void deleteAll();
@@ -33,11 +35,11 @@ public interface PersonWithCoursesDao {
     void delete(Person person);
 
     @Query("DELETE FROM persons WHERE id !=:id")
-    void deleteExceptUser(int id);
+    void deleteExceptUser(String id);
 
     @Query("UPDATE persons SET photo = :newPhoto WHERE id =:id")
-    void updatePhoto(String newPhoto, int id);
+    void updatePhoto(String newPhoto, String id);
 
     @Query("UPDATE persons SET favorite = :isFavorite WHERE id =:id")
-    void updateFavorite(boolean isFavorite, int id);
+    void updateFavorite(boolean isFavorite, String id);
 }
