@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,9 @@ public class Session {
     @NonNull
     public String sessionId;
 
-    //@ColumnInfo(name = "people")
-    //public List<String> peopleIDs;
+    @TypeConverters(StringConverter.class)
+    @ColumnInfo(name = "people")
+    public List<String> peopleIDs;
 
     @ColumnInfo(name = "sessionName")
     public String sessionName;
@@ -25,6 +27,6 @@ public class Session {
     public Session(String sessionId, String sessionName){
         this.sessionId = sessionId;
         this.sessionName = sessionName;
-//        this.peopleIDs = new ArrayList<String>();
+        this.peopleIDs = new ArrayList<String>();
     }
 }
