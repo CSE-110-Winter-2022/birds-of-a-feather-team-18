@@ -20,10 +20,12 @@ import com.example.birdsofafeather.model.db.Session;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 //set up the student taken common course list
 public class PersonListActivity extends AppCompatActivity {
@@ -58,6 +60,21 @@ public class PersonListActivity extends AppCompatActivity {
 
         db = AppDatabase.singleton(getApplicationContext());
         //first we get the person list in the database
+
+        classMatesByNumCourses = new ArrayList<PersonWithCourses>();
+        classMatesByCourseSize = new ArrayList<PersonWithCourses>();
+        classMatesByRecentCourses = new ArrayList<PersonWithCourses>();
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
+        if(s!=null) {
+            List<String> ids = s.peopleIDs;
+            for (int i = 0; i < ids.size(); i++) {
+                classMatesByNumCourses.add(db.personWithCoursesDao().get(ids.get(i)));
+                classMatesByCourseSize.add(db.personWithCoursesDao().get(ids.get(i)));
+                classMatesByRecentCourses.add(db.personWithCoursesDao().get(ids.get(i)));
+            }
+        }
+        /*
         classMatesByNumCourses = db.personWithCoursesDao().getAll();
         classMatesByCourseSize = db.personWithCoursesDao().getAll();
         classMatesByRecentCourses = db.personWithCoursesDao().getAll();
@@ -67,7 +84,7 @@ public class PersonListActivity extends AppCompatActivity {
         classMatesByNumCourses = classMatesByNumCourses.subList(1, classMatesByNumCourses.size());
         classMatesByCourseSize = classMatesByCourseSize.subList(1, classMatesByCourseSize.size());
         classMatesByRecentCourses = classMatesByRecentCourses.subList(1, classMatesByRecentCourses.size());
-
+        */
         //Use a sorting to sort the number of common course
         //more common course, higher priority
         classMatesByNumCourses.sort(new Comparator<PersonWithCourses>() {
@@ -210,18 +227,19 @@ public class PersonListActivity extends AppCompatActivity {
                 .setPositiveButton("New", (dialog,id) -> {
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mmaa");
                     String dateString = dateFormat.format(new Date()).toString();
-                    Session newSession = new Session(String.valueOf(db.sessionsDao().maxId()+1), dateString);
-                    SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+                    Session newSession = new Session(UUID.randomUUID().toString(), dateString);
+                    SharedPreferences preferences = getSharedPreferences("session",MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("currSession", newSession.sessionId);
+                    editor.apply();
                     db.sessionsDao().insert(newSession);
 
-                    /*
+
                     Intent intent = new Intent(PersonListActivity.this, SearchService.class);
                     startService(intent);
                     Log.d(TAG, "Start Clicked, service start");
                     dialog.cancel();
-                    */
+
                 })
                 .setNegativeButton("Previous", (dialog,id) -> {
                     //implement choosing previous session
@@ -229,10 +247,11 @@ public class PersonListActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
 
-
+        /*
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         startService(intent);
         Log.d(TAG, "Start Clicked, service start");
+        */
     }
 
     //bind the button to stop service
@@ -240,6 +259,7 @@ public class PersonListActivity extends AppCompatActivity {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("currSession", "none");
+        editor.apply();
 
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);

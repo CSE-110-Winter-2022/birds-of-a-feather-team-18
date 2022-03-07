@@ -17,6 +17,9 @@ public interface PersonWithCoursesDao {
     @Query("SELECT * FROM persons WHERE id=:id")
     PersonWithCourses get(String id);
 
+    @Query("SELECT EXISTS (SELECT 1 FROM persons where id=:id)")
+    Boolean exists(String id);
+
     @Query("SELECT COUNT(*) from persons")
     int count();
 

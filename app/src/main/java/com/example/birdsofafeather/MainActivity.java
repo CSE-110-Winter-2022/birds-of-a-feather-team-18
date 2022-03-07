@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: GET RID OF THIS PART FOR DEMO
         //clear database of all persons and courses
         db.coursesDao().deleteExceptUser("1");
         db.personWithCoursesDao().deleteExceptUser("1");
@@ -84,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
 
-        this.messageListener = new FakedMessageListener(realListener, test, db);
+        AppDatabase db = AppDatabase.singleton(this);
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        String currSessionID = preferences.getString("currSession", "");
+
+        this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
     }
 
     //check if search service is on or off
@@ -132,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
             };
 
             AppDatabase db = AppDatabase.singleton(this);
+            SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+            String currSessionID = preferences.getString("currSession", "");
             //Use messageListener to save profile in database
-            this.messageListener = new FakedMessageListener(realListener, test, db);
+            this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
         } else {
             //if service is not on, will show a toast message
             Toast.makeText(this,"Service is not on", Toast.LENGTH_SHORT).show();

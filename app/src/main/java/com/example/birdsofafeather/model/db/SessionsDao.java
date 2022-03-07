@@ -5,16 +5,17 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.TypeConverters;
 
 import java.util.List;
 
 @Dao
 public interface SessionsDao {
 
-    //@Query("SELECT * FROM sessions")
-    //List<Session> getAll();
+    @Query("SELECT * FROM sessions")
+    List<Session> getAll();
 
-    @Query("SELECT * FROM persons where id=:id")
+    @Query("SELECT * FROM sessions where id=:id")
     Session get(String id);
 
     @Query("SELECT COUNT(*) from sessions")

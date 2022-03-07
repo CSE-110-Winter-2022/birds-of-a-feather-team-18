@@ -1,9 +1,12 @@
 package com.example.birdsofafeather;
 
+import android.content.SharedPreferences;
+
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
+import com.example.birdsofafeather.model.db.Session;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
@@ -21,7 +24,7 @@ public class FakedMessageListener extends MessageListener {
     //instantiate executor to execute messages
     private final ScheduledExecutorService executor;
 
-    public FakedMessageListener(MessageListener realMessageListener, String messageStr, AppDatabase db) {
+    public FakedMessageListener(MessageListener realMessageListener, String messageStr, AppDatabase db, String sessionID) {
         this.messageListener = realMessageListener;
         this.executor = Executors.newSingleThreadScheduledExecutor();
 
@@ -41,7 +44,7 @@ public class FakedMessageListener extends MessageListener {
                 //String line = "";
                 String csvSplitBy = ",";
 
-                //count means the line of the profile, 0 means name, 1 means Photo Url
+                //count means the line of the profile, 0 means uuid, 1 means name, 2 means Photo Url
                 int count = 0;
                 String name = null;
                 String photoId = null;
@@ -64,12 +67,16 @@ public class FakedMessageListener extends MessageListener {
                 //start use scanner to scan each line
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
+                    if(count == 0) {
+                        personId = array[0];
+                        count++;
+                    }
                     //set profile name
-                    if (count == 0) {
+                    else if (count == 1) {
                         name = array[0];
                         count++;
                     //set profile photo url
-                    } else if (count == 1) {
+                    } else if (count == 2) {
                         photoId = array[0];
                         count++;
                     //set profile courses
@@ -83,10 +90,9 @@ public class FakedMessageListener extends MessageListener {
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
 
-                        String personString = name + photoId;
-                        personId = UUID.nameUUIDFromBytes(personString.getBytes()).toString();
+                        //String personString = name + photoId;
+                        //personId = UUID.nameUUIDFromBytes(personString.getBytes()).toString();
 
-                        //TODO: Put size functionality for mocked bluetooth
                         Course c = new Course(courseId, personId, text, year,quarter,courseSize);
                         if(userCourseText.contains(c.text)){
                             db.coursesDao().insert(c);
@@ -94,70 +100,80 @@ public class FakedMessageListener extends MessageListener {
                     }
                 }
 
-                //set the student profile id
-                Person newPerson = new Person(personId, name, photoId, false);
+                List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
+                peopleInSession.add(personId);
+                Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
+                updatedSession.peopleIDs = peopleInSession;
+                db.sessionsDao().delete(db.sessionsDao().get(sessionID));
+                db.sessionsDao().insert(updatedSession);
 
-                //only add the person when there are common course with user
-                List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
-                if (newPersonCourses.size() != 0){
-                    //calculate the size and recency priorities for this new person
-                    float sizePrio = 0;
-                    int recentPrio = 0;
-                    int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-                    int thisQuarter;
-                    int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
-                    int thisWeek = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
-                    if(thisMonth>9 || (thisMonth==9 && thisWeek>=3)) {
-                        thisQuarter = 1;
-                    } else if (thisMonth<3 || (thisMonth==3 && thisWeek<=3)) {
-                        thisQuarter = 2;
-                    } else if ((thisMonth==3 && thisWeek>=4) || (thisMonth>3 && thisMonth<6) || (thisMonth==6 && thisWeek <=2)) {
-                        thisQuarter = 3;
-                    } else if ((thisMonth==6 && thisWeek >=3) || thisMonth==7) {
-                        thisQuarter = 4;
-                    } else {
-                        thisQuarter = 4;
-                    }
-                    for(int i=0; i<newPersonCourses.size(); i++){
-                        int yearAge = (thisYear - Integer.parseInt(newPersonCourses.get(i).year))*4;
-                        String courseQuarter = newPersonCourses.get(i).quarter;
-                        int courseQ = 0;
-                        if(courseQuarter.equals("FA")){
-                            courseQ = 1;
-                        } else if(courseQuarter.equals("WI")){
-                            courseQ = 2;
-                        } else if(courseQuarter.equals("SP")){
-                            courseQ = 3;
-                        } else if(courseQuarter.equals("SS1") || courseQuarter.equals("SS2") || courseQuarter.equals("SSS")){
-                            courseQ = 4;
+
+                if(!db.personWithCoursesDao().exists(personId)){
+                    //set the student profile id
+                    Person newPerson = new Person(personId, name, photoId, false);
+
+                    //only add the person when there are common course with user
+                    List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
+                    if (newPersonCourses.size() != 0) {
+                        //calculate the size and recency priorities for this new person
+                        float sizePrio = 0;
+                        int recentPrio = 0;
+                        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+                        int thisQuarter;
+                        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+                        int thisWeek = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
+                        if (thisMonth > 9 || (thisMonth == 9 && thisWeek >= 3)) {
+                            thisQuarter = 1;
+                        } else if (thisMonth < 3 || (thisMonth == 3 && thisWeek <= 3)) {
+                            thisQuarter = 2;
+                        } else if ((thisMonth == 3 && thisWeek >= 4) || (thisMonth > 3 && thisMonth < 6) || (thisMonth == 6 && thisWeek <= 2)) {
+                            thisQuarter = 3;
+                        } else if ((thisMonth == 6 && thisWeek >= 3) || thisMonth == 7) {
+                            thisQuarter = 4;
+                        } else {
+                            thisQuarter = 4;
                         }
-                        int courseAge = thisQuarter - courseQ;
-                        int age = yearAge + courseAge;
-                        recentPrio = Integer.max(5 - age, 1);
-                        switch(newPersonCourses.get(i).size){
-                            case "Tiny":
-                                sizePrio += 1;
-                                break;
-                            case "Small":
-                                sizePrio += 0.33;
-                                break;
-                            case "Medium":
-                                sizePrio += 0.18;
-                                break;
-                            case "Large":
-                                sizePrio += 0.10;
-                                break;
-                            case "Huge":
-                                sizePrio += 0.06;
-                                break;
-                            case "Gigantic":
-                                sizePrio += 0.03;
-                                break;
+                        for (int i = 0; i < newPersonCourses.size(); i++) {
+                            int yearAge = (thisYear - Integer.parseInt(newPersonCourses.get(i).year)) * 4;
+                            String courseQuarter = newPersonCourses.get(i).quarter;
+                            int courseQ = 0;
+                            if (courseQuarter.equals("FA")) {
+                                courseQ = 1;
+                            } else if (courseQuarter.equals("WI")) {
+                                courseQ = 2;
+                            } else if (courseQuarter.equals("SP")) {
+                                courseQ = 3;
+                            } else if (courseQuarter.equals("SS1") || courseQuarter.equals("SS2") || courseQuarter.equals("SSS")) {
+                                courseQ = 4;
+                            }
+                            int courseAge = thisQuarter - courseQ;
+                            int age = yearAge + courseAge;
+                            recentPrio = Integer.max(5 - age, 1);
+                            switch (newPersonCourses.get(i).size) {
+                                case "Tiny":
+                                    sizePrio += 1;
+                                    break;
+                                case "Small":
+                                    sizePrio += 0.33;
+                                    break;
+                                case "Medium":
+                                    sizePrio += 0.18;
+                                    break;
+                                case "Large":
+                                    sizePrio += 0.10;
+                                    break;
+                                case "Huge":
+                                    sizePrio += 0.06;
+                                    break;
+                                case "Gigantic":
+                                    sizePrio += 0.03;
+                                    break;
+                            }
                         }
+                        newPerson.sizePriority = sizePrio;
+                        newPerson.recentPriority = recentPrio;
+                        db.personWithCoursesDao().insert(newPerson);
                     }
-                    newPerson.sizePriority = sizePrio;
-                    newPerson.recentPriority = recentPrio;
-                    db.personWithCoursesDao().insert(newPerson);
                 }
                 scanner.close();
 
