@@ -94,7 +94,7 @@ public class FakedMessageListener extends MessageListener {
                         //personId = UUID.nameUUIDFromBytes(personString.getBytes()).toString();
 
                         Course c = new Course(courseId, personId, text, year,quarter,courseSize);
-                        if(userCourseText.contains(c.text)){
+                        if(userCourseText.contains(c.text) && !db.personWithCoursesDao().exists(personId)){
                             db.coursesDao().insert(c);
                         }
                     }

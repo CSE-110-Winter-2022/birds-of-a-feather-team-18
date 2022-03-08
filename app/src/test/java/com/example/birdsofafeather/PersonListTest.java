@@ -3,6 +3,7 @@ package com.example.birdsofafeather;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,6 +20,7 @@ import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
+import com.example.birdsofafeather.model.db.Session;
 import com.squareup.picasso.Picasso;
 
 import org.junit.After;
@@ -27,7 +29,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -81,6 +85,8 @@ public class PersonListTest {
         //Tyler's recentPriority: WI21 & FA21 & SP21 --> age 3 & age 4 & age 2 --> 2+1+3=6
         person4.recentPriority = 6;
 
+        //Adding all of them to the same session
+
         testDB.personWithCoursesDao().insert(person1);
         testDB.personWithCoursesDao().insert(person2);
         testDB.personWithCoursesDao().insert(person3);
@@ -109,10 +115,25 @@ public class PersonListTest {
     @Test
     public void test_sorts() {
         ActivityScenario<PersonListActivity> scenario = ActivityScenario.launch(PersonListActivity.class);
-
+        Context context = ApplicationProvider.getApplicationContext();
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {
+            List<String> peopleInSession = new ArrayList<>();
+            peopleInSession.add("2");
+            peopleInSession.add("3");
+            peopleInSession.add("4");
+            Session newSession = new Session(UUID.randomUUID().toString(), "test");
+            newSession.peopleIDs = peopleInSession;
+            SharedPreferences preferences = context.getSharedPreferences("session",context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("currSession", newSession.sessionId);
+            editor.apply();
+            testDB.sessionsDao().insert(newSession);
+
+            activity.updateAllLists();
+            List<PersonWithCourses> list = activity.classMatesByNumCourses;
+
             Spinner sortOptionSpinnerView = activity.findViewById(R.id.sort_spinner);
             Button sortButton = activity.findViewById(R.id.apply_sort_button);
             sortButton.performClick();
@@ -138,6 +159,8 @@ public class PersonListTest {
             assert(personList.get(0).person.sizePriority > personList.get(1).person.sizePriority);
             assert(personList.get(1).person.sizePriority > personList.get(2).person.sizePriority);
 
+            Button stopButton = activity.findViewById(R.id.stopBtn);
+            stopButton.performClick();
         });
     }
 
