@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
 
         AppDatabase db = AppDatabase.singleton(this);
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("currSession", "none");
+        editor.apply();
         String currSessionID = preferences.getString("currSession", "");
 
         this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
