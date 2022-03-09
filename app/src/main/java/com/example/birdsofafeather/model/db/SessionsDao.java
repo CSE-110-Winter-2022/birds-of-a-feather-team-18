@@ -29,4 +29,7 @@ public interface SessionsDao {
 
     @Delete
     void delete(Session session);
+
+    @Query("UPDATE sessions SET sessionName =:newSessionName WHERE id=:id")
+    void updateSessionName(String newSessionName, String id);
 }

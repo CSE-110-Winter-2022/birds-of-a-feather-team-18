@@ -47,6 +47,12 @@
             android:name=".FavoriteListActivity"
             android:exported="false" />
         <activity
+            android:name=".SessionListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrevPersonListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -1,11 +1,14 @@
 package com.example.birdsofafeather;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
@@ -42,6 +45,8 @@ public class PersonListActivity extends AppCompatActivity {
     private Session currSession;
 
     private String newSortText;
+
+    private boolean serviceRunning;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -216,12 +221,15 @@ public class PersonListActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(PersonListActivity.this, SearchService.class);
                     startService(intent);
+                    serviceRunning = true;
                     Log.d(TAG, "Start Clicked, service start");
                     dialog.cancel();
 
                 })
                 .setNegativeButton("Previous", (dialog,id) -> {
                     //implement choosing previous session
+                    Intent intent = new Intent(PersonListActivity.this, SessionListActivity.class);
+                    startActivity(intent);
                 });
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
@@ -235,6 +243,9 @@ public class PersonListActivity extends AppCompatActivity {
 
     //bind the button to stop service
     public void onStopClicked(View view) {
+        if(serviceRunning) {
+            showNameSessionDialog(this);
+        }
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("currSession", "none");
@@ -242,13 +253,35 @@ public class PersonListActivity extends AppCompatActivity {
 
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);
+        serviceRunning = false;
         Log.d(TAG, "Stop Clicked, service stop");
     }
 
-    // Go to Favorite List and send current spinner value
-    public void onFavoriteClicked(View view) {
-        Intent intent = new Intent(this, FavoriteListActivity.class);
-        intent.putExtra("currSortText", newSortText);
-        startActivity(intent);
+    public void showNameSessionDialog(Context c) {
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        final EditText taskEditText = new EditText(c);
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(c)
+                .setTitle("Name Session")
+                .setView(taskEditText)
+                .setPositiveButton("Name", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = String.valueOf(taskEditText.getText());
+                        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
+                        db.sessionsDao().updateSessionName(name, s.sessionId);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String name = String.valueOf(taskEditText.getText());
+                        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
+                        db.sessionsDao().updateSessionName(s.sessionName, s.sessionId);
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 }

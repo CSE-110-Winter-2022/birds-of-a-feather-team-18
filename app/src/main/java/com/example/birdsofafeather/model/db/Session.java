@@ -29,4 +29,8 @@ public class Session {
         this.sessionName = sessionName;
         this.peopleIDs = new ArrayList<String>();
     }
+
+    public void setSessionName(String newSessionName){
+        this.sessionName = newSessionName;
+    }
 }

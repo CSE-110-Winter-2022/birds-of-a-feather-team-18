@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
+import com.example.birdsofafeather.model.db.Session;
 
 public class NameLoginActivity extends AppCompatActivity {
     protected AppDatabase db;
@@ -21,6 +22,11 @@ public class NameLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle(R.string.app_title);
         db = AppDatabase.singleton(this);
+
+        if(db.sessionsDao().count() == 0){
+            Session favoritesSession = new Session("favoritesSession", "Favorites");
+            db.sessionsDao().insert(favoritesSession);
+        }
     }
 
     public void onConfirmClicked(View view){
