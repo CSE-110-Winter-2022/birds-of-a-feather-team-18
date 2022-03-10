@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,9 @@ import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,6 +51,9 @@ public class PersonListActivity extends AppCompatActivity {
 
     private String newSortText;
 
+    private Message mActiveMessage;
+    private MessageListener messageListener;
+
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -61,6 +68,20 @@ public class PersonListActivity extends AppCompatActivity {
 
         //send the info to the viewAdapter
         updateView(classMatesByNumCourses);
+
+        messageListener = new MessageListener() {
+            @Override
+            public void onFound(Message message) {
+                Log.d(TAG, "Found message: " + new String(message.getContent()));
+            }
+
+            @Override
+            public void onLost(Message message) {
+                Log.d(TAG, "Lost sight of message: " + new String(message.getContent()));
+            }
+        };
+
+        mActiveMessage = new Message("Hello World".getBytes());
     }
 
     public void onApplySortClicked(View view) {
@@ -232,6 +253,8 @@ public class PersonListActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
 
+        publish("Here is the profile should be publish");
+        subscribe();
         /*
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         startService(intent);
@@ -272,6 +295,10 @@ public class PersonListActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+
+        //unpublish and unsubscribe the message
+        unpublish();
+        unsubscribe();
     }
 
     //check if search service is on or off
@@ -284,5 +311,29 @@ public class PersonListActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void publish(String message) {
+        Log.i(TAG, "Publishing message: " + message);
+        mActiveMessage = new Message(message.getBytes());
+        Nearby.getMessagesClient(this).publish(mActiveMessage);
+    }
+
+    private void unpublish() {
+        Log.i(TAG, "Unpublishing.");
+        if (mActiveMessage != null) {
+            Nearby.getMessagesClient(this).unpublish(mActiveMessage);
+            mActiveMessage = null;
+        }
+    }
+
+    private void subscribe() {
+        Log.i(TAG, "Subscribing.");
+        Nearby.getMessagesClient(this).subscribe(messageListener);
+    }
+
+    private void unsubscribe() {
+        Log.i(TAG, "Unsubscribing.");
+        Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
 }

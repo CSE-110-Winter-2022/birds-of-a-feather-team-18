@@ -176,7 +176,6 @@ public class FakedMessageListener extends MessageListener {
                     }
                 }
                 scanner.close();
-
                 //send back the message that the profile is set up
                 this.messageListener.onLost(message);
 

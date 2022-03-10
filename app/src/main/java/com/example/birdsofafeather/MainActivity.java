@@ -25,6 +25,8 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.nio.charset.StandardCharsets;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Bofs-Nearby";
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase db;
     private final int backgroundCode = 1150;
     private final int coarseCode = 72621;
+    private Message message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         String currSessionID = preferences.getString("currSession", "");
 
         this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
+
+        message = new Message("Hello".getBytes());
     }
 
     //check if search service is on or off
@@ -227,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+        Nearby.getMessagesClient(this).publish(message);
         Nearby.getMessagesClient(this).subscribe(messageListener);
     }
 
@@ -234,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Nearby.getMessagesClient(this).unpublish(message);
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
 }

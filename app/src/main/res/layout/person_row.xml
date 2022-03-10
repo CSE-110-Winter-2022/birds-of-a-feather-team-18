@@ -45,4 +45,12 @@
         android:layout_marginLeft="200dp"
         android:background="@android:color/transparent"
         android:button="@android:drawable/btn_star" />
+
+    <CheckBox
+        android:id="@+id/list_wave"
+        android:layout_width="19dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="6sp"
+        android:button="@android:drawable/checkbox_on_background" />
 </FrameLayout>
