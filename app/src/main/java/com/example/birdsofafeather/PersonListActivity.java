@@ -300,7 +300,7 @@ public class PersonListActivity extends AppCompatActivity {
         }
 
 
-        publish("Here is the profile should be publish");
+        publish(selfCSV);
         subscribe();
         /*
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);

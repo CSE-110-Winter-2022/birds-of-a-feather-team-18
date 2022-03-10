@@ -3,17 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.478" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/drawable/ic_launcher_background.xml" value="0.478" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_favorite_list.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_login.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_mock.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_detail.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_list.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_photo_url.xml" value="0.4365942028985507" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_course.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_detail.xml" value="0.325" />
-        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_list.xml" value="0.325" />
-        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_session_list.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/courses_row.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/55369/StudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/person_row.xml" value="0.325" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_person_list.xml" value="0.4365942028985507" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/courses_row.xml" value="0.44972826086956524" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/person_row.xml" value="0.44972826086956524" />
         <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_prev_course.xml" value="0.24375" />
         <entry key="..\:/Users/gavin/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.14427083333333332" />
         <entry key="..\:/Users/trewr/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.24954710144927536" />

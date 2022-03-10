@@ -56,17 +56,34 @@
         app:layout_constraintStart_toEndOf="@+id/image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
+    <ImageButton
         android:id="@+id/detail_wave"
-        android:layout_width="43dp"
-        android:layout_height="42dp"
+        android:layout_width="42dp"
+        android:layout_height="47dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="22dp"
-        android:button="@android:drawable/ic_menu_call"
-        android:onClick="onDetailWaveClicked"
         android:background="@android:color/transparent"
+        android:onClick="onDetailWaveClicked"
+        android:src="@drawable/wave_hand_hollow"
         app:layout_constraintEnd_toStartOf="@+id/image_view"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/detail_wave_send"
+        android:layout_width="42dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="22dp"
+        android:background="@android:color/transparent"
+        android:onClick="onDetailWaveClicked"
+        android:src="@drawable/wave_hand_solid"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/image_view"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,12 +53,16 @@ public class PersonDetailActivity extends AppCompatActivity {
         favStar.setChecked(favorite);
 
         //Check if send wave to the person
-        CheckBox waveSend = findViewById(R.id.detail_wave);
+        ImageButton waveSend = findViewById(R.id.detail_wave);
+        ImageButton waveHasSend = findViewById(R.id.detail_wave_send);
         boolean waving = person.getWavingToThem();
         if (waving) {
+            waveHasSend.setVisibility(View.VISIBLE);
             waveSend.setEnabled(false);
+            waveSend.setVisibility(View.INVISIBLE);
         }
-        waveSend.setChecked(waving);
+        waveSend.setActivated(waving);
+        waveHasSend.setActivated(waving);
 
         // Set up recyclerview
         coursesRecyclerView = findViewById(R.id.courses_view);
@@ -79,8 +84,14 @@ public class PersonDetailActivity extends AppCompatActivity {
         db.personWithCoursesDao().updateFavorite(isFavorite, person.getId());
     }
 
+    //once the button is clicked, we will send a waving message
     public void onDetailWaveClicked(View view) {
-        boolean isWaveSend = ((CheckBox)view).isChecked();
-        db.personWithCoursesDao().updateWavingToThem(isWaveSend, person.getId());
+
+        ImageButton waveHasSend = findViewById(R.id.detail_wave_send);
+        ImageButton waveSend = findViewById(R.id.detail_wave);
+
+        waveSend.setVisibility(View.INVISIBLE);
+        waveHasSend.setVisibility(View.VISIBLE);
+        db.personWithCoursesDao().updateWavingToThem(true, person.getId());
     }
 }
