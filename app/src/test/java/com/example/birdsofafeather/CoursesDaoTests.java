@@ -41,12 +41,12 @@ public class CoursesDaoTests {
     //delete, and deleteAll methods in CoursesDao
     @Test
     public void coursesDaoTest() {
-        Person person1 = new Person(1, "Bob", DEFAULT_PHOTO, false);
-        Person person2 = new Person(2, "Joe", DEFAULT_PHOTO, false);
-        Course course1 = new Course(1, 1, "course1", "22", "SP", "Tiny");
-        Course course2 = new Course(2, 1, "course2", "22", "SP", "Small");
-        Course course3 = new Course(3, 2, "course3", "", "", "");
-        Course course4 = new Course(4, 2, "course4", "19", "FA", "Large");
+        Person person1 = new Person("1", "Bob", DEFAULT_PHOTO, false);
+        Person person2 = new Person("2", "Joe", DEFAULT_PHOTO, false);
+        Course course1 = new Course(1, "1", "course1", "22", "SP", "Tiny");
+        Course course2 = new Course(2, "1", "course2", "22", "SP", "Small");
+        Course course3 = new Course(3, "2", "course3", "", "", "");
+        Course course4 = new Course(4, "2", "course4", "19", "FA", "Large");
 
         testDB.personWithCoursesDao().insert(person1);
         testDB.personWithCoursesDao().insert(person2);
@@ -55,20 +55,20 @@ public class CoursesDaoTests {
         testDB.coursesDao().insert(course3);
         testDB.coursesDao().insert(course4);
 
-        List<Course> actualCoursesList = testDB.coursesDao().getForPerson(1);
+        List<Course> actualCoursesList = testDB.coursesDao().getForPerson("1");
         String actualCourses = "";
         for(int i = 0; i < actualCoursesList.size(); i++) {
             actualCourses += actualCoursesList.get(i).text;
         }
 
         assertEquals("course1course2", actualCourses);
-        assertEquals("course1", testDB.coursesDao().get(1).text);
-        assertEquals("Tiny", testDB.coursesDao().get(1).size);
-        assertEquals("SP", testDB.coursesDao().get(2).quarter);
-        assertEquals("19", testDB.coursesDao().get(4).year);
+        assertEquals("course1", testDB.coursesDao().get("1").text);
+        assertEquals("Tiny", testDB.coursesDao().get("1").size);
+        assertEquals("SP", testDB.coursesDao().get("2").quarter);
+        assertEquals("19", testDB.coursesDao().get("4").year);
         assertEquals(4, testDB.coursesDao().count());
         assertEquals(4, testDB.coursesDao().maxId());
-        testDB.coursesDao().deleteExceptUser(1);
+        testDB.coursesDao().deleteExceptUser("1");
         assertEquals(2, testDB.coursesDao().count());
         testDB.coursesDao().delete(course2);
         assertEquals(1, testDB.coursesDao().count());

@@ -12,7 +12,7 @@ public class Course {
     public int courseId;
 
     @ColumnInfo(name = "person_id")
-    public int personId;
+    public String personId;
 
     @ColumnInfo(name = "text")
     public String text;
@@ -26,7 +26,7 @@ public class Course {
     @ColumnInfo(name = "size")
     public String size;
 
-    public Course(int courseId, int personId, String text, String year, String quarter, String size){
+    public Course(int courseId, String personId, String text, String year, String quarter, String size){
         this.courseId = courseId;
         this.personId = personId;
         this.text = text;

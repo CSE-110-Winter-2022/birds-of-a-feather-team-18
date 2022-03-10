@@ -12,10 +12,10 @@ import java.util.List;
 public interface CoursesDao {
     @Transaction
     @Query("SELECT * FROM courses where person_id=:personId")
-    List<Course> getForPerson(int personId);
+    List<Course> getForPerson(String personId);
 
     @Query("SELECT * FROM courses where id=:id")
-    Course get(int id);
+    Course get(String id);
 
     @Query("SELECT COUNT(*) from courses")
     int count();
@@ -27,7 +27,7 @@ public interface CoursesDao {
     void deleteAll();
 
     @Query("DELETE FROM courses WHERE person_id !=:id")
-    void deleteExceptUser(int id);
+    void deleteExceptUser(String id);
 
     @Insert
     void insert(Course course);

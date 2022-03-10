@@ -27,7 +27,7 @@ import java.util.List;
 
 public class PrevCourseActivity extends AppCompatActivity {
     private AppDatabase db;
-    private int personId;
+    private String personId;
     private int currCourseCount;
 
     private RecyclerView coursesRecyclerView;
@@ -42,7 +42,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         db = AppDatabase.singleton(getApplicationContext());
 
         // get user ID (always 1)
-        personId = 1;
+        personId = "1";
         List<Course> courses = db.coursesDao().getForPerson(personId);
 
         // Quarter Drop-down functionality

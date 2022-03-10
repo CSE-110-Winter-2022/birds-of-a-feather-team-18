@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Person;
+import com.example.birdsofafeather.model.db.Session;
 
 public class NameLoginActivity extends AppCompatActivity {
     protected AppDatabase db;
@@ -21,6 +22,11 @@ public class NameLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle(R.string.app_title);
         db = AppDatabase.singleton(this);
+
+        if(db.sessionsDao().count() == 0){
+            Session favoritesSession = new Session("favoritesSession", "Favorites");
+            db.sessionsDao().insert(favoritesSession);
+        }
     }
 
     public void onConfirmClicked(View view){
@@ -32,7 +38,7 @@ public class NameLoginActivity extends AppCompatActivity {
             alertDialog = Utilities.showAlert(this, "No Name Entered");
         } else {
             //create a person and insert it into the database with an id of 1 and with the default photo
-            Person newSelf = new Person( 1, selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false);
+            Person newSelf = new Person( "1", selfName, "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg", false);
             db.personWithCoursesDao().insert(newSelf);
 
             //start PhotoURLActivity
