@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
+import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
@@ -253,8 +254,38 @@ public class PersonListActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
 
-        String selfString = db.personWithCoursesDao().get("1").getName() + db.personWithCoursesDao().get("1").getPhoto();
+        String selfName = db.personWithCoursesDao().get("1").getName();
+        String selfPhotoURL = db.personWithCoursesDao().get("1").getPhoto();
+        String selfString = selfName + selfPhotoURL;
         String selfId = UUID.nameUUIDFromBytes(selfString.getBytes()).toString();
+        List<Course> selfCourses = db.coursesDao().getForPerson("1");
+        String allCourses = "";
+        for(int i = 0; i < selfCourses.size(); i++) {
+            Course currCourse = selfCourses.get(i);
+            String[] textInfo = currCourse.text.split(" ");
+            allCourses += currCourse.year + "," + currCourse.quarter + "," + textInfo[1] + "," + textInfo[2] + "," + currCourse.size;
+            if(i != selfCourses.size() - 1) {
+                allCourses += "\n";
+            }
+        }
+        List<PersonWithCourses> peopleWavingTo = db.personWithCoursesDao().getAllWavingToThem();
+        String allWaves = "";
+        for(int i = 0; i < peopleWavingTo.size(); i++) {
+            PersonWithCourses currPerson = peopleWavingTo.get(i);
+            allWaves += currPerson.getId() + ",wave" + ",,,";
+            if(i != peopleWavingTo.size() - 1) {
+                allWaves += "\n";
+            }
+        }
+        String selfCSV = "";
+
+        if(peopleWavingTo.isEmpty()) {
+            selfCSV = selfId + ",,,,\n" + selfName + ",,,,\n" + selfPhotoURL + ",,,,\n" + allCourses;
+        }
+        else {
+            selfCSV = selfId + ",,,,\n" + selfName + ",,,,\n" + selfPhotoURL + ",,,,\n" + allCourses + "\n" + allWaves;
+        }
+
 
         publish("Here is the profile should be publish");
         subscribe();

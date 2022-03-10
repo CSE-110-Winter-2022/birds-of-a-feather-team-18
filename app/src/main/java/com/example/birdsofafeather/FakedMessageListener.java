@@ -101,11 +101,13 @@ public class FakedMessageListener extends MessageListener {
                 }
 
                 List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
-                peopleInSession.add(personId);
-                Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
-                updatedSession.peopleIDs = peopleInSession;
-                db.sessionsDao().delete(db.sessionsDao().get(sessionID));
-                db.sessionsDao().insert(updatedSession);
+                if(!peopleInSession.contains(personId)) {
+                    peopleInSession.add(personId);
+                    Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
+                    updatedSession.peopleIDs = peopleInSession;
+                    db.sessionsDao().delete(db.sessionsDao().get(sessionID));
+                    db.sessionsDao().insert(updatedSession);
+                }
 
 
                 if(!db.personWithCoursesDao().exists(personId)){

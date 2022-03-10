@@ -17,6 +17,9 @@ public interface PersonWithCoursesDao {
     @Query("SELECT * FROM persons WHERE id=:id")
     PersonWithCourses get(String id);
 
+    @Query("SELECT * FROM persons WHERE wavingToThem=1")
+    List<PersonWithCourses> getAllWavingToThem();
+
     @Query("SELECT EXISTS (SELECT 1 FROM persons where id=:id)")
     Boolean exists(String id);
 
