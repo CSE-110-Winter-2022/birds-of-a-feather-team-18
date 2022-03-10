@@ -40,11 +40,12 @@ public class SessionsViewAdapter extends RecyclerView.Adapter<SessionsViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
+        View view;
+        view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.session_row, parent, false);
-
         return new ViewHolder(view, this::showRenameSessionDialog);
+
     }
 
 
@@ -88,13 +89,12 @@ public class SessionsViewAdapter extends RecyclerView.Adapter<SessionsViewAdapte
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView sessionTextView;
-        private final FloatingActionButton renameFab;
         private Session session;
 
         ViewHolder(View itemView, BiConsumer<Context, Integer> showRenameSessionDialog) {
             super(itemView);
             this.sessionTextView = itemView.findViewById(R.id.session_row_name);
-            this.renameFab = itemView.findViewById(R.id.rename_fab);
+            FloatingActionButton renameFab = itemView.findViewById(R.id.rename_fab);
             itemView.setOnClickListener(this);
 
             renameFab.setOnClickListener((view) -> {

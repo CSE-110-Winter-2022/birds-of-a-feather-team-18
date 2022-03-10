@@ -1,5 +1,6 @@
 package com.example.birdsofafeather;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,8 +46,6 @@ public class PersonListActivity extends AppCompatActivity {
     private Session currSession;
 
     private String newSortText;
-
-    private boolean serviceRunning;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -221,7 +220,6 @@ public class PersonListActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(PersonListActivity.this, SearchService.class);
                     startService(intent);
-                    serviceRunning = true;
                     Log.d(TAG, "Start Clicked, service start");
                     dialog.cancel();
 
@@ -243,7 +241,7 @@ public class PersonListActivity extends AppCompatActivity {
 
     //bind the button to stop service
     public void onStopClicked(View view) {
-        if(serviceRunning) {
+        if(isMyServiceRunning(SearchService.class)) {
             showNameSessionDialog(this);
         }
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
@@ -253,7 +251,6 @@ public class PersonListActivity extends AppCompatActivity {
 
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);
-        serviceRunning = false;
         Log.d(TAG, "Stop Clicked, service stop");
     }
 
@@ -272,16 +269,20 @@ public class PersonListActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String name = String.valueOf(taskEditText.getText());
-                        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
-                        db.sessionsDao().updateSessionName(s.sessionName, s.sessionId);
-                        dialog.cancel();
-                    }
-                })
+                .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+    }
+
+    //check if search service is on or off
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            //if service is on, return true
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

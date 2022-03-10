@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/layout/activity_prev_session_person_list.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/activity_session_list.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/courses_row.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/favorites_session_row.xml" value="0.284375" />
         <entry key="app/src/main/res/layout/notes_row.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/person_row.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/session_row.xml" value="0.22760416666666666" />
