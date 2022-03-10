@@ -253,6 +253,9 @@ public class PersonListActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
 
+        String selfString = db.personWithCoursesDao().get("1").getName() + db.personWithCoursesDao().get("1").getPhoto();
+        String selfId = UUID.nameUUIDFromBytes(selfString.getBytes()).toString();
+
         publish("Here is the profile should be publish");
         subscribe();
         /*

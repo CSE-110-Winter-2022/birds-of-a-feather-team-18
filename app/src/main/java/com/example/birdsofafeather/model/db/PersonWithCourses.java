@@ -39,4 +39,10 @@ public class PersonWithCourses implements IPerson{
     public boolean getFavorite(){
         return this.person.favorite;
     }
+
+    @Override
+    public boolean getWavingToThem() {return this.person.wavingToThem; }
+
+    @Override
+    public boolean getWavingToUs() {return this.person.wavingToUs; }
 }

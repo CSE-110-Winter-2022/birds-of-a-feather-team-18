@@ -45,4 +45,10 @@ public interface PersonWithCoursesDao {
 
     @Query("UPDATE persons SET favorite = :isFavorite WHERE id =:id")
     void updateFavorite(boolean isFavorite, String id);
+
+    @Query("UPDATE persons SET wavingToThem = :isWavingToThem WHERE id =:id")
+    void updateWavingToThem(boolean isWavingToThem, String id);
+
+    @Query("UPDATE persons SET wavingToUs = :isWavingToUs WHERE id =:id")
+    void updateWavingToUs(boolean isWavingToUs, String id);
 }
