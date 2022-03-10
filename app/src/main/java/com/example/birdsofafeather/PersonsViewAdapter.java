@@ -65,6 +65,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         private final ImageView imageView;
         private final TextView commonCourseView;
         private final CheckBox listFavoriteStar;
+        private final CheckBox listWaveReceive;
         private IPerson person;
 
         ViewHolder(View itemView, AppDatabase db) {
@@ -75,6 +76,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             itemView.setOnClickListener(this);
             this.commonCourseView = itemView.findViewById(R.id.common_course_num);
             this.listFavoriteStar = itemView.findViewById(R.id.list_star);
+            this.listWaveReceive = itemView.findViewById(R.id.list_wave);
 
             this.listFavoriteStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -100,6 +102,13 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             Integer num = (Integer)person.getCourses().size();
             this.commonCourseView.setText(num.toString());
             this.listFavoriteStar.setChecked(person.getFavorite());
+            //If there's a waving, set image visible
+            //TODO: Set the getFavorite to getWaveReceive
+            if (person.getWavingToUs()) {
+                this.listWaveReceive.setVisibility(View.VISIBLE);
+            } else {
+                this.listWaveReceive.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override

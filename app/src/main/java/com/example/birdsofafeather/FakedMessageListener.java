@@ -44,6 +44,10 @@ public class FakedMessageListener extends MessageListener {
                 //String line = "";
                 String csvSplitBy = ",";
 
+                //get selfID
+                String selfString = db.personWithCoursesDao().get("1").getName() + db.personWithCoursesDao().get("1").getPhoto();
+                String selfId = UUID.nameUUIDFromBytes(selfString.getBytes()).toString();
+
                 //count means the line of the profile, 0 means uuid, 1 means name, 2 means Photo Url
                 int count = 0;
                 String name = null;
@@ -54,6 +58,7 @@ public class FakedMessageListener extends MessageListener {
                 String courseNum;
                 String text;
                 String courseSize;
+                Boolean isWave = false;
                 //get the user courses from db
                 List<Course> userCourses = db.coursesDao().getForPerson("1");
                 //create a list string to store the courses
@@ -67,6 +72,7 @@ public class FakedMessageListener extends MessageListener {
                 //start use scanner to scan each line
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
+                    String firstValue = array[0];
                     if(count == 0) {
                         personId = array[0];
                         count++;
@@ -80,7 +86,13 @@ public class FakedMessageListener extends MessageListener {
                         photoId = array[0];
                         count++;
                     //set profile courses
-                    } else {
+
+                    }                    //TODO: Here should put the real ourself UUID
+                    else if (array[0].equals(selfId) || array[0].equals("4b295157-ba31-4f9f-8401-5d85d9cf659a")) {
+                        //TODO: set the waving to ourself to true
+                        isWave = true;
+                    }
+                    else if (array.length == 5){
                         year = array[0];
                         quarter = array[1];
                         courseType = array[2];
@@ -98,6 +110,8 @@ public class FakedMessageListener extends MessageListener {
                             db.coursesDao().insert(c);
                         }
                     }
+                    //else to check if people are sending wave or not
+
                 }
 
                 List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
@@ -109,11 +123,12 @@ public class FakedMessageListener extends MessageListener {
                     db.sessionsDao().insert(updatedSession);
                 }
 
-
+                boolean s = db.personWithCoursesDao().exists(personId);
                 if(!db.personWithCoursesDao().exists(personId)){
                     //set the student profile id
+                    //TODO: implement priority of waving send
                     Person newPerson = new Person(personId, name, photoId, false);
-
+                    newPerson.wavingToUs = isWave;
                     //only add the person when there are common course with user
                     List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
                     if (newPersonCourses.size() != 0) {

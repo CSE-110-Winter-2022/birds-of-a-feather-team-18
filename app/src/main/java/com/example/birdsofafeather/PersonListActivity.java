@@ -129,35 +129,22 @@ public class PersonListActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         Session s = db.sessionsDao().get(preferences.getString("currSession",""));
 
+        updateAllLists();
+
         switch (newSortText){
             case "Most Shared Classes":
                 // refresh recyclerview with updated database
-                updateListAndView(classMatesByNumCourses);
+                updateView(classMatesByNumCourses);
                 break;
             case "Most Recent Classes":
                 // refresh recyclerview with updated database
-                updateListAndView(classMatesByRecentCourses);
+                updateView(classMatesByRecentCourses);
                 break;
             case "Smallest Classes":
                 // refresh recyclerview with updated database
-                updateListAndView(classMatesByCourseSize);
+                updateView(classMatesByCourseSize);
                 break;
         }
-    }
-
-    public void updateListAndView(List<PersonWithCourses> sortedList){
-        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
-        currSession = db.sessionsDao().get(preferences.getString("currSession",""));
-        sortedList.clear();
-        if(currSession!=null) {
-            List<String> ids = currSession.peopleIDs;
-            for (int i = 0; i < ids.size(); i++) {
-                sortedList.add(db.personWithCoursesDao().get(ids.get(i)));
-            }
-        }
-
-        //send the info to the viewAdapter
-        updateView(sortedList);
     }
 
     public void updateView(List<PersonWithCourses> sortedList) {
@@ -199,26 +186,52 @@ public class PersonListActivity extends AppCompatActivity {
         classMatesByNumCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                return t2.getCourses().size() - t1.getCourses().size();
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    return t2.getCourses().size() - t1.getCourses().size();
+                }
+                else if (t1.getWavingToUs()){
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
             }
         });
 
         classMatesByCourseSize.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                if(t2.person.sizePriority>t1.person.sizePriority){
-                    return 1;
-                } else if(t2.person.sizePriority<t1.person.sizePriority){
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    if(t2.person.sizePriority>t1.person.sizePriority){
+                        return 1;
+                    } else if(t2.person.sizePriority<t1.person.sizePriority){
+                        return -1;
+                    }
+                    return 0;
+                }
+                else if (t1.getWavingToUs()){
                     return -1;
                 }
-                return 0;
+                else {
+                    return 1;
+                }
             }
+
         });
 
         classMatesByRecentCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                return t2.person.recentPriority - t1.person.recentPriority;
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    return t2.person.recentPriority - t1.person.recentPriority;
+                }
+                else if (t1.getWavingToUs()){
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+
             }
         });
     }

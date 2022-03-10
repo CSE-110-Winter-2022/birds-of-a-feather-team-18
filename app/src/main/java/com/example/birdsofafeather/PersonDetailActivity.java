@@ -51,6 +51,14 @@ public class PersonDetailActivity extends AppCompatActivity {
         boolean favorite = person.getFavorite();
         favStar.setChecked(favorite);
 
+        //Check if send wave to the person
+        CheckBox waveSend = findViewById(R.id.detail_wave);
+        boolean waving = person.getWavingToThem();
+        if (waving) {
+            waveSend.setEnabled(false);
+        }
+        waveSend.setChecked(waving);
+
         // Set up recyclerview
         coursesRecyclerView = findViewById(R.id.courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);
@@ -69,5 +77,10 @@ public class PersonDetailActivity extends AppCompatActivity {
         boolean isFavorite = ((CheckBox)view).isChecked();
 
         db.personWithCoursesDao().updateFavorite(isFavorite, person.getId());
+    }
+
+    public void onDetailWaveClicked(View view) {
+        boolean isWaveSend = ((CheckBox)view).isChecked();
+        db.personWithCoursesDao().updateWavingToThem(isWaveSend, person.getId());
     }
 }

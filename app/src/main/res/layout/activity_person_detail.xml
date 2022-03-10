@@ -56,5 +56,19 @@
         app:layout_constraintStart_toEndOf="@+id/image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/detail_wave"
+        android:layout_width="43dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="22dp"
+        android:button="@android:drawable/ic_menu_call"
+        android:onClick="onDetailWaveClicked"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toStartOf="@+id/image_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

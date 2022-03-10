@@ -48,9 +48,9 @@
 
     <CheckBox
         android:id="@+id/list_wave"
-        android:layout_width="19dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="350dp"
+        android:layout_marginLeft="345dp"
         android:layout_marginTop="6sp"
-        android:button="@android:drawable/checkbox_on_background" />
+        android:button="@android:drawable/ic_dialog_email" />
 </FrameLayout>
