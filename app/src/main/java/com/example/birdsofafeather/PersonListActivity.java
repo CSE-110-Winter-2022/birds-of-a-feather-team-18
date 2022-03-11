@@ -141,6 +141,11 @@ public class PersonListActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         currSession = db.sessionsDao().get(preferences.getString("currSession",""));
 
+        updateAllListsAndCurrView();
+    }
+
+    public void updateAllListsAndCurrView() {
+
         updateAllLists();
 
         switch (newSortText){
@@ -236,37 +241,7 @@ public class PersonListActivity extends AppCompatActivity {
         });
     }
 
-    public void onStartClicked(View view) {
-
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-
-        alertBuilder.setTitle("Starting Session")
-                .setMessage("Resume a previous session or start a new one?")
-                .setCancelable(true)
-                .setPositiveButton("New", (dialog,id) -> {
-                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mmaa");
-                    String dateString = dateFormat.format(new Date()).toString();
-                    Session newSession = new Session(UUID.randomUUID().toString(), dateString);
-                    SharedPreferences preferences = getSharedPreferences("session",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("currSession", newSession.sessionId);
-                    editor.apply();
-                    db.sessionsDao().insert(newSession);
-
-                    Intent intent = new Intent(PersonListActivity.this, SearchService.class);
-                    startService(intent);
-                    Log.d(TAG, "Start Clicked, service start");
-                    dialog.cancel();
-
-                })
-                .setNegativeButton("Previous", (dialog,id) -> {
-                    //implement choosing previous session
-                    Intent intent = new Intent(PersonListActivity.this, SessionListActivity.class);
-                    startActivity(intent);
-                });
-        AlertDialog alertDialog = alertBuilder.create();
-        alertDialog.show();
-
+    public String createCSV() {
         String selfName = db.personWithCoursesDao().get("1").getName();
         String selfPhotoURL = db.personWithCoursesDao().get("1").getPhoto();
         String selfString = selfName + selfPhotoURL;
@@ -299,8 +274,41 @@ public class PersonListActivity extends AppCompatActivity {
             selfCSV = selfId + ",,,,\n" + selfName + ",,,,\n" + selfPhotoURL + ",,,,\n" + allCourses + "\n" + allWaves;
         }
 
+        return selfCSV;
+    }
 
-        publish(selfCSV);
+    public void onStartClicked(View view) {
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        alertBuilder.setTitle("Starting Session")
+                .setMessage("Resume a previous session or start a new one?")
+                .setCancelable(true)
+                .setPositiveButton("New", (dialog,id) -> {
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mmaa");
+                    String dateString = dateFormat.format(new Date()).toString();
+                    Session newSession = new Session(UUID.randomUUID().toString(), dateString);
+                    SharedPreferences preferences = getSharedPreferences("session",MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("currSession", newSession.sessionId);
+                    editor.apply();
+                    db.sessionsDao().insert(newSession);
+
+                    Intent intent = new Intent(PersonListActivity.this, SearchService.class);
+                    startService(intent);
+                    Log.d(TAG, "Start Clicked, service start");
+                    dialog.cancel();
+
+                })
+                .setNegativeButton("Previous", (dialog,id) -> {
+                    //implement choosing previous session
+                    Intent intent = new Intent(PersonListActivity.this, SessionListActivity.class);
+                    startActivity(intent);
+                });
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+
+        publish(createCSV());
         subscribe();
         /*
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
@@ -318,6 +326,8 @@ public class PersonListActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("currSession", "none");
         editor.apply();
+
+        updateAllListsAndCurrView();
 
         Intent intent = new Intent(PersonListActivity.this, SearchService.class);
         stopService(intent);
