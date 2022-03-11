@@ -58,8 +58,6 @@ public class SessionListActivity extends AppCompatActivity {
 
     }
 
-
-    // Go to Favorite List and send current spinner value
     public void onFinishClicked(View view) {
         finish();
     }
