@@ -110,17 +110,6 @@ public class FakedMessageListener extends MessageListener {
                             db.coursesDao().insert(c);
                         }
                     }
-                    //else to check if people are sending wave or not
-
-                }
-
-                List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
-                if(!peopleInSession.contains(personId)) {
-                    peopleInSession.add(personId);
-                    Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
-                    updatedSession.peopleIDs = peopleInSession;
-                    db.sessionsDao().delete(db.sessionsDao().get(sessionID));
-                    db.sessionsDao().insert(updatedSession);
                 }
 
                 boolean s = db.personWithCoursesDao().exists(personId);
@@ -190,6 +179,15 @@ public class FakedMessageListener extends MessageListener {
                         newPerson.sizePriority = sizePrio;
                         newPerson.recentPriority = recentPrio;
                         db.personWithCoursesDao().insert(newPerson);
+
+                        List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
+                        if(!peopleInSession.contains(personId)) {
+                            peopleInSession.add(personId);
+                            Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
+                            updatedSession.peopleIDs = peopleInSession;
+                            db.sessionsDao().delete(db.sessionsDao().get(sessionID));
+                            db.sessionsDao().insert(updatedSession);
+                        }
                     }
                 }
                 scanner.close();
