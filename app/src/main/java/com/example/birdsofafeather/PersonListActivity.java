@@ -319,10 +319,11 @@ public class PersonListActivity extends AppCompatActivity {
 
     //bind the button to stop service
     public void onStopClicked(View view) {
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
         if(isMyServiceRunning(SearchService.class)) {
             showNameSessionDialog(this);
         }
-        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("currSession", "none");
         editor.apply();
@@ -336,6 +337,7 @@ public class PersonListActivity extends AppCompatActivity {
 
     public void showNameSessionDialog(Context c) {
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
         final EditText taskEditText = new EditText(c);
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(c)
                 .setTitle("Name Session")
@@ -344,7 +346,7 @@ public class PersonListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = String.valueOf(taskEditText.getText());
-                        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
+                        //Session s = db.sessionsDao().get(preferences.getString("currSession",""));
                         db.sessionsDao().updateSessionName(name, s.sessionId);
                         dialog.cancel();
                     }
