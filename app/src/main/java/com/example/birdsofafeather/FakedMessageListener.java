@@ -76,6 +76,7 @@ public class FakedMessageListener extends MessageListener {
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
                     String firstValue = array[0];
+                    //set UUID
                     if(count == 0) {
                         personId = array[0];
                         count++;
@@ -90,15 +91,14 @@ public class FakedMessageListener extends MessageListener {
                         count++;
                     //set profile courses
 
-                    }                    //TODO: Here should put the real ourself UUID
+                    }
                     else if (array[0].equals(selfId) || array[0].equals("4b295157-ba31-4f9f-8401-5d85d9cf659a")) {
-                        //TODO: set the waving to ourself to true
                         isWave = true;
-
                         if(db.personWithCoursesDao().exists(personId)) {
                             db.personWithCoursesDao().updateWavingToUs(true, personId);
                         }
                     }
+                    //create this person's courses
                     else if (array.length == 5){
                         year = array[0];
                         quarter = array[1];
@@ -109,9 +109,7 @@ public class FakedMessageListener extends MessageListener {
                         text = quarter + year + ' ' + courseType + ' ' + courseNum;
                         int courseId = db.coursesDao().maxId() + 1;
 
-                        //String personString = name + photoId;
-                        //personId = UUID.nameUUIDFromBytes(personString.getBytes()).toString();
-
+                        //Create the course, but only insert it into the db if the user also has this course
                         Course c = new Course(courseId, personId, text, year,quarter,courseSize);
                         if(userCourseText.contains(c.text) && !db.personWithCoursesDao().exists(personId)){
                             db.coursesDao().insert(c);
@@ -119,6 +117,7 @@ public class FakedMessageListener extends MessageListener {
                     }
                 }
 
+                //If the person doesn't already exist in the database, add them to it
                 if(!db.personWithCoursesDao().exists(personId)){
                     //set the student profile id
                     Person newPerson = new Person(personId, name, photoId, false);
@@ -184,22 +183,22 @@ public class FakedMessageListener extends MessageListener {
                         newPerson.sizePriority = sizePrio;
                         newPerson.recentPriority = recentPrio;
                         db.personWithCoursesDao().insert(newPerson);
-
-                        List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
-                        if(!peopleInSession.contains(personId)) {
-                            peopleInSession.add(personId);
-                            Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
-                            updatedSession.peopleIDs = peopleInSession;
-                            db.sessionsDao().delete(db.sessionsDao().get(sessionID));
-                            db.sessionsDao().insert(updatedSession);
-                        }
                     }
+                }
+
+                //add person into the current session
+                List<String> peopleInSession = db.sessionsDao().get(sessionID).peopleIDs;
+                if(db.personWithCoursesDao().exists(personId) && !peopleInSession.contains(personId)) {
+                    peopleInSession.add(personId);
+                    Session updatedSession = new Session(sessionID, db.sessionsDao().get(sessionID).sessionName);
+                    updatedSession.peopleIDs = peopleInSession;
+                    db.sessionsDao().delete(db.sessionsDao().get(sessionID));
+                    db.sessionsDao().insert(updatedSession);
                 }
 
                 scanner.close();
                 //send back the message that the profile is set up
                 this.messageListener.onLost(message);
-
             }
         });
     }

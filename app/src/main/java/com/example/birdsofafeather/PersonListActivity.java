@@ -382,7 +382,9 @@ public class PersonListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = String.valueOf(taskEditText.getText());
-                        db.sessionsDao().updateSessionName(name, s.sessionId);
+                        if(!name.equals("")) {
+                            db.sessionsDao().updateSessionName(name, s.sessionId);
+                        }
                         Log.d(TAG, "Session Name: " + db.sessionsDao().get(s.sessionId).sessionName);
                         dialog.cancel();
                     }
