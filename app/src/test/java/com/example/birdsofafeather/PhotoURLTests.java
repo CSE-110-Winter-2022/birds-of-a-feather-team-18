@@ -31,10 +31,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 public class PhotoURLTests {
-<<<<<<< HEAD
-=======
     AppDatabase testDB;
->>>>>>> 25d6d57739afaf84004a96dfd634026b0f152b8f
 
     @Before
     public void setupDb() {
