@@ -71,11 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: GET RID OF THIS PART FOR DEMO
-        //clear database of all persons and courses
-        //db.coursesDao().deleteExceptUser("1");
-        //db.personWithCoursesDao().deleteExceptUser("1");
-
         //if the database is empty, start the login activity
         if (db.personWithCoursesDao().count() == 0) {
             Intent intent = new Intent(this, NameLoginActivity.class);
