@@ -103,8 +103,10 @@ public class PersonDetailActivity extends AppCompatActivity {
         Toast.makeText(this,"Wave has send", Toast.LENGTH_SHORT).show();
         waveSend.setVisibility(View.INVISIBLE);
         waveHasSend.setVisibility(View.VISIBLE);
-        publish(createCSV());
+        //set the wave to true first
         db.personWithCoursesDao().updateWavingToThem(true, person.getId());
+        //publish profile
+        publish(createCSV());
     }
 
     private void publish(String message) {
