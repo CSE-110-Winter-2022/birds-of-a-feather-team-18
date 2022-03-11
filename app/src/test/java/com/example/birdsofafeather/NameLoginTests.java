@@ -34,13 +34,14 @@ import java.util.List;
  */
 @RunWith(AndroidJUnit4.class)
 public class NameLoginTests {
-    @Rule
-    public ActivityScenarioRule<NameLoginActivity> scenarioRule = new ActivityScenarioRule<>(NameLoginActivity.class);
+    AppDatabase testDB;
+
 
     @Before
     public void setupDb() {
         Context context = ApplicationProvider.getApplicationContext();
         AppDatabase.useTestDatabase(context);
+        testDB = AppDatabase.singleton(context);
     }
 
     @After
@@ -51,7 +52,7 @@ public class NameLoginTests {
 
     @Test
     public void test_no_name() {
-        ActivityScenario<NameLoginActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<NameLoginActivity> scenario = ActivityScenario.launch(NameLoginActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -67,13 +68,13 @@ public class NameLoginTests {
             //check that an error message pops up
             assertNotEquals(null, a.getButton(DialogInterface.BUTTON_POSITIVE));
             //check that the database is still empty
-            assertEquals(0, activity.db.personWithCoursesDao().count());
+            assertEquals(0, testDB.personWithCoursesDao().count());
         });
     }
-    /*
+
     @Test
     public void test_valid_name() {
-        ActivityScenario<NameLoginActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<NameLoginActivity> scenario = ActivityScenario.launch(NameLoginActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -84,9 +85,9 @@ public class NameLoginTests {
             newNameTextView.setText("Cabernet");
             confirmButton.performClick();
 
-            assertEquals(1, activity.db.personWithCoursesDao().count());
-            assertEquals("Cabernet", activity.db.personWithCoursesDao().get(1).person.name);
+            assertEquals(1, testDB.personWithCoursesDao().count());
+            assertEquals("Cabernet", testDB.personWithCoursesDao().get("1").person.name);
         });
     }
-    */
+
 }

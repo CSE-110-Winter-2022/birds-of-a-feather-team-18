@@ -47,30 +47,6 @@ public class MainActivity extends AppCompatActivity {
         requestBackgroundPermission();
         requestCoarsePermission();
 
-        Button AskPermissionsRequest = findViewById(R.id.askPermissions);
-        AskPermissionsRequest.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "Permissions have already been granted!", Toast.LENGTH_SHORT).show();
-                }
-                else if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                    requestCoarsePermission();
-                }
-                else{
-                    requestBackgroundPermission();
-                    requestCoarsePermission();
-                }
-            }
-        });
-
         //TODO: GET RID OF THIS PART FOR DEMO
         //clear database of all persons and courses
         //db.coursesDao().deleteExceptUser("1");

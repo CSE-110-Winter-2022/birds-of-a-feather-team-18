@@ -35,8 +35,6 @@ import java.util.List;
  */
 @RunWith(AndroidJUnit4.class)
 public class PrevClassesTest {
-    @Rule
-    public ActivityScenarioRule<PrevCourseActivity> scenarioRule = new ActivityScenarioRule<>(PrevCourseActivity.class);
 
     @Before
     public void setupDb() {
@@ -52,7 +50,7 @@ public class PrevClassesTest {
 
     @Test
     public void test_no_repeat_courses() {
-        ActivityScenario<PrevCourseActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PrevCourseActivity> scenario = ActivityScenario.launch(PrevCourseActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -91,7 +89,7 @@ public class PrevClassesTest {
 
     @Test
     public void test_add_class() {
-        ActivityScenario<PrevCourseActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PrevCourseActivity> scenario = ActivityScenario.launch(PrevCourseActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -125,7 +123,7 @@ public class PrevClassesTest {
 
     @Test
     public void testDropDown(){
-        ActivityScenario<PrevCourseActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PrevCourseActivity> scenario = ActivityScenario.launch(PrevCourseActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 

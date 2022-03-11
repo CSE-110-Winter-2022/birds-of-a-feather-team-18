@@ -94,6 +94,10 @@ public class FakedMessageListener extends MessageListener {
                     else if (array[0].equals(selfId) || array[0].equals("4b295157-ba31-4f9f-8401-5d85d9cf659a")) {
                         //TODO: set the waving to ourself to true
                         isWave = true;
+
+                        if(db.personWithCoursesDao().exists(personId)) {
+                            db.personWithCoursesDao().updateWavingToUs(true, personId);
+                        }
                     }
                     else if (array.length == 5){
                         year = array[0];
@@ -115,7 +119,6 @@ public class FakedMessageListener extends MessageListener {
                     }
                 }
 
-                boolean s = db.personWithCoursesDao().exists(personId);
                 if(!db.personWithCoursesDao().exists(personId)){
                     //set the student profile id
                     Person newPerson = new Person(personId, name, photoId, false);

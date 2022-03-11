@@ -31,8 +31,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 public class PhotoURLTests {
-    @Rule
-    public ActivityScenarioRule<PhotoURLActivity> scenarioRule = new ActivityScenarioRule<>(PhotoURLActivity.class);
 
     @Before
     public void setupDb() {
@@ -48,7 +46,7 @@ public class PhotoURLTests {
 
     @Test
     public void test_no_URL() {
-        ActivityScenario<PhotoURLActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PhotoURLActivity> scenario = ActivityScenario.launch(PhotoURLActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -71,7 +69,7 @@ public class PhotoURLTests {
 
     @Test
     public void test_invalid_URL() {
-        ActivityScenario<PhotoURLActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PhotoURLActivity> scenario = ActivityScenario.launch(PhotoURLActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -98,7 +96,7 @@ public class PhotoURLTests {
 
     @Test
     public void test_valid_URL() {
-        ActivityScenario<PhotoURLActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<PhotoURLActivity> scenario = ActivityScenario.launch(PhotoURLActivity.class);
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
