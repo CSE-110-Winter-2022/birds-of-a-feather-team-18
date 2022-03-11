@@ -1,5 +1,6 @@
 package com.example.birdsofafeather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
@@ -9,6 +10,7 @@ import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.example.birdsofafeather.PersonListActivity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class FakedMessageListener extends MessageListener {
     private final MessageListener messageListener;
     //instantiate executor to execute messages
     private final ScheduledExecutorService executor;
+    private Intent PersonListActivity;
 
     public FakedMessageListener(MessageListener realMessageListener, String messageStr, AppDatabase db, String sessionID) {
         this.messageListener = realMessageListener;
@@ -115,7 +118,6 @@ public class FakedMessageListener extends MessageListener {
                 boolean s = db.personWithCoursesDao().exists(personId);
                 if(!db.personWithCoursesDao().exists(personId)){
                     //set the student profile id
-                    //TODO: implement priority of waving send
                     Person newPerson = new Person(personId, name, photoId, false);
                     newPerson.wavingToUs = isWave;
                     //only add the person when there are common course with user
@@ -190,6 +192,7 @@ public class FakedMessageListener extends MessageListener {
                         }
                     }
                 }
+
                 scanner.close();
                 //send back the message that the profile is set up
                 this.messageListener.onLost(message);

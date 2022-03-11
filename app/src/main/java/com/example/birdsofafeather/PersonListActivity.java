@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -34,6 +36,8 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 //set up the student taken common course list
@@ -54,6 +58,10 @@ public class PersonListActivity extends AppCompatActivity {
 
     private Message mActiveMessage;
     private MessageListener messageListener;
+
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 10000;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -97,6 +105,8 @@ public class PersonListActivity extends AppCompatActivity {
         };
 
         mActiveMessage = new Message("Hello World".getBytes());
+
+
     }
 
     public void onApplySortClicked(View view) {
@@ -124,6 +134,14 @@ public class PersonListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume(){
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                handler.postDelayed(runnable, delay);
+                updateAllListsAndCurrView();
+                Log.i(TAG, "Updating view.");
+            }
+        }, delay);
+
         super.onResume();
         setContentView(R.layout.activity_person_list);
         setTitle(R.string.app_title);
@@ -142,6 +160,11 @@ public class PersonListActivity extends AppCompatActivity {
         currSession = db.sessionsDao().get(preferences.getString("currSession",""));
 
         updateAllListsAndCurrView();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
     }
 
     public void updateAllListsAndCurrView() {
@@ -163,6 +186,7 @@ public class PersonListActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
     public void updateView(List<PersonWithCourses> sortedList) {
         personsLayoutManager = new LinearLayoutManager(this);
@@ -277,7 +301,7 @@ public class PersonListActivity extends AppCompatActivity {
         return selfCSV;
     }
 
-    public void onStartClicked(View view) {
+    public void onStartClicked(View view) throws InterruptedException {
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
@@ -374,6 +398,7 @@ public class PersonListActivity extends AppCompatActivity {
 
     private void publish(String message) {
         Log.i(TAG, "Publishing message: " + message);
+
         mActiveMessage = new Message(message.getBytes());
         Nearby.getMessagesClient(this).publish(mActiveMessage);
     }
