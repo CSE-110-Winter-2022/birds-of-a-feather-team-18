@@ -3,31 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.478" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/drawable/ic_launcher_background.xml" value="0.478" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_favorite_list.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_login.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_mock.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_detail.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_person_list.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_photo_url.xml" value="0.4365942028985507" />
         <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_course.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_prev_person_list.xml" value="0.4365942028985507" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/courses_row.xml" value="0.44972826086956524" />
+        <entry key="..\:/Users/55369/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/person_row.xml" value="0.44972826086956524" />
         <entry key="..\:/Users/armaa/AndroidStudioProjects/BirdsOfAFeather/app/src/main/res/layout/activity_prev_course.xml" value="0.24375" />
         <entry key="..\:/Users/gavin/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.14427083333333332" />
-        <entry key="app/src/main/res/layout/activity_favorite_list.xml" value="0.22760416666666666" />
+        <entry key="..\:/Users/trewr/AndroidStudioProjects/birds-of-a-feather-team-18/app/src/main/res/layout/activity_main.xml" value="0.24954710144927536" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165625" />
         <entry key="app/src/main/res/layout/activity_person_detail.xml" value="0.165625" />
-        <entry key="app/src/main/res/layout/activity_person_list.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/activity_photo_url.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_prev_course.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/activity_prev_course_detail.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_prev_session.xml" value="0.22760416666666666" />
-        <entry key="app/src/main/res/layout/activity_prev_session_list.xml" value="0.22760416666666666" />
-        <entry key="app/src/main/res/layout/activity_prev_session_person_list.xml" value="0.22760416666666666" />
-        <entry key="app/src/main/res/layout/activity_session_list.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/courses_row.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/favorites_session_row.xml" value="0.284375" />
         <entry key="app/src/main/res/layout/notes_row.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/person_row.xml" value="0.165625" />
-        <entry key="app/src/main/res/layout/session_row.xml" value="0.22760416666666666" />
       </map>
     </option>
   </component>

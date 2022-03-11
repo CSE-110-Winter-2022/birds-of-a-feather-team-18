@@ -45,4 +45,13 @@
         android:layout_marginLeft="200dp"
         android:background="@android:color/transparent"
         android:button="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/list_wave"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginLeft="345dp"
+        android:layout_marginTop="10sp"
+        android:src="@drawable/wave_hand_solid"
+        android:visibility="invisible" />
 </FrameLayout>

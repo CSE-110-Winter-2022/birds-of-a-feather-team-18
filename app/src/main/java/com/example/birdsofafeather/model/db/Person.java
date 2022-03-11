@@ -28,6 +28,12 @@ public class Person {
     @ColumnInfo(name = "favorite")
     public boolean favorite;
 
+    @ColumnInfo(name = "wavingToThem")
+    public boolean wavingToThem;
+
+    @ColumnInfo(name = "wavingToUs")
+    public boolean wavingToUs;
+
     public Person(String personId, String name, String photo, boolean favorite){
         this.personId = personId;
         this.name = name;
@@ -35,5 +41,7 @@ public class Person {
         sizePriority = 0;
         recentPriority = 0;
         this.favorite = favorite;
+        this.wavingToThem = false;
+        this.wavingToUs = false;
     }
 }

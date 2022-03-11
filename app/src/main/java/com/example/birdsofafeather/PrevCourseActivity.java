@@ -89,7 +89,7 @@ public class PrevCourseActivity extends AppCompatActivity {
         Spinner newSizeSpinnerView = findViewById(R.id.class_size_spinner);
         TextView newCourseNumTextView = findViewById(R.id.course_number_view);
 
-        // get String for Year/Quarter/Subject/CourseNum
+        // get String for Year/Quarter/Subject/CourseNum/Size
         String newSubjectText = newSubjectTextView.getText().toString();
         String newYearText = newYearSpinnerView.getSelectedItem().toString();
         String newQuarterText = newQuarterSpinnerView.getSelectedItem().toString();
@@ -133,7 +133,7 @@ public class PrevCourseActivity extends AppCompatActivity {
                 break;
             }
         }
-        if(!alreadyInDatabase){
+        if(!alreadyInDatabase && !newSubjectText.equals("") && !newCourseNumText.equals("")){
             db.coursesDao().insert(newCourse);
             currCourseCount = db.coursesDao().getForPerson(personId).size();
             coursesViewAdapter.addCourse(newCourse);

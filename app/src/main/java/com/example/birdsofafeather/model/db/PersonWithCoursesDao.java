@@ -17,6 +17,9 @@ public interface PersonWithCoursesDao {
     @Query("SELECT * FROM persons WHERE id=:id")
     PersonWithCourses get(String id);
 
+    @Query("SELECT * FROM persons WHERE wavingToThem=1")
+    List<PersonWithCourses> getAllWavingToThem();
+
     @Query("SELECT EXISTS (SELECT 1 FROM persons where id=:id)")
     Boolean exists(String id);
 
@@ -45,4 +48,10 @@ public interface PersonWithCoursesDao {
 
     @Query("UPDATE persons SET favorite = :isFavorite WHERE id =:id")
     void updateFavorite(boolean isFavorite, String id);
+
+    @Query("UPDATE persons SET wavingToThem = :isWavingToThem WHERE id =:id")
+    void updateWavingToThem(boolean isWavingToThem, String id);
+
+    @Query("UPDATE persons SET wavingToUs = :isWavingToUs WHERE id =:id")
+    void updateWavingToUs(boolean isWavingToUs, String id);
 }

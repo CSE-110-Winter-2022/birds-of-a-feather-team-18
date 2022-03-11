@@ -143,26 +143,50 @@ public class FavoriteListActivity extends AppCompatActivity {
         favClassmatesByNumCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                return t2.getCourses().size() - t1.getCourses().size();
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    return t2.getCourses().size() - t1.getCourses().size();
+                }
+                else if (t1.getWavingToUs()){
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
             }
         });
 
         favClassmatesByCourseSize.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                if(t2.person.sizePriority>t1.person.sizePriority){
-                    return 1;
-                } else if(t2.person.sizePriority<t1.person.sizePriority){
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    if(t2.person.sizePriority>t1.person.sizePriority){
+                        return 1;
+                    } else if(t2.person.sizePriority<t1.person.sizePriority){
+                        return -1;
+                    }
+                    return 0;
+                }
+                else if (t1.getWavingToUs()){
                     return -1;
                 }
-                return 0;
+                else {
+                    return 1;
+                }
             }
         });
 
         favClassmatesByRecentCourses.sort(new Comparator<PersonWithCourses>() {
             @Override
             public int compare(PersonWithCourses t1, PersonWithCourses t2) {
-                return t2.person.recentPriority - t1.person.recentPriority;
+                if(!t1.getWavingToUs() && !t2.getWavingToUs()) {
+                    return t2.person.recentPriority - t1.person.recentPriority;
+                }
+                else if (t1.getWavingToUs()){
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
             }
         });
     }

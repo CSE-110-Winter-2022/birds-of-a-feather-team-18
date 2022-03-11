@@ -8,4 +8,6 @@ public interface IPerson {
     String getPhoto();
     List<String> getCourses();
     boolean getFavorite();
+    boolean getWavingToThem();
+    boolean getWavingToUs();
 }
