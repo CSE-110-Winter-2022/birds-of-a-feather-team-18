@@ -61,11 +61,25 @@ public class PersonListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person_list);
         setTitle(R.string.app_title);
 
+
+
+        personsRecyclerView = findViewById(R.id.persons_view);
+        Spinner sortSpinner = findViewById(R.id.sort_spinner);
+        ArrayAdapter<CharSequence> sortArrAdapter = ArrayAdapter.createFromResource
+                (this,R.array.sort, android.R.layout.simple_spinner_item);
+        sortArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        sortSpinner.setAdapter(sortArrAdapter);
+        // get default spinner value
+        newSortText = sortSpinner.getSelectedItem().toString();
+
+        db = AppDatabase.singleton(getApplicationContext());
+
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        currSession = db.sessionsDao().get(preferences.getString("currSession",""));
+
         //Use a sorting to sort the number of common course
         //more common course, higher priority
         updateAllLists();
-
-        personsRecyclerView = findViewById(R.id.persons_view);
 
         //send the info to the viewAdapter
         updateView(classMatesByNumCourses);
@@ -88,21 +102,19 @@ public class PersonListActivity extends AppCompatActivity {
     public void onApplySortClicked(View view) {
         Spinner newSortSpinnerView = findViewById(R.id.sort_spinner);
         newSortText = newSortSpinnerView.getSelectedItem().toString();
+        updateAllLists();
         switch (newSortText){
             case "Most Shared Classes":
-                personsRecyclerView = findViewById(R.id.persons_view);
 
                 //send the info to the viewAdapter
                 updateView(classMatesByNumCourses);
                 break;
             case "Most Recent Classes":
-                personsRecyclerView = findViewById(R.id.persons_view);
 
                 //send the info to the viewAdapter
                 updateView(classMatesByRecentCourses);
                 break;
             case "Smallest Classes":
-                personsRecyclerView = findViewById(R.id.persons_view);
 
                 //send the info to the viewAdapter
                 updateView(classMatesByCourseSize);
@@ -127,7 +139,7 @@ public class PersonListActivity extends AppCompatActivity {
         personsRecyclerView = findViewById(R.id.persons_view);
 
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
-        Session s = db.sessionsDao().get(preferences.getString("currSession",""));
+        currSession = db.sessionsDao().get(preferences.getString("currSession",""));
 
         updateAllLists();
 
@@ -156,18 +168,6 @@ public class PersonListActivity extends AppCompatActivity {
     }
 
     public void updateAllLists() {
-        // Sort Selection Drop-down functionality
-        Spinner sortSpinner = findViewById(R.id.sort_spinner);
-        ArrayAdapter<CharSequence> sortArrAdapter = ArrayAdapter.createFromResource
-                (this,R.array.sort, android.R.layout.simple_spinner_item);
-        sortArrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        sortSpinner.setAdapter(sortArrAdapter);
-
-        // get default spinner value
-        newSortText = sortSpinner.getSelectedItem().toString();
-
-        db = AppDatabase.singleton(getApplicationContext());
-        //first we get the person list in the database
 
         classMatesByNumCourses = new ArrayList<PersonWithCourses>();
         classMatesByCourseSize = new ArrayList<PersonWithCourses>();
@@ -314,7 +314,7 @@ public class PersonListActivity extends AppCompatActivity {
         if(isMyServiceRunning(SearchService.class)) {
             showNameSessionDialog(this);
         }
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("currSession", "none");
         editor.apply();
