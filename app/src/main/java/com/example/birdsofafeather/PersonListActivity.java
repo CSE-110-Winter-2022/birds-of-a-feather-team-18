@@ -12,9 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
-import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
 import com.google.android.gms.nearby.Nearby;
@@ -36,8 +33,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 //set up the student taken common course list
@@ -305,10 +300,12 @@ public class PersonListActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
+        //display message asking to choose previous or new session
         alertBuilder.setTitle("Starting Session")
                 .setMessage("Resume a previous session or start a new one?")
                 .setCancelable(true)
                 .setPositiveButton("New", (dialog,id) -> {
+                    //Create a new session and name it with the current date and time and start searching
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mmaa");
                     String dateString = dateFormat.format(new Date()).toString();
                     Session newSession = new Session(UUID.randomUUID().toString(), dateString);
@@ -325,7 +322,7 @@ public class PersonListActivity extends AppCompatActivity {
 
                 })
                 .setNegativeButton("Previous", (dialog,id) -> {
-                    //implement choosing previous session
+                    //go to previous session
                     Intent intent = new Intent(PersonListActivity.this, SessionListActivity.class);
                     startActivity(intent);
                 });
@@ -334,11 +331,6 @@ public class PersonListActivity extends AppCompatActivity {
 
         publish(createCSV());
         subscribe();
-        /*
-        Intent intent = new Intent(PersonListActivity.this, SearchService.class);
-        startService(intent);
-        Log.d(TAG, "Start Clicked, service start");
-        */
     }
 
     //bind the button to stop service

@@ -1,29 +1,16 @@
 package com.example.birdsofafeather;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
-import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 //set up the student taken common course list
 public class SessionListActivity extends AppCompatActivity {

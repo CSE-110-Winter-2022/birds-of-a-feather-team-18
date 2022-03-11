@@ -23,6 +23,7 @@ public class NameLoginActivity extends AppCompatActivity {
         setTitle(R.string.app_title);
         db = AppDatabase.singleton(this);
 
+        //create a favorites session
         if(db.sessionsDao().count() == 0){
             Session favoritesSession = new Session("favoritesSession", "Favorites");
             db.sessionsDao().insert(favoritesSession);

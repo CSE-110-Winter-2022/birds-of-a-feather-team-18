@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,14 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
-import java.nio.charset.StandardCharsets;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,10 +44,6 @@ public class MainActivity extends AppCompatActivity {
         requestBackgroundPermission();
         requestCoarsePermission();
 
-        //TODO: GET RID OF THIS PART FOR DEMO
-        //clear database of all persons and courses
-        //db.coursesDao().deleteExceptUser("1");
-        //db.personWithCoursesDao().deleteExceptUser("1");
 
         //if the database is empty, start the login activity
         if (db.personWithCoursesDao().count() == 0) {
@@ -64,16 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
-
         AppDatabase db = AppDatabase.singleton(this);
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        //When app starts, no session is active
         editor.putString("currSession", "none");
         editor.apply();
         String currSessionID = preferences.getString("currSession", "");
-
         this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
-
         message = new Message("Hello".getBytes());
     }
 

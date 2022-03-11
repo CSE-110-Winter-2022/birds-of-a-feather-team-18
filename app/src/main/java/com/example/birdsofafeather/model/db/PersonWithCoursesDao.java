@@ -26,11 +26,6 @@ public interface PersonWithCoursesDao {
     @Query("SELECT COUNT(*) from persons")
     int count();
 
-    /*
-    @Query("SELECT MAX(id) from persons")
-    int maxId();
-    */
-
     @Query("DELETE FROM persons")
     void deleteAll();
 

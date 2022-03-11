@@ -1,16 +1,12 @@
 package com.example.birdsofafeather;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
-import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
-import com.example.birdsofafeather.PersonListActivity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -25,7 +21,6 @@ public class FakedMessageListener extends MessageListener {
     private final MessageListener messageListener;
     //instantiate executor to execute messages
     private final ScheduledExecutorService executor;
-    private Intent PersonListActivity;
 
     public FakedMessageListener(MessageListener realMessageListener, String messageStr, AppDatabase db, String sessionID) {
         this.messageListener = realMessageListener;
@@ -75,7 +70,6 @@ public class FakedMessageListener extends MessageListener {
                 //start use scanner to scan each line
                 while (scanner.hasNextLine()) {
                     String[] array = scanner.nextLine().split(csvSplitBy);
-                    String firstValue = array[0];
                     //set UUID
                     if(count == 0) {
                         personId = array[0];

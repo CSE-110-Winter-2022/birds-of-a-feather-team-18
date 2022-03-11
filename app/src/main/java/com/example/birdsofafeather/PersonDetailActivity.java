@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
-import com.google.android.gms.nearby.messages.MessageListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,7 +35,6 @@ public class PersonDetailActivity extends AppCompatActivity {
     private CoursesViewAdapter coursesViewAdapter;
 
     private Message mActiveMessage;
-    private MessageListener messageListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

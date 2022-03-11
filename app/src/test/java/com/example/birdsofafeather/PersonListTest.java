@@ -5,27 +5,22 @@ import static org.junit.Assert.assertEquals;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
-import com.squareup.picasso.Picasso;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

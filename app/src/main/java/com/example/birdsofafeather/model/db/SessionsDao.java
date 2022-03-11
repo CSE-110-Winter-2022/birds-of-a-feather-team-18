@@ -4,8 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
-import androidx.room.TypeConverters;
 
 import java.util.List;
 
@@ -20,9 +18,6 @@ public interface SessionsDao {
 
     @Query("SELECT COUNT(*) from sessions")
     int count();
-
-    @Query("SELECT MAX(id) from sessions")
-    int maxId();
 
     @Insert
     void insert(Session session);
