@@ -24,7 +24,7 @@
 
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyAMc-iSGkLFmUHUkoDO0SeP2-YpEOdXQJc" />
+            android:value="AIzaSyA4aFu4mY6rDlOW8uQ_A1sQztXFBKF5pVQ" />
 
         <activity
             android:name=".PersonDetailActivity"
