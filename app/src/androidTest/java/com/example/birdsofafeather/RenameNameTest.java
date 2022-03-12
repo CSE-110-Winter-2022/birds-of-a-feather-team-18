@@ -3,7 +3,6 @@ package com.example.birdsofafeather;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -25,9 +24,14 @@ import android.view.ViewParent;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiSelector;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -38,19 +42,22 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class NameRenameSessionTest {
+public class RenameNameTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
+    /*
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
             GrantPermissionRule.grant(
-                    "android.permission.ACCESS_COARSE_LOCATION",
-                    "android.permission.ACCESS_BACKGROUND_LOCATION");
+                    "android.permission.BLUETOOTH_ADVERTISE",
+                    "android.permission.BLUETOOTH_SCAN",
+                    "android.permission.BLUETOOTH_CONNECT");
+
+     */
 
     @Test
-    public void nameRenameSessionTest() {
+    public void renameNameTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.self_name_textview),
                         childAtPosition(
@@ -269,16 +276,19 @@ public class NameRenameSessionTest {
                         isDisplayed()));
         materialButton6.perform(click());
 
-        ViewInteraction materialButton7 = onView(
-                allOf(withId(android.R.id.button1), withText("ok"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(androidx.appcompat.R.id.buttonPanel),
-                                        0),
-                                3)));
-        materialButton7.perform(scrollTo(), click());
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        UiObject allowButton = device.findObject(new UiSelector()
+                .text("Allow")
+                .className("android.widget.Button"));
+        try {
+            if(allowButton.exists() && allowButton.isEnabled()){
+                allowButton.click();
+            }
+        } catch (UiObjectNotFoundException e){
+            e.printStackTrace();
+        }
 
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction materialButton7 = onView(
                 allOf(withId(R.id.get_button), withText("Get Bofs"),
                         childAtPosition(
                                 childAtPosition(
@@ -286,9 +296,9 @@ public class NameRenameSessionTest {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton8.perform(click());
+        materialButton7.perform(click());
 
-        ViewInteraction materialButton9 = onView(
+        ViewInteraction materialButton8 = onView(
                 allOf(withId(R.id.startBtn), withText("Start"),
                         childAtPosition(
                                 childAtPosition(
@@ -296,31 +306,37 @@ public class NameRenameSessionTest {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton9.perform(click());
+        materialButton8.perform(click());
 
-        ViewInteraction materialButton10 = onView(
+        ViewInteraction materialButton9 = onView(
                 allOf(withId(android.R.id.button1), withText("New"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.buttonPanel),
                                         0),
                                 3)));
-        materialButton10.perform(scrollTo(), click());
+        materialButton9.perform(scrollTo(), click());
 
-        pressBack();
-
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.student_profile),
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(R.id.stopBtn), withText("Stop"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                1),
+                                4),
                         isDisplayed()));
-        appCompatEditText10.perform(replaceText("a4ca50b6-941b-11ec-b909-0242ac120002,,,,\nBill,,,,\nhttps://lh3.googleusercontent.com/pw/AM-JKLXQ2ix4dg-PzLrPOSMOOy6M3PSUrijov9jCLXs4IGSTwN73B4kr-F6Nti_4KsiUU8LzDSGPSWNKnFdKIPqCQ2dFTRbARsW76pevHPBzc51nceZDZrMPmDfAYyI4XNOnPrZarGlLLUZW9wal6j-z9uA6WQ=w854-h924-no?authuser=0,,,,\n2021,FA,CSE,210,Small\n2022,WI,CSE,110,Large"), closeSoftKeyboard());
+        materialButton10.perform(click());
+
+        DataInteraction materialTextView5 = onData(anything())
+                .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
+                        childAtPosition(
+                                withClassName(is("android.widget.FrameLayout")),
+                                0)))
+                .atPosition(0);
+        materialTextView5.perform(click());
 
         ViewInteraction materialButton11 = onView(
-                allOf(withId(R.id.enter_button), withText("Mock"),
+                allOf(withId(R.id.startBtn), withText("Start"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -330,32 +346,29 @@ public class NameRenameSessionTest {
         materialButton11.perform(click());
 
         ViewInteraction materialButton12 = onView(
-                allOf(withId(R.id.get_button), withText("Get Bofs"),
+                allOf(withId(android.R.id.button2), withText("Previous"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withId(androidx.appcompat.R.id.buttonPanel),
                                         0),
-                                0),
+                                2)));
+        materialButton12.perform(scrollTo(), click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.session_row_name), withText("WI2022 CSE 110"),
+                        withParent(withParent(withId(R.id.sessions_view))),
                         isDisplayed()));
-        materialButton12.perform(click());
+        textView.check(matches(withText("WI2022 CSE 110")));
 
         ViewInteraction materialButton13 = onView(
-                allOf(withId(R.id.stopBtn), withText("Stop"),
+                allOf(withId(R.id.finish_button), withText("Go Back"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                1),
                         isDisplayed()));
         materialButton13.perform(click());
-
-        DataInteraction materialTextView5 = onData(anything())
-                .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
-                        childAtPosition(
-                                withClassName(is("android.widget.FrameLayout")),
-                                0)))
-                .atPosition(0);
-        materialTextView5.perform(click());
 
         ViewInteraction materialButton14 = onView(
                 allOf(withId(R.id.startBtn), withText("Start"),
@@ -368,29 +381,23 @@ public class NameRenameSessionTest {
         materialButton14.perform(click());
 
         ViewInteraction materialButton15 = onView(
-                allOf(withId(android.R.id.button2), withText("Previous"),
+                allOf(withId(android.R.id.button1), withText("New"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.buttonPanel),
                                         0),
-                                2)));
+                                3)));
         materialButton15.perform(scrollTo(), click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.session_row_name), withText("WI2022 CSE 110"),
-                        withParent(withParent(withId(R.id.sessions_view))),
-                        isDisplayed()));
-        textView.check(matches(withText("WI2022 CSE 110")));
-
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.rename_fab),
+        ViewInteraction materialButton16 = onView(
+                allOf(withId(R.id.stopBtn), withText("Stop"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.sessions_view),
-                                        1),
-                                1),
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
                         isDisplayed()));
-        floatingActionButton.perform(click());
+        materialButton16.perform(click());
 
         ViewInteraction editText = onView(
                 allOf(childAtPosition(
@@ -400,22 +407,76 @@ public class NameRenameSessionTest {
                                         0)),
                         0),
                         isDisplayed()));
-        editText.perform(replaceText("Renamed Session"), closeSoftKeyboard());
+        editText.perform(replaceText("New Session"), closeSoftKeyboard());
 
-        ViewInteraction materialButton16 = onView(
+        ViewInteraction materialButton17 = onView(
+                allOf(withId(android.R.id.button1), withText("Name"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton17.perform(scrollTo(), click());
+
+        ViewInteraction materialButton18 = onView(
+                allOf(withId(R.id.startBtn), withText("Start"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton18.perform(click());
+
+        ViewInteraction materialButton19 = onView(
+                allOf(withId(android.R.id.button2), withText("Previous"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(androidx.appcompat.R.id.buttonPanel),
+                                        0),
+                                2)));
+        materialButton19.perform(scrollTo(), click());
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.session_row_name), withText("New Session"),
+                        withParent(withParent(withId(R.id.sessions_view))),
+                        isDisplayed()));
+        textView2.check(matches(withText("New Session")));
+
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.rename_fab),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.sessions_view),
+                                        2),
+                                1),
+                        isDisplayed()));
+        floatingActionButton.perform(click());
+
+        ViewInteraction editText2 = onView(
+                allOf(childAtPosition(
+                        allOf(withId(android.R.id.custom),
+                                childAtPosition(
+                                        withClassName(is("android.widget.FrameLayout")),
+                                        0)),
+                        0),
+                        isDisplayed()));
+        editText2.perform(replaceText("Renamed Session"), closeSoftKeyboard());
+
+        ViewInteraction materialButton20 = onView(
                 allOf(withId(android.R.id.button1), withText("Rename"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton16.perform(scrollTo(), click());
+        materialButton20.perform(scrollTo(), click());
 
-        ViewInteraction textView2 = onView(
+        ViewInteraction textView3 = onView(
                 allOf(withId(R.id.session_row_name), withText("Renamed Session"),
                         withParent(withParent(withId(R.id.sessions_view))),
                         isDisplayed()));
-        textView2.check(matches(withText("Renamed Session")));
+        textView3.check(matches(withText("Renamed Session")));
     }
 
     private static Matcher<View> childAtPosition(

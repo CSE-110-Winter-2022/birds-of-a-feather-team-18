@@ -18,20 +18,28 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class permissionsTest {
     @Rule
-    public GrantPermissionRule backgroundPermission = GrantPermissionRule.grant(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+    public GrantPermissionRule scanPermission = GrantPermissionRule.grant(Manifest.permission.BLUETOOTH_SCAN);
     @Rule
-    public GrantPermissionRule coarsePermission = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION);
+    public GrantPermissionRule adPermission = GrantPermissionRule.grant(Manifest.permission.BLUETOOTH_ADVERTISE);
+    @Rule
+    public GrantPermissionRule connectPermission = GrantPermissionRule.grant(Manifest.permission.BLUETOOTH_CONNECT);
 
     @Test
-    public void backgroundTest(){
+    public void scanTest(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getContext();
-        assertEquals(ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_BACKGROUND_LOCATION"), PackageManager.PERMISSION_GRANTED);
+        assertEquals(ContextCompat.checkSelfPermission(appContext,"android.permission.BLUETOOTH_SCAN"), PackageManager.PERMISSION_GRANTED);
     }
 
     @Test
-    public void coarseTest(){
+    public void adTest(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getContext();
-        assertEquals(ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_COARSE_LOCATION"), PackageManager.PERMISSION_GRANTED);
+        assertEquals(ContextCompat.checkSelfPermission(appContext,"android.permission.BLUETOOTH_ADVERTISE"), PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Test
+    public void connectTest(){
+        Context appContext = InstrumentationRegistry.getInstrumentation().getContext();
+        assertEquals(ContextCompat.checkSelfPermission(appContext,"android.permission.BLUETOOTH_CONNECT"), PackageManager.PERMISSION_GRANTED);
     }
 
 }
