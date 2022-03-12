@@ -16,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
-import com.example.birdsofafeather.model.db.PersonWithCourses;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 
 public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.ViewHolder> {

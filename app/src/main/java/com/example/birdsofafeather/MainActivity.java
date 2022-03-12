@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,15 +24,15 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
-import java.nio.charset.StandardCharsets;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Bofs-Nearby";
     private MessageListener messageListener;
     private AppDatabase db;
-    private final int backgroundCode = 1150;
-    private final int coarseCode = 72621;
+    private final int adCode = 621;
+    private final int scanCode = 345;
+    private final int connectCode = 123784;
     private Message message;
 
     @Override
@@ -44,37 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
         db = AppDatabase.singleton(this);
 
-        requestBackgroundPermission();
-        requestCoarsePermission();
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED)
+            Toast.makeText(MainActivity.this, "BLUETOOTH_SCAN Permission granted!", Toast.LENGTH_SHORT).show();
+        else
+            requestScanPermission();
 
-        Button AskPermissionsRequest = findViewById(R.id.askPermissions);
-        AskPermissionsRequest.setOnClickListener(new View.OnClickListener() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_ADVERTISE) == PackageManager.PERMISSION_GRANTED)
+            Toast.makeText(MainActivity.this, "BLUETOOTH_ADVERTISE Permission granted!", Toast.LENGTH_SHORT).show();
+        else
+            requestAdPermission();
 
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "Permissions have already been granted!", Toast.LENGTH_SHORT).show();
-                }
-                else if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(MainActivity.this,
-                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                    requestCoarsePermission();
-                }
-                else{
-                    requestBackgroundPermission();
-                    requestCoarsePermission();
-                }
-            }
-        });
-
-        //TODO: GET RID OF THIS PART FOR DEMO
-        //clear database of all persons and courses
-        //db.coursesDao().deleteExceptUser("1");
-        //db.personWithCoursesDao().deleteExceptUser("1");
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED)
+            Toast.makeText(MainActivity.this, "BLUETOOTH_CONNECT Permission granted!", Toast.LENGTH_SHORT).show();
+        else
+            requestConnectPermission();
 
         //if the database is empty, start the login activity
         if (db.personWithCoursesDao().count() == 0) {
@@ -88,16 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
         TextView profile = findViewById(R.id.student_profile);
         String test = profile.getText().toString();
-
         AppDatabase db = AppDatabase.singleton(this);
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        //When app starts, no session is active
         editor.putString("currSession", "none");
         editor.apply();
         String currSessionID = preferences.getString("currSession", "");
-
         this.messageListener = new FakedMessageListener(realListener, test, db, currSessionID);
-
         message = new Message("Hello".getBytes());
     }
 
@@ -166,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void requestBackgroundPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            new AlertDialog.Builder(this).setTitle("BACKGROUND_LOCATION Permission needed").setMessage("This permission is needed to search for other BoFs.")
+    private void requestScanPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_SCAN)) {
+            new AlertDialog.Builder(this).setTitle("BLUETOOTH_SCAN Permission needed").setMessage("This permission is needed to search for other BoFs.")
                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(MainActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, backgroundCode);
+                                    new String[]{Manifest.permission.BLUETOOTH_SCAN}, scanCode);
                         }
                     })
                     .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -184,18 +164,18 @@ public class MainActivity extends AppCompatActivity {
                     }).create().show();
         }
         else {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, backgroundCode);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.BLUETOOTH_SCAN}, scanCode);
         }
     }
 
-    private void requestCoarsePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            new AlertDialog.Builder(this).setTitle("COARSE_LOCATION Permission needed").setMessage("This permission is needed to search for other BoFs.")
+    private void requestAdPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_ADVERTISE)) {
+            new AlertDialog.Builder(this).setTitle("BLUETOOTH_CONNECT Permission needed").setMessage("This permission is needed to search for other BoFs.")
                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(MainActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, coarseCode);
+                                    new String[]{Manifest.permission.BLUETOOTH_ADVERTISE}, adCode);
                         }
                     })
                     .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -206,26 +186,50 @@ public class MainActivity extends AppCompatActivity {
                     }).create().show();
         }
         else {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, coarseCode);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.BLUETOOTH_ADVERTISE}, adCode);
+        }
+    }
+
+    private void requestConnectPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_CONNECT)) {
+            new AlertDialog.Builder(this).setTitle("BLUETOOTH_CONNECT Permission needed").setMessage("This permission is needed to search for other BoFs.")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.BLUETOOTH_CONNECT}, connectCode);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.BLUETOOTH_CONNECT}, connectCode);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == backgroundCode) {
+        if (requestCode == scanCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Toast.makeText(this, "BACKGROUND_LOCATION Permission is granted", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "You need to grant 'BACKGROUND_LOCATION Permission' to search for other BoFs.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "BLUETOOTH_SCAN Permission is granted", Toast.LENGTH_SHORT).show();
         }
-        if (requestCode == coarseCode) {
+        if (requestCode == adCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Toast.makeText(this, "COARSE_LOCATION Permission is granted", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "You need to grant 'COARSE_LOCATION Permission' to search for other BoFs.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "BLUETOOTH_ADVERTISE Permission is granted", Toast.LENGTH_SHORT).show();
+        }
+        if (requestCode == connectCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(this, "BLUETOOTH_CONNECT Permission is granted", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     // Starting bluetooth
     @Override

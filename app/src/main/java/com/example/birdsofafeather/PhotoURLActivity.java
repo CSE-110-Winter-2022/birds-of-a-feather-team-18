@@ -3,20 +3,14 @@ package com.example.birdsofafeather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
-import com.example.birdsofafeather.model.db.Person;
-import com.example.birdsofafeather.model.db.PersonWithCourses;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -37,7 +31,6 @@ public class PhotoURLActivity extends AppCompatActivity {
         TextView photoUrlTextView = findViewById(R.id.photo_url_textview);
 
         if(!photoUrlTextView.getText().toString().equals("")) {
-            //imageView = findViewById(R.id.testImageView);
 
             try {
                 //create URL to check if the entered URL is valid

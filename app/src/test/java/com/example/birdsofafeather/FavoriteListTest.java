@@ -13,6 +13,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.birdsofafeather.model.IPerson;
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.Person;
@@ -34,7 +35,7 @@ import java.util.UUID;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class PersonListTest {
+public class FavoriteListTest {
 
     AppDatabase testDB;
     final String DEFAULT_PHOTO = "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255532-stock-illustration-profile-placeholder-male-default-profile.jpg";
@@ -46,8 +47,8 @@ public class PersonListTest {
         testDB = AppDatabase.singleton(context);
 
         Person person1 = new Person("1", "User", DEFAULT_PHOTO, false);
-        Person person2 = new Person("2", "Small Simon", DEFAULT_PHOTO, false);
-        Person person3 = new Person("3", "Freshman Fabio", DEFAULT_PHOTO, false);
+        Person person2 = new Person("2", "Small Simon", DEFAULT_PHOTO, true);
+        Person person3 = new Person("3", "Freshman Fabio", DEFAULT_PHOTO, true);
         Person person4 = new Person("4", "Tryhard Tyler", DEFAULT_PHOTO, false);
 
         //user's courses
@@ -108,8 +109,8 @@ public class PersonListTest {
 
 
     @Test
-    public void test_sorts() {
-        ActivityScenario<PersonListActivity> scenario = ActivityScenario.launch(PersonListActivity.class);
+    public void test_favoriteList() {
+        ActivityScenario<FavoriteListActivity> scenario = ActivityScenario.launch(FavoriteListActivity.class);
         Context context = ApplicationProvider.getApplicationContext();
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -126,37 +127,11 @@ public class PersonListTest {
             editor.apply();
             testDB.sessionsDao().insert(newSession);
 
-            activity.updateAllLists();
-            List<PersonWithCourses> list = activity.classMatesByNumCourses;
+            // Get list of favorite students
+            List<? extends IPerson> favoriteTestClassmates =  activity.personsViewAdapter.getPersons();
 
-            Spinner sortOptionSpinnerView = activity.findViewById(R.id.sort_spinner);
-            Button sortButton = activity.findViewById(R.id.apply_sort_button);
-            sortButton.performClick();
-
-            RecyclerView personRecyclerView = activity.findViewById(R.id.persons_view);
-            PersonsViewAdapter personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
-            List<PersonWithCourses> personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
-            assertEquals("4", personList.get(0).getId());
-
-
-            sortOptionSpinnerView.setSelection(1);
-            sortButton.performClick();
-            personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
-            personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
-
-            assert(personList.get(0).person.recentPriority > personList.get(1).person.recentPriority);
-            assert(personList.get(1).person.recentPriority > personList.get(2).person.recentPriority);
-
-            sortOptionSpinnerView.setSelection(2);
-            sortButton.performClick();
-            personViewAdapter = (PersonsViewAdapter) personRecyclerView.getAdapter();
-            personList = (List<PersonWithCourses>) personViewAdapter.getPersons();
-            assert(personList.get(0).person.sizePriority > personList.get(1).person.sizePriority);
-            assert(personList.get(1).person.sizePriority > personList.get(2).person.sizePriority);
-
-            Button stopButton = activity.findViewById(R.id.stopBtn);
-            stopButton.performClick();
+            // 3 classmates, but only 2 favorites
+            assertEquals(2, favoriteTestClassmates.size());
         });
     }
-
 }
