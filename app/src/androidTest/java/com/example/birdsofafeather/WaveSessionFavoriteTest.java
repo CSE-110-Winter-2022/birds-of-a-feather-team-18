@@ -49,15 +49,6 @@ public class WaveSessionFavoriteTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    /*
-    @Rule
-    public GrantPermissionRule mGrantPermissionRule =
-            GrantPermissionRule.grant(
-                    "android.permission.BLUETOOTH_ADVERTISE",
-                    "android.permission.BLUETOOTH_SCAN",
-                    "android.permission.BLUETOOTH_CONNECT");
-
-     */
 
     @Test
     public void waveSessionFavoriteTest() {

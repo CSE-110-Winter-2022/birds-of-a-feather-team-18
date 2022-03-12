@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,12 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdsofafeather.model.db.AppDatabase;
 import com.example.birdsofafeather.model.db.Course;
+import com.example.birdsofafeather.model.db.Person;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.example.birdsofafeather.model.db.Session;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.android.gms.nearby.messages.SubscribeCallback;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
 
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +44,9 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 //set up the student taken common course list
@@ -43,6 +57,9 @@ public class PersonListActivity extends AppCompatActivity {
     protected PersonsViewAdapter personsViewAdapter;
     //set up data base
     private AppDatabase db;
+
+    private static final int TTL_SECONDS = 20;
+    private static final Strategy PUB_STRATEGY = new Strategy.Builder().setTtlSeconds(TTL_SECONDS).build();
 
     public List<PersonWithCourses> classMatesByNumCourses;
     private List<PersonWithCourses> classMatesByCourseSize;
@@ -56,7 +73,7 @@ public class PersonListActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
     Runnable runnable;
-    int delay = 10000;
+    int delay = 5000;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -89,8 +106,171 @@ public class PersonListActivity extends AppCompatActivity {
 
         messageListener = new MessageListener() {
             @Override
-            public void onFound(Message message) {
-                Log.d(TAG, "Found message: " + new String(message.getContent()));
+            public void onFound(final Message message) {
+                String currSessionID = preferences.getString("currSession", "");
+                String messageStr = new String(message.getContent());
+                //If there is no message coming, we will put it to the database
+                if (messageStr == null || messageStr.length() == 0) {
+                    System.out.println("No message");
+                } //else if the messageStr is not null, we start implement then to the database
+                else {
+                    Log.d(TAG, "Found message: " + new String(message.getContent()));
+                    //use a scanner to scan the line from CSV profile
+                    Scanner scanner = new Scanner(messageStr);
+                    //String line = "";
+                    String csvSplitBy = ",";
+
+                    //get selfID
+                    String selfString = db.personWithCoursesDao().get("1").getName() + db.personWithCoursesDao().get("1").getPhoto();
+                    String selfId = UUID.nameUUIDFromBytes(selfString.getBytes()).toString();
+
+                    //count means the line of the profile, 0 means uuid, 1 means name, 2 means Photo Url
+                    int count = 0;
+                    String name = null;
+                    String photoId = null;
+                    String year;
+                    String quarter;
+                    String courseType;
+                    String courseNum;
+                    String text;
+                    String courseSize;
+                    Boolean isWave = false;
+                    //get the user courses from db
+                    List<Course> userCourses = db.coursesDao().getForPerson("1");
+                    //create a list string to store the courses
+                    List<String> userCourseText = new ArrayList<>();
+                    //start implement the user courses, then we can make comparison
+                    for(int i = 0; i < userCourses.size(); i++){
+                        userCourseText.add(userCourses.get(i).text);
+                    }
+
+                    String personId = "";
+                    //start use scanner to scan each line
+                    while (scanner.hasNextLine()) {
+                        String[] array = scanner.nextLine().split(csvSplitBy);
+                        //set UUID
+                        if(count == 0) {
+                            personId = array[0];
+                            count++;
+                        }
+                        //set profile name
+                        else if (count == 1) {
+                            name = array[0];
+                            count++;
+                            //set profile photo url
+                        } else if (count == 2) {
+                            photoId = array[0];
+                            count++;
+                            //set profile courses
+
+                        }
+                        else if (array[0].equals(selfId) || array[0].equals("4b295157-ba31-4f9f-8401-5d85d9cf659a")) {
+                            isWave = true;
+                            if(db.personWithCoursesDao().exists(personId)) {
+                                db.personWithCoursesDao().updateWavingToUs(true, personId);
+                            }
+                        }
+                        //create this person's courses
+                        else if (array.length == 5){
+                            year = array[0];
+                            quarter = array[1];
+                            courseType = array[2];
+                            courseNum = array[3];
+                            courseSize = array[4];
+                            //set the course to the official version
+                            text = quarter + year + ' ' + courseType + ' ' + courseNum;
+                            int courseId = db.coursesDao().maxId() + 1;
+
+                            //Create the course, but only insert it into the db if the user also has this course
+                            Course c = new Course(courseId, personId, text, year,quarter,courseSize);
+                            if(userCourseText.contains(c.text) && !db.personWithCoursesDao().exists(personId)){
+                                db.coursesDao().insert(c);
+                            }
+                        }
+                    }
+
+                    //If the person doesn't already exist in the database, add them to it
+                    if(!db.personWithCoursesDao().exists(personId)){
+                        //set the student profile id
+                        Person newPerson = new Person(personId, name, photoId, false);
+                        newPerson.wavingToUs = isWave;
+                        //only add the person when there are common course with user
+                        List<Course> newPersonCourses = db.coursesDao().getForPerson(personId);
+                        if (newPersonCourses.size() != 0) {
+                            //calculate the size and recency priorities for this new person
+                            float sizePrio = 0;
+                            int recentPrio = 0;
+                            int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+                            int thisQuarter;
+                            int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+                            int thisWeek = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
+                            if (thisMonth > 9 || (thisMonth == 9 && thisWeek >= 3)) {
+                                thisQuarter = 1;
+                            } else if (thisMonth < 3 || (thisMonth == 3 && thisWeek <= 3)) {
+                                thisQuarter = 2;
+                            } else if ((thisMonth == 3 && thisWeek >= 4) || (thisMonth > 3 && thisMonth < 6) || (thisMonth == 6 && thisWeek <= 2)) {
+                                thisQuarter = 3;
+                            } else if ((thisMonth == 6 && thisWeek >= 3) || thisMonth == 7) {
+                                thisQuarter = 4;
+                            } else {
+                                thisQuarter = 4;
+                            }
+                            for (int i = 0; i < newPersonCourses.size(); i++) {
+                                int yearAge = (thisYear - Integer.parseInt(newPersonCourses.get(i).year)) * 4;
+                                String courseQuarter = newPersonCourses.get(i).quarter;
+                                int courseQ = 0;
+                                if (courseQuarter.equals("FA")) {
+                                    courseQ = 1;
+                                } else if (courseQuarter.equals("WI")) {
+                                    courseQ = 2;
+                                } else if (courseQuarter.equals("SP")) {
+                                    courseQ = 3;
+                                } else if (courseQuarter.equals("SS1") || courseQuarter.equals("SS2") || courseQuarter.equals("SSS")) {
+                                    courseQ = 4;
+                                }
+                                int courseAge = thisQuarter - courseQ;
+                                int age = yearAge + courseAge;
+                                recentPrio = Integer.max(5 - age, 1);
+                                switch (newPersonCourses.get(i).size) {
+                                    case "Tiny":
+                                        sizePrio += 1;
+                                        break;
+                                    case "Small":
+                                        sizePrio += 0.33;
+                                        break;
+                                    case "Medium":
+                                        sizePrio += 0.18;
+                                        break;
+                                    case "Large":
+                                        sizePrio += 0.10;
+                                        break;
+                                    case "Huge":
+                                        sizePrio += 0.06;
+                                        break;
+                                    case "Gigantic":
+                                        sizePrio += 0.03;
+                                        break;
+                                }
+                            }
+                            newPerson.sizePriority = sizePrio;
+                            newPerson.recentPriority = recentPrio;
+                            db.personWithCoursesDao().insert(newPerson);
+                        }
+                    }
+
+                    //add person into the current session
+                    List<String> peopleInSession = db.sessionsDao().get(currSessionID).peopleIDs;
+                    if(db.personWithCoursesDao().exists(personId) && !peopleInSession.contains(personId)) {
+                        peopleInSession.add(personId);
+                        Session updatedSession = new Session(currSessionID, db.sessionsDao().get(currSessionID).sessionName);
+                        updatedSession.peopleIDs = peopleInSession;
+                        db.sessionsDao().delete(db.sessionsDao().get(currSessionID));
+                        db.sessionsDao().insert(updatedSession);
+                    }
+
+                    scanner.close();
+                    //send back the message that the profile is set up
+                }
             }
 
             @Override
@@ -98,10 +278,6 @@ public class PersonListActivity extends AppCompatActivity {
                 Log.d(TAG, "Lost sight of message: " + new String(message.getContent()));
             }
         };
-
-        mActiveMessage = new Message("Hello World".getBytes());
-
-
     }
 
     public void onApplySortClicked(View view) {
@@ -133,6 +309,8 @@ public class PersonListActivity extends AppCompatActivity {
             public void run() {
                 handler.postDelayed(runnable, delay);
                 updateAllListsAndCurrView();
+
+                subscribe();
                 Log.i(TAG, "Updating view.");
             }
         }, delay);
@@ -452,9 +630,15 @@ public class PersonListActivity extends AppCompatActivity {
 
     private void publish(String message) {
         Log.i(TAG, "Publishing message: " + message);
-
+        PublishOptions options = new PublishOptions.Builder().setStrategy(PUB_STRATEGY).setCallback(new PublishCallback() {
+            @Override
+            public void onExpired() {
+                super.onExpired();
+                Log.i(TAG, "No longer published");
+            }
+        }).build();
         mActiveMessage = new Message(message.getBytes());
-        Nearby.getMessagesClient(this).publish(mActiveMessage);
+        Nearby.getMessagesClient(this).publish(mActiveMessage, options);
     }
 
     private void unpublish() {
@@ -467,7 +651,14 @@ public class PersonListActivity extends AppCompatActivity {
 
     private void subscribe() {
         Log.i(TAG, "Subscribing.");
-        Nearby.getMessagesClient(this).subscribe(messageListener);
+        SubscribeOptions options = new SubscribeOptions.Builder().setStrategy(PUB_STRATEGY).setCallback(new SubscribeCallback() {
+            @Override
+            public void onExpired() {
+                super.onExpired();
+                Log.i(TAG, "No longer subscribe");
+            }
+        }).build();
+        Nearby.getMessagesClient(this).subscribe(messageListener, options);
     }
 
     private void unsubscribe() {

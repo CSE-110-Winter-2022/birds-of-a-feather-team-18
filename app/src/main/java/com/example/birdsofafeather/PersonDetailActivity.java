@@ -19,6 +19,8 @@ import com.example.birdsofafeather.model.db.Course;
 import com.example.birdsofafeather.model.db.PersonWithCourses;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -103,6 +105,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         //set the wave to true first
         db.personWithCoursesDao().updateWavingToThem(true, person.getId());
         //publish profile
+        unpublish();
         publish(createCSV());
     }
 
@@ -111,6 +114,27 @@ public class PersonDetailActivity extends AppCompatActivity {
 
         mActiveMessage = new Message(message.getBytes());
         Nearby.getMessagesClient(this).publish(mActiveMessage);
+    }
+
+    /*private void publish(String message) {
+        Log.i(TAG, "Publishing message: " + message);
+        PublishOptions options = new PublishOptions.Builder().setStrategy(PUB_STRATEGY).setCallback(new PublishCallback() {
+            @Override
+            public void onExpired() {
+                super.onExpired();
+                Log.i(TAG, "No longer published");
+            }
+        }).build();
+        mActiveMessage = new Message(message.getBytes());
+        Nearby.getMessagesClient(this).publish(mActiveMessage, options);
+    }*/
+
+    private void unpublish() {
+        Log.i(TAG, "Unpublishing.");
+        if (mActiveMessage != null) {
+            Nearby.getMessagesClient(this).unpublish(mActiveMessage);
+            mActiveMessage = null;
+        }
     }
 
     public String createCSV() {
